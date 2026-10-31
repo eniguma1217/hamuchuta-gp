@@ -1,0 +1,313 @@
+{
+  "path": "/workspace/scratch/d6ea6d2bc4b0/hamster-story-town-20261019/dist/assets/story-v5/eating-actions-v5.png",
+  "source": "/workspace/scratch/d6ea6d2bc4b0/generated_images/exec-4ba694ec-d63b-4931-9ddd-00e1bac2dc1c.png",
+  "width": 1086,
+  "height": 1448,
+  "mode": "RGBA",
+  "columns": 3,
+  "rows": 4,
+  "uniformGrid": false,
+  "sha256": "3b2872dce406eb0914a4646b228157953d605eb8b87b61184e9eeddaafb7458c",
+  "cropMethod": "Connected main sprite alpha>32 with3px padding; bounds are [left,top,right,bottom] exclusive",
+  "cells": [
+    {
+      "id": "cream",
+      "action": "hold",
+      "row": 0,
+      "col": 0,
+      "alphaBounds": [
+        52,
+        113,
+        337,
+        386
+      ],
+      "paddedBounds": [
+        49,
+        110,
+        340,
+        389
+      ],
+      "sourceRect": [
+        49,
+        110,
+        291,
+        279
+      ]
+    },
+    {
+      "id": "golden",
+      "action": "hold",
+      "row": 0,
+      "col": 1,
+      "alphaBounds": [
+        400,
+        114,
+        686,
+        387
+      ],
+      "paddedBounds": [
+        397,
+        111,
+        689,
+        390
+      ],
+      "sourceRect": [
+        397,
+        111,
+        292,
+        279
+      ]
+    },
+    {
+      "id": "gray",
+      "action": "hold",
+      "row": 0,
+      "col": 2,
+      "alphaBounds": [
+        751,
+        113,
+        1037,
+        387
+      ],
+      "paddedBounds": [
+        748,
+        110,
+        1040,
+        390
+      ],
+      "sourceRect": [
+        748,
+        110,
+        292,
+        280
+      ]
+    },
+    {
+      "id": "cream",
+      "action": "gnaw",
+      "row": 1,
+      "col": 0,
+      "alphaBounds": [
+        52,
+        455,
+        349,
+        718
+      ],
+      "paddedBounds": [
+        49,
+        452,
+        352,
+        721
+      ],
+      "sourceRect": [
+        49,
+        452,
+        303,
+        269
+      ]
+    },
+    {
+      "id": "golden",
+      "action": "gnaw",
+      "row": 1,
+      "col": 1,
+      "alphaBounds": [
+        403,
+        455,
+        697,
+        718
+      ],
+      "paddedBounds": [
+        400,
+        452,
+        700,
+        721
+      ],
+      "sourceRect": [
+        400,
+        452,
+        300,
+        269
+      ]
+    },
+    {
+      "id": "gray",
+      "action": "gnaw",
+      "row": 1,
+      "col": 2,
+      "alphaBounds": [
+        748,
+        454,
+        1044,
+        718
+      ],
+      "paddedBounds": [
+        745,
+        451,
+        1047,
+        721
+      ],
+      "sourceRect": [
+        745,
+        451,
+        302,
+        270
+      ]
+    },
+    {
+      "id": "cream",
+      "action": "puffed_gnaw",
+      "row": 2,
+      "col": 0,
+      "alphaBounds": [
+        50,
+        782,
+        352,
+        1045
+      ],
+      "paddedBounds": [
+        47,
+        779,
+        355,
+        1048
+      ],
+      "sourceRect": [
+        47,
+        779,
+        308,
+        269
+      ]
+    },
+    {
+      "id": "golden",
+      "action": "puffed_gnaw",
+      "row": 2,
+      "col": 1,
+      "alphaBounds": [
+        402,
+        782,
+        701,
+        1046
+      ],
+      "paddedBounds": [
+        399,
+        779,
+        704,
+        1049
+      ],
+      "sourceRect": [
+        399,
+        779,
+        305,
+        270
+      ]
+    },
+    {
+      "id": "gray",
+      "action": "puffed_gnaw",
+      "row": 2,
+      "col": 2,
+      "alphaBounds": [
+        751,
+        783,
+        1049,
+        1046
+      ],
+      "paddedBounds": [
+        748,
+        780,
+        1052,
+        1049
+      ],
+      "sourceRect": [
+        748,
+        780,
+        304,
+        269
+      ]
+    },
+    {
+      "id": "cream",
+      "action": "finished",
+      "row": 3,
+      "col": 0,
+      "alphaBounds": [
+        47,
+        1096,
+        340,
+        1369
+      ],
+      "paddedBounds": [
+        44,
+        1093,
+        343,
+        1372
+      ],
+      "sourceRect": [
+        44,
+        1093,
+        299,
+        279
+      ]
+    },
+    {
+      "id": "golden",
+      "action": "finished",
+      "row": 3,
+      "col": 1,
+      "alphaBounds": [
+        399,
+        1097,
+        693,
+        1371
+      ],
+      "paddedBounds": [
+        396,
+        1094,
+        696,
+        1374
+      ],
+      "sourceRect": [
+        396,
+        1094,
+        300,
+        280
+      ]
+    },
+    {
+      "id": "gray",
+      "action": "finished",
+      "row": 3,
+      "col": 2,
+      "alphaBounds": [
+        744,
+        1097,
+        1037,
+        1371
+      ],
+      "paddedBounds": [
+        741,
+        1094,
+        1040,
+        1374
+      ],
+      "sourceRect": [
+        741,
+        1094,
+        299,
+        280
+      ]
+    }
+  ],
+  "visibleChecks": {
+    "threeCorrectIdentities": true,
+    "fullFeetTailsEars": true,
+    "twoFrontPawsAndStripedSeedRows1to3": true,
+    "seedTouchesMouthRows2and3": true,
+    "row3PuffedCheeks": true
+  },
+  "limitations": [
+    "AI pixel-style art with microalpha and fine edges, not strict fixed-grid pixel-perfect.",
+    "Full in-game animation still requires playback hookup; no code edits were made."
+  ]
+}

@@ -1,0 +1,271 @@
+/* One-screen home (#30, owner 2026-10-25): the training screen fits one phone screen without
+   scrolling. Thin bar, room, compact stats, Uma Musume-style commands. Same green/cream palette
+   as home-ui.css. The room shrinks on short screens so the commands always stay in view. */
+body[data-screen="training"] .topline,body[data-screen="training"] .site-header,body[data-screen="training"] .site-footer{display:none}
+body[data-screen="training"] #game.shell{max-width:520px;margin:0 auto;padding:6px 8px 10px}
+.home-bar{display:flex;align-items:center;gap:6px;min-height:42px;padding:3px 6px 3px 10px;margin:0 0 6px;background:#285f52;color:#fff8df;border:2px solid #214a40;box-shadow:inset 0 -3px #163e34}
+.home-when{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+.home-when strong{font-size:13px;white-space:nowrap}
+.home-when small{font-size:9px;opacity:.85}
+.home-chip{margin-left:auto;min-width:0;max-width:56%;padding:5px 8px;font-size:11px;line-height:1.2;color:#214a40;background:#fff8df;border:2px solid #b1c88a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.home-chip b{margin-left:5px;color:#a83b29}
+.home-menu-button{flex:none;width:36px;height:32px;padding:0;font-size:18px;line-height:1;color:#214a40;background:#fff8df;border:2px solid #b1c88a}
+.home-one{display:flex;flex-direction:column;gap:6px;min-height:calc(100vh - 66px);min-height:calc(100dvh - 66px)}
+.home-one>.home-panel,.home-one>.race-one{margin-top:auto}
+.home-room-one .scene-wrap{position:relative;border:3px solid #285f52;background:#214a40;line-height:0}
+/* Room height = screen minus everything else in that mode (bar, stats, speech or panel, gaps). */
+.home-room-one #scene{display:block;margin:0 auto;aspect-ratio:16/9;height:auto;width:min(100%,calc((100vh - 330px)*16/9));width:min(100%,calc((100dvh - 330px)*16/9))}
+.home-one[data-pick="1"] #scene{width:min(100%,calc((100vh - 372px)*16/9));width:min(100%,calc((100dvh - 372px)*16/9))}
+.home-one[data-mode="train"] #scene{width:min(100%,calc((100vh - 360px)*16/9));width:min(100%,calc((100dvh - 360px)*16/9))}
+.home-one[data-state="race-ready"] #scene{width:min(100%,calc((100vh - 425px)*16/9));width:min(100%,calc((100dvh - 425px)*16/9))}
+.home-room-one .scene-name{position:absolute;right:6px;bottom:6px;left:auto;transform:none;padding:3px 8px;font-size:11px;line-height:1.3}
+.home-say{margin:0;padding:5px 9px;font-size:12px;line-height:1.45;color:#214a40;background:#fff8df;border:2px solid #285f52;border-radius:0 10px 10px 10px;max-height:4.4em;overflow:hidden}
+.home-say small{display:block;font-size:9px;line-height:1.2;color:#477766}
+.home-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+.hs{position:relative;padding:3px 3px 4px;text-align:center;line-height:1.1;background:#fff8dd;border:2px solid #b1c88a}
+.hs small{display:block;font-size:9px;color:#477766;white-space:nowrap;overflow:hidden;text-overflow:clip}
+.hs b{font-size:16px;color:#214a40}
+.hs em{margin-left:2px;font-style:normal;font-size:10px;font-weight:bold;color:#a83b29}
+.hs-bar{display:block;height:3px;margin-top:2px;background:#e5d8a8}.hs-bar i{display:block;height:100%;background:#477766}
+.hs-up{position:absolute;top:-7px;right:-3px;padding:0 4px;font-style:normal;font-size:10px;font-weight:bold;line-height:1.5;color:#fff8df;background:#a83b29}
+.home-vitals{display:flex;align-items:center;gap:6px;padding:0 2px;font-size:11px;color:#214a40;white-space:nowrap}
+.home-vitals .meter{flex:1;height:8px;min-width:40px;background:#e5d8a8;border:1px solid #477766}.home-vitals .meter i{display:block;height:100%;background:#6fa36b}
+.home-panel{display:flex;flex-direction:column;gap:6px}
+.home-commands{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.cmd,.tr{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px;color:#214a40;background:#fff8df;border:2px solid #477766;box-shadow:inset 0 -3px #e5d8a8;font-weight:bold;cursor:pointer}
+.cmd{min-height:54px;font-size:13px}
+.tr{min-height:66px;padding:4px 2px;font-size:10px;line-height:1.2}
+.cmd .pixel-icon,.tr .pixel-icon{width:24px;height:24px;object-fit:contain;image-rendering:pixelated}
+.cmd-train{color:#fff8df;background:#285f52;border-color:#214a40;box-shadow:inset 0 -3px #163e34}
+.cmd.picked,.tr.picked{color:#fff8df;background:#a83b29;border-color:#6b291f;box-shadow:inset 0 -3px #6b291f}
+.cmd em,.tr em{font-style:normal;font-size:9px;line-height:1.1}
+.cmd:disabled,.tr:disabled{opacity:.45;cursor:default}
+.cmd-badge{position:absolute;top:3px;right:5px;padding:0 5px;font-style:normal;font-size:10px;color:#fff8df;background:#a83b29;border-radius:8px}
+.train-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+.pick-detail{padding:5px 8px;font-size:11px;line-height:1.4;color:#214a40;background:#fff8dd;border:2px solid #285f52}
+.pick-head{display:flex;align-items:baseline;gap:8px}.pick-head b{margin-right:auto;font-size:13px}.pick-head .risk{font-weight:bold;color:#a83b29}
+.pick-gains{display:flex;flex-wrap:wrap;gap:4px;margin:3px 0}.pick-gains .chip{padding:0 6px;background:#e9f0d6;border:1px solid #b1c88a}.pick-gains .chip.main{color:#fff8df;background:#285f52;border-color:#214a40}
+.pick-detail small{display:block;font-size:10px;color:#477766}
+.pick-hint{margin:0;padding:6px 8px;font-size:11px;line-height:1.4;color:#477766;background:#fff8dd;border:2px dashed #b1c88a}
+.home-back{min-height:36px;padding:4px}
+.home-one .conversation-entry{margin:0;padding:8px 10px;flex-direction:row;align-items:center}
+.race-one{margin:0;padding:7px 10px;text-align:left;background:#fff8dd;border:3px solid #285f52}
+.race-one-head{display:flex;align-items:baseline;gap:8px}.race-one-head h2{margin:0;font-size:16px;color:#214a40}.race-one-head .eyebrow{white-space:nowrap}
+.race-one-rule,.race-one-course,.race-one-style{margin:3px 0;font-size:11px;line-height:1.4;color:#214a40}
+.race-one .style-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:4px 0;padding:0;border:0}
+.race-one .style-picker legend{padding:0;font-size:11px;font-weight:bold;color:#214a40}
+.race-one .course-option{min-height:38px;padding:4px;text-align:center;font-size:11px}
+.race-one .primary{margin-top:4px;min-height:40px;padding:8px}
+.menu-list{display:grid;gap:8px}.menu-list button{min-height:44px}
+@media(min-width:700px){body[data-screen="training"] #game.shell{padding-top:12px}}
+/* The modal × was cream on cream (home-ui.css colour over styles.css background); menu, town and
+   plan now open as modals from the home, so make it visible. */
+body[data-screen="training"] .modal-header .close-button{color:#214a40;background:#fff8df;border-color:#b1c88a}
+
+/* One-screen race broadcast, result, analysis, 能力 and 戦績 (#30, owner 2026-10-25). */
+body[data-screen="training"] .modal-header{padding:6px 10px}
+body[data-screen="training"] .modal-header h2{font-size:15px}
+body[data-screen="training"] .modal-body{padding:10px}
+.race-one-screen{padding:8px;display:flex;flex-direction:column;gap:6px}
+.race-one-screen .broadcast-head{display:flex;align-items:center;gap:8px;padding:0 0 4px;font-size:10px}
+.race-one-screen .broadcast-title{flex:1;min-width:0;font-weight:bold;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0}
+.race-one-screen .race-live{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 8px;font-size:12px}
+.race-one-screen .race-live strong{font-size:18px}
+.race-one-screen .race-live-message{margin:0;padding:6px 8px;min-height:3.1em;font-size:12px;line-height:1.35}
+.race-one-screen .playback-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:0}
+.race-one-screen .playback-controls button{min-height:40px;padding:4px 2px;font-size:11px}
+.res-one{display:flex;flex-direction:column;gap:6px}
+.res-top{margin:0;padding:0 0 4px;text-align:center}
+.res-top .eyebrow{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.res-rank{display:flex;align-items:baseline;justify-content:center;gap:14px}
+.res-top .big-rank{margin:0;line-height:1}.res-top .big-rank strong{font-size:44px}
+.res-top .finish-time{margin:0;font-size:18px}
+.res-top h3{margin:2px 0 0;font-size:15px}
+.res-reward{margin:2px 0 0;font-size:11px}
+.res-tabs,.sub-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.res-tab,.sub-tab{min-height:34px;padding:4px;font-size:12px;font-weight:bold;color:#214a40;background:#fff8df;border:2px solid #b1c88a}
+.res-tab.active,.sub-tab.active{color:#fff8df;background:#285f52;border-color:#214a40}
+.res-panel{max-height:calc(100vh - 330px);max-height:calc(100dvh - 330px);overflow:auto}
+.res-detail .res-panel{max-height:calc(100vh - 290px);max-height:calc(100dvh - 290px)}
+.res-panel .ceremony{margin:0;padding:6px}
+.res-panel .ceremony-title{margin:2px 0;font-size:12px}
+.res-panel .ceremony-winners{gap:4px}
+.res-panel .ceremony-winner{padding:3px}
+.res-panel .ceremony-winner canvas{width:min(100%,84px);height:auto}
+.res-panel .ceremony-winner strong{font-size:11px}.res-panel .ceremony-winner span,.res-panel .ceremony-winner b{font-size:10px}
+.res-panel .ceremony-hero{margin-top:4px;padding:3px;gap:6px}.res-panel .ceremony-hero canvas{width:52px;height:auto}.res-panel .ceremony-hero p{margin:0;font-size:11px;line-height:1.4}
+.res-panel .selected-twelve{margin:4px 0 0;padding:4px}.res-panel .selected-twelve h4{margin:0;font-size:11px}.res-panel .selected-twelve p{margin:0;font-size:10px}.res-panel .selected-twelve div{gap:2px}.res-panel .selected-twelve span{font-size:10px;padding:1px 4px}
+.res-panel .result-list{margin:0}.res-panel .result-row{padding:5px 8px;font-size:12px}
+.result-gap{text-align:center;font-size:11px;line-height:1;color:#7a6a5c}
+.res-panel .coach-notebook,.res-panel .growth-dialogue{margin:0 0 6px;padding:8px;font-size:11px}
+.res-panel .analysis{margin:0}.res-panel .analysis h3{margin:0 0 4px;font-size:14px}.res-panel .analysis p{margin:2px 0;font-size:11px}
+.res-panel .analysis-row{padding:4px 6px}.res-panel .analysis-row small{font-size:10px}
+.res-one .result-actions{display:grid;grid-template-columns:1fr 1.6fr;gap:6px;margin:0}
+.res-one .result-actions button{min-height:42px;margin:0}
+.result-empty{margin:8px 0;font-size:12px;text-align:center}
+@media(max-height:620px){.res-panel #ceremony-stage{display:none}.res-top .big-rank strong{font-size:36px}.res-panel .analysis .micro-note{display:none}.res-panel .analysis-row small{display:none}}
+.one-page{margin:0;padding:10px 12px}
+.one-page h1{margin:0 0 6px;font-size:18px}
+.one-page .sub-tabs{margin-bottom:8px}
+.one-page .stat-row{margin:0 0 4px}
+.one-page .individuality-grid{gap:6px;margin:6px 0}
+.one-page .individuality-card{padding:6px 8px}.one-page .individuality-card h2{margin:0 0 2px;font-size:13px}.one-page .individuality-card p{margin:0;font-size:11px;line-height:1.45}
+.one-page h3{margin:6px 0 2px;font-size:13px}.one-page>p{margin:2px 0;font-size:12px}
+.one-page .relationship-card{padding:8px}.one-page .relationship-card p{margin:2px 0;font-size:12px}
+.one-page .history-card{padding:6px 8px;margin:0 0 4px}.one-page .history-card h3{margin:0;font-size:12px}.one-page .history-card p{margin:0;font-size:10px}
+.one-page .log-entry{padding:4px 0;font-size:11px}
+.bond-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:8px}.bond-list p{margin:1px 0;font-size:11px}
+/* Award tab: the stage becomes a thin banner, winners and the twelve compact, so the podium,
+   the hero and (world final) the twelve fit without inner scrolling. */
+.res-panel #ceremony-stage{display:block;width:100%;height:52px;object-fit:cover}
+.res-panel .ceremony-title{position:static;margin:3px 0;padding:2px 6px}
+.res-panel .ceremony-winner{padding:2px;min-height:0}
+.res-panel .ceremony-winner canvas{width:46px;height:auto}
+.res-panel .ceremony-winner b{font-size:10px}
+.res-panel .selected-twelve div{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}
+.res-panel .selected-twelve span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 3px;font-size:9px;line-height:1.6}
+.res-panel .result-row{padding:4px 8px;font-size:11px;line-height:1.3}
+@media(max-height:620px){.res-panel .result-row{padding:2px 8px}.res-top h3{font-size:13px}.res-reward{display:none}}
+@media(max-height:620px){.res-panel #ceremony-stage{display:none}}
+.res-tabs.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.res-panel>.selected-twelve{margin:0;padding:8px}.res-panel>.selected-twelve h4{font-size:13px}.res-panel>.selected-twelve p{font-size:11px;margin:2px 0 6px}
+.res-panel>.selected-twelve div{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.res-panel>.selected-twelve span{font-size:11px;line-height:2}
+.rival-voice{margin:0 0 6px;padding:7px 9px;font-size:12px;color:#214a40;background:#fff8df;border:2px solid #a83b29}.rival-voice b{display:block;font-size:10px;color:#a83b29}.rival-voice p{margin:2px 0 0}
+.year-goal{margin:0 0 8px;padding:8px 10px;color:#214a40;background:#fff8dd;border:2px solid #285f52}.year-goal b{font-size:12px}.year-goal p{margin:2px 0;font-size:14px;font-weight:bold}.year-goal small{font-size:11px;color:#a83b29}
+
+/* 町へ on one phone screen with five friends and up to six side stories (#30 side stories, owner 2026-10-25) */
+.modal .side-stories,.modal .town-panel,.modal .boost-status{margin:0 0 8px;padding:8px 10px;border-radius:10px}
+.modal .side-stories h3,.modal .town-panel h3{font-size:14px;margin:0 0 2px}
+.modal .side-stories p,.modal .town-panel p{font-size:11px;line-height:1.4;margin:0 0 6px}
+.modal .boost-status{font-size:11px;line-height:1.45}
+.modal .side-stories>div{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+.modal .side-stories button{min-height:0;padding:5px 7px;font-size:12px;line-height:1.25}
+.modal .side-stories button small{display:none}
+.modal .town-options{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.modal .town-option{flex-direction:column;justify-content:center;text-align:center;min-height:0;padding:4px 2px;gap:0;font-size:11px;line-height:1.25}
+.modal .town-option canvas{width:36px;height:32px}
+.modal .town-option small{font-size:9px}
+.modal .town-panel~button.full{min-height:0;padding:8px 10px}
+
+/* Friends at practice: their faces sit on the training button (#30 B2, owner 2026-10-25) */
+.train-row button{position:relative}
+.train-row .friend-faces{position:absolute;top:-6px;right:-4px;display:flex;gap:0;pointer-events:none;z-index:1}
+.train-row .friend-faces i{display:block;width:30px;height:30px;margin-left:-5px;overflow:hidden;background:#fff8e2;border:2px solid #2f6b5a;border-radius:50%}
+.train-row .friend-faces canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
+.train-row button.with-friends{box-shadow:inset 0 0 0 2px #f2b53d}
+.pick-detail .friend-help{color:#9a5a0a;font-weight:700}
+
+/* Training result on short phones (375x548): crop the picture's sky and grass so it fits one screen (#30, 2026-10-25) */
+@media (max-height:600px){
+ .practice-result .result-illustration{height:124px}
+ .practice-result .result-illustration canvas{position:relative;top:50%;transform:translateY(-50%)}
+ .practice-result h3{font-size:19px;margin:8px 0 4px}
+ .practice-result>p{margin:4px 0}
+}
+
+/* 図鑑 (#30, owner 2026-10-25): five tabs, tiles in two columns, ten per page, one phone screen */
+.album{display:grid;gap:8px}
+.album-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px}
+.album-tabs button{min-height:0;padding:6px 2px;font-size:11px;line-height:1.25;background:#fff8e2;border:2px solid #8aa575;color:#285f52;white-space:normal}
+.album-tabs button.active{background:#285f52;color:#fff4d0;border-color:#285f52}
+.album-sub{display:flex;gap:6px}
+.album-sub button{flex:1;min-height:0;padding:5px 8px;font-size:12px;background:#fff8e2;border:2px solid #c9b88f;color:#5b4a3c}
+.album-sub button.active{background:#f2b53d;border-color:#b07d16;color:#3d2a10}
+.album-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+.album-tile{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;min-height:44px;padding:5px 8px;text-align:left;font-size:12px;line-height:1.3;background:#fffaf0;border:2px solid #8aa575;border-radius:8px;color:#2f4b40}
+.album-tile b{font-size:12px}
+.album-tile small{font-size:10px;color:#6d7a55}
+.album-tile.locked{background:#eee8d4;border:2px dashed #b8ad8c;color:#7d735c}
+.album-tile.locked small{color:#8a7f63}
+.album-pager{display:flex;align-items:center;justify-content:center;gap:12px;font-size:12px}
+.album-pager button{min-height:0;padding:4px 14px}
+.album-town{display:grid;gap:6px}
+.album-friend{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;background:#fffaf0;border:2px solid #8aa575;border-radius:8px}
+.album-friend b{font-size:12px;color:#285f52}
+.album-friend span{display:flex;gap:4px}
+.album-friend button,.album-friend i{display:grid;place-items:center;width:30px;height:30px;min-height:0;padding:0;font-size:13px;font-style:normal;border-radius:50%}
+.album-friend button{background:#f2b53d;border:2px solid #b07d16;color:#3d2a10;font-weight:700}
+.album-friend i{background:#eee8d4;border:2px dashed #b8ad8c;color:#8a7f63}
+.album-note{margin:0;font-size:11px;line-height:1.45;color:#5b5a46}
+.album-hall{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.album-hall li{display:grid;grid-template-columns:auto 1fr;gap:0 8px;align-items:center;padding:6px 8px;background:#fff6d6;border:2px solid #d4a63a;border-radius:8px}
+.album-hall .gen{grid-row:span 2;font-size:11px;font-weight:700;color:#fff4d0;background:#b07d16;border-radius:6px;padding:4px 6px}
+.album-hall b{font-size:14px;color:#3d2a10}
+.album-hall small{font-size:11px;color:#6d5a3c}
+.album-bests{display:grid;gap:4px;font-size:12px}
+.album-bests p{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:0;padding:4px 8px;background:#fffaf0;border:1px solid #c9d3b4;border-radius:6px}
+.album-bests p span{color:#5b5a46}
+.album-bests p b{color:#285f52;margin-right:8px}
+.album-bests p small{margin-left:auto;color:#7d735c}
+.album-bests h4{margin:4px 0 0;font-size:12px;color:#285f52}
+.album-friends{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+.album-tabs button small{display:block;font-size:10px;opacity:.85}
+@media (max-height:600px){.album{gap:5px}.album-tile{min-height:38px;padding:3px 7px}.album-tabs button{padding:4px 2px}.album-friend{padding:4px 8px}}
+@media (max-width:400px){.album-tabs button{font-size:10px;letter-spacing:-.06em;padding-left:0;padding-right:0}}
+
+/* Talent pick at the start of a run (#30 R1, owner 2026-10-26) */
+.talent-grid{display:grid;gap:8px;margin:8px 0}
+.talent-card{display:grid;gap:3px;text-align:left;padding:10px 12px;min-height:0;background:#fffaf0;border:2px solid #8aa575;border-radius:10px;color:#2f4b40}
+.talent-card b{font-size:15px;color:#285f52;display:flex;align-items:center;gap:8px}
+.talent-card b em{font-style:normal;font-size:10px;background:#f2b53d;color:#3d2a10;border-radius:4px;padding:1px 6px}
+.talent-card span{font-size:12px;line-height:1.45}
+
+/* Partner choice on one phone screen: the three partners side by side (#30, 2026-10-26) */
+.modal .partner-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:6px 0}
+.modal .partner-card{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:0;padding:6px 4px;text-align:center}
+.modal .partner-card canvas{width:100%;max-width:84px;height:auto;aspect-ratio:66/60}
+.modal .partner-card h3{margin:0;font-size:14px}
+.modal .partner-card small{font-size:10px;line-height:1.3}
+.modal .partner-card .partner-traits{display:grid;gap:1px}
+.modal .partner-card .partner-traits b{font-size:10px;line-height:1.35}
+.modal .partner-card .partner-traits span{font-size:10px;line-height:1.35}
+.modal .name-field{display:grid;gap:3px;font-size:12px;margin:4px 0 8px}
+.modal .name-field input{min-height:38px}
+@media (max-width:400px){.modal .partner-card .partner-traits span{display:none}}
+/* Talents (#30, owner 2026-10-30): the first one is revealed, rare events add more; gold ones shine. */
+.talent-reveal{display:grid;gap:8px;margin-bottom:14px;text-align:center}
+.talent-reveal>small{font-size:12px;font-weight:bold;color:#477766}
+.talent-reveal p{margin:0;font-size:12px;line-height:1.5;color:#5b6b60;text-align:left}
+.talent-card-reveal{padding:14px;text-align:center;border-width:3px;animation:talent-pop .5s ease-out}
+.talent-card-reveal b{justify-content:center;font-size:19px}
+.talent-get{display:grid;gap:3px;margin:6px 0 10px;padding:12px;text-align:center;background:#f3faea;border:3px solid #6fa36b;border-radius:10px;animation:talent-pop .5s ease-out}
+.talent-get small{font-size:12px;font-weight:bold;color:#477766}
+.talent-get b{font-size:20px;color:#285f52}
+.talent-get span{font-size:12px;line-height:1.45;color:#2f4b40}
+.talent-get.gold{background:linear-gradient(135deg,#fff3c4,#f7d774 45%,#fff0b0);border-color:#c79a1e;box-shadow:0 0 0 3px #fff6d6,0 0 16px #f2c94c}
+.talent-get.gold small,.talent-get.gold b{color:#7a5300}
+.individuality-card.gold{background:linear-gradient(135deg,#fff7d6,#f6e3a1);border-color:#c79a1e}
+.individuality-card.gold h2{color:#7a5300}
+@keyframes talent-pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.talent-card-reveal,.talent-get{animation:none}}
+/* The Uma Musume-style home (#30, owner 2026-10-30 「もっとプレイ中のメイン画面を大きくして練習とかの項目を画面内に
+   入れ込んで」, pick B on phone and PC): the room fills the screen under the thin bar, the camera keeps the hamster
+   in view (home-art.js homeCamera), the stats and words sit on top of the picture and the commands at its foot. */
+body[data-screen="training"] .home-one{position:relative;display:block;height:calc(100vh - 66px);height:calc(100dvh - 66px);min-height:500px;overflow:hidden}
+body[data-screen="training"] .home-one .home-room-one,body[data-screen="training"] .home-one .home-room-one .scene-wrap{position:absolute;inset:0}
+body[data-screen="training"] .home-one .home-room-one #scene{width:100%;height:100%;aspect-ratio:auto;image-rendering:pixelated}
+body[data-screen="training"] .home-one .home-room-one .scene-name{display:none}
+.home-top,.home-bottom{position:absolute;left:8px;right:8px;z-index:2;display:grid;gap:6px}
+.home-top{top:8px}
+.home-bottom{bottom:8px}
+body[data-screen="training"] .home-one .hs,body[data-screen="training"] .home-one .home-vitals{background:rgba(255,248,221,.92)}
+body[data-screen="training"] .home-one .home-vitals{padding:3px 6px;border:2px solid #b1c88a}
+body[data-screen="training"] .home-one .home-say{margin-right:64px;background:rgba(255,248,223,.95)}
+body[data-screen="training"] .home-one .cmd,body[data-screen="training"] .home-one .tr,body[data-screen="training"] .home-one .pick-hint,body[data-screen="training"] .home-one .pick-detail,body[data-screen="training"] .home-one .home-back,body[data-screen="training"] .home-one .conversation-entry{background:rgba(255,248,223,.94)}
+body[data-screen="training"] .home-one .cmd-train,body[data-screen="training"] .home-one .cmd.picked,body[data-screen="training"] .home-one .tr.picked{background:#285f52}
+body[data-screen="training"] .home-one .cmd.picked,body[data-screen="training"] .home-one .tr.picked{background:#a83b29}
+body[data-screen="training"] .home-one .cmd{min-height:58px;font-size:14px}
+/* PC and wide tablets: the room keeps 16:9 and is as big as the screen allows; stats top-left, words
+   top-right, commands bottom-centre. */
+@media(min-width:900px) and (min-aspect-ratio:4/3){
+ body[data-screen="training"] #game.shell{max-width:1240px}
+ body[data-screen="training"] .home-one{width:min(100%,calc((100dvh - 78px)*16/9));height:calc(100dvh - 78px);margin:0 auto}
+ .home-top{left:12px;right:12px;top:12px;grid-template-columns:minmax(0,440px) 1fr minmax(0,320px);align-items:start}
+ .home-top>.home-stats{grid-column:1;grid-row:1}.home-top>.home-vitals{grid-column:1;grid-row:2}
+ .home-top>.home-say{grid-column:3;grid-row:1/span 2;margin-right:0}
+ .home-bottom{left:50%;right:auto;bottom:12px;width:min(620px,calc(100% - 24px));transform:translateX(-50%)}
+}
+@media(min-width:700px){body[data-screen="training"] .home-one{height:calc(100vh - 78px);height:calc(100dvh - 78px)}}
+@media(min-width:900px) and (min-aspect-ratio:4/3){body[data-screen="training"] .home-one[data-mode="train"] .home-bottom{width:min(780px,calc(100% - 24px))}body[data-screen="training"] .home-one .tr{min-height:58px}}
+/* Short phones: smaller commands so the hamster's feet stay clear. */
+@media(max-height:700px){body[data-screen="training"] .home-one .cmd{min-height:48px;font-size:13px}body[data-screen="training"] .home-one .tr{min-height:56px}}

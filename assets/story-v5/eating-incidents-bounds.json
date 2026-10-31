@@ -1,0 +1,170 @@
+{
+  "path": "/workspace/scratch/d6ea6d2bc4b0/hamster-story-town-20261019/dist/assets/story-v5/eating-incidents-v5.png",
+  "source": "/workspace/scratch/d6ea6d2bc4b0/generated_images/exec-a6d22084-f350-4ff7-a699-6aeb38b63fbe.png",
+  "firstDraftSource": "/workspace/scratch/d6ea6d2bc4b0/generated_images/exec-218b2f70-000c-4ecf-9c44-dff3612781b8.png",
+  "width": 1536,
+  "height": 1024,
+  "mode": "RGBA",
+  "columns": 3,
+  "rows": 2,
+  "uniformGrid": false,
+  "sha256": "cb62e43a14841d8cbcff74928c5ec169be8e94ffbe58e5be87dc77b54232dea4",
+  "cropMethod": "Connected sprite alpha>32+3px padding; bounds=[left,top,right,bottom] exclusive",
+  "cells": [
+    {
+      "id": "cream",
+      "action": "hard_shell",
+      "row": 0,
+      "col": 0,
+      "alphaBounds": [
+        80,
+        145,
+        435,
+        472
+      ],
+      "paddedBounds": [
+        77,
+        142,
+        438,
+        475
+      ],
+      "sourceRect": [
+        77,
+        142,
+        361,
+        333
+      ]
+    },
+    {
+      "id": "golden",
+      "action": "hard_shell",
+      "row": 0,
+      "col": 1,
+      "alphaBounds": [
+        589,
+        144,
+        949,
+        472
+      ],
+      "paddedBounds": [
+        586,
+        141,
+        952,
+        475
+      ],
+      "sourceRect": [
+        586,
+        141,
+        366,
+        334
+      ]
+    },
+    {
+      "id": "gray",
+      "action": "hard_shell",
+      "row": 0,
+      "col": 2,
+      "alphaBounds": [
+        1081,
+        144,
+        1442,
+        472
+      ],
+      "paddedBounds": [
+        1078,
+        141,
+        1445,
+        475
+      ],
+      "sourceRect": [
+        1078,
+        141,
+        367,
+        334
+      ]
+    },
+    {
+      "id": "cream",
+      "action": "dropped_seed_reach",
+      "row": 1,
+      "col": 0,
+      "alphaBounds": [
+        69,
+        587,
+        510,
+        925
+      ],
+      "paddedBounds": [
+        66,
+        584,
+        513,
+        928
+      ],
+      "sourceRect": [
+        66,
+        584,
+        447,
+        344
+      ]
+    },
+    {
+      "id": "golden",
+      "action": "dropped_seed_reach",
+      "row": 1,
+      "col": 1,
+      "alphaBounds": [
+        586,
+        587,
+        1022,
+        925
+      ],
+      "paddedBounds": [
+        583,
+        584,
+        1025,
+        928
+      ],
+      "sourceRect": [
+        583,
+        584,
+        442,
+        344
+      ]
+    },
+    {
+      "id": "gray",
+      "action": "dropped_seed_reach",
+      "row": 1,
+      "col": 2,
+      "alphaBounds": [
+        1072,
+        585,
+        1508,
+        925
+      ],
+      "paddedBounds": [
+        1069,
+        582,
+        1511,
+        928
+      ],
+      "sourceRect": [
+        1069,
+        582,
+        442,
+        346
+      ]
+    }
+  ],
+  "visualChecks": [
+    "Top3sprites hold visible striped seed with both forepaws at mouth, effort face.",
+    "Bottom3sprites have empty paws, one reaching right, surprised mouth and rightward glance.",
+    "No seed or prop in bottom row; code must animate seed separately.",
+    "All ears/feet/tails remain inside sourceRects."
+  ],
+  "limitations": [
+    "Pixel-style with some fine edges and partial alpha, not strict fixed-grid pixel-perfect.",
+    "Generated RGB preview shows dark background glow, but those outside pixels have alpha0; preservePNGalpha. Measured crops exclude irrelevant transparent RGB.",
+    "Need actual gameplay composition check at final64px sprite size."
+  ]
+}

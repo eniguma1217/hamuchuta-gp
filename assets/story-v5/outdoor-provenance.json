@@ -1,0 +1,36 @@
+{
+  "generator": "builtin image_gen",
+  "path": "dist/assets/story-v5/outdoor-study-v5.png",
+  "source": "generated_images/exec-7c0ef44a-f4c3-480e-a31e-e494092fd922.png",
+  "sha256": "97578607f32fec0719192013a94d53364cf8f6fb4088cf0953895b5bae5d98b8",
+  "width": 1968,
+  "height": 799,
+  "panels": {
+    "day": [
+      0,
+      0,
+      984,
+      400
+    ],
+    "sunset": [
+      984,
+      0,
+      984,
+      400
+    ],
+    "stadium": [
+      0,
+      400,
+      984,
+      399
+    ],
+    "shrine": [
+      984,
+      400,
+      984,
+      399
+    ]
+  },
+  "brief": "Original GBC/GBA pixel art. Four outdoor race-venue exam stations; two empty desks per panel. Day, sunset, floodlit stadium and moonlit shrine. Visible track, stands, flags and sky. No classroom, humans or generated text. Existing checkpoint night palette as reference.",
+  "postProcessing": "No pixel editing; measured crops and nearest-neighbor Canvas placement."
+}

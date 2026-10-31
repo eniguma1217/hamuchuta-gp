@@ -1,0 +1,675 @@
+@font-face{font-family:HamMaru;src:url('./assets/fonts/ZenMaruGothic-Medium.ttf') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
+:root{--ink:#403046;--mid:#795367;--olive:#eaa35c;--pale:#fff0d2;--paper:#fff9ed;--line:#dfc5b6;--shadow:#e7d1bd;--font:'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.6;background-image:radial-gradient(#263b2910 .7px,transparent .7px);background-size:6px 6px}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:disabled{cursor:default;opacity:.45}button:focus-visible,a:focus-visible{outline:3px solid var(--mid);outline-offset:4px}button:not(:disabled):active{transform:translate(2px,2px);box-shadow:none!important}a{color:inherit}h1,h2,h3,p{margin:0}h2{font-size:18px}h3{font-size:15px}small{font-size:11px}.shell{max-width:1160px;padding-left:30px;padding-right:30px;margin:auto}.topline{background:var(--ink);color:var(--pale);padding:7px max(30px,calc((100vw - 1100px)/2));display:flex;justify-content:space-between;font:10px/1.6 monospace;letter-spacing:1.4px}.topline span:last-child{font-family:var(--font);letter-spacing:1px}.site-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:27px;padding-bottom:27px}.brand{display:flex;align-items:center;gap:14px;text-decoration:none}.brand strong{display:block;font-size:23px;font-weight:900;letter-spacing:1px;line-height:1.5}.brand small{font-size:11px;letter-spacing:3px;font-weight:bold}.cursor{color:var(--olive)}.brand-sprite{width:33px;height:30px;background:var(--ink);clip-path:polygon(0 0,28% 0,28% 22%,72% 22%,72% 0,100% 0,100% 80%,90% 80%,90% 100%,10% 100%,10% 80%,0 80%);position:relative;image-rendering:pixelated}.brand-sprite:before{content:'';position:absolute;background:var(--paper);width:4px;height:5px;left:7px;top:14px;box-shadow:15px 0 var(--paper)}.brand-sprite:after{content:'';position:absolute;background:var(--pale);width:7px;height:3px;left:13px;top:23px}.help-button{background:transparent;border:1px solid var(--line);font-size:12px;padding:10px 14px;white-space:nowrap}.help-button span{display:inline-flex;justify-content:center;align-items:center;background:var(--ink);color:var(--paper);width:16px;height:16px;font:bold 12px monospace;margin-right:6px}.game-toolbar{display:flex;justify-content:space-between;gap:15px;align-items:center;border-top:1px solid var(--line);padding:16px 0}.tablist{display:flex;gap:5px}.tab{border:0;background:transparent;color:var(--mid);padding:10px 18px;font-size:12px;font-weight:bold;min-height:44px}.tab.active{color:var(--paper);background:var(--ink);box-shadow:3px 3px 0 var(--shadow)}.tab .num{font:10px monospace;margin-right:7px;opacity:.6}.toolbar-note{font-size:11px;display:flex;gap:7px;align-items:center;white-space:nowrap}.pixel-dot{display:inline-block;width:6px;height:6px;background:var(--mid);vertical-align:middle}.season-strip{background:#e8ecd6;border:1px solid var(--line);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:24px;margin:3px 0 21px}.date-info{white-space:nowrap;min-width:126px}.eyebrow{font:10px/1.5 monospace;letter-spacing:1.6px;color:var(--mid)}.date-info strong{font-size:18px;display:block}.date-info small{font-size:10px;color:var(--mid)}.timeline{display:flex;gap:14px;flex:1;max-width:525px}.year-track{flex:1;min-width:0}.year-track>span{font-size:10px;display:block;color:var(--mid);margin-bottom:6px}.months{display:grid;grid-template-columns:repeat(24,1fr);gap:2px}.month{height:7px;background:#cbd4b0}.month.done{background:var(--mid)}.month.current{background:var(--ink);box-shadow:0 2px var(--ink)}.next-race{font-size:11px;text-align:right;white-space:nowrap}.next-race strong{display:block;font-size:12px}.dashboard{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:24px;align-items:start}.left-column,.right-column{min-width:0}.panel{border:2px solid var(--ink);background:var(--paper);box-shadow:4px 4px 0 var(--shadow)}.scene-panel{background:var(--pale);position:relative;overflow:hidden}.scene-top{display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-bottom:2px solid var(--ink);background:var(--pale)}.scene-top h2{font-size:12px;letter-spacing:1px}.scene-top span{font:10px monospace;letter-spacing:1px}.scene-wrap{position:relative;background:var(--pale)}#scene{display:block;width:100%;aspect-ratio:2/1;image-rendering:pixelated;image-rendering:crisp-edges}.scene-location{position:absolute;left:16px;top:15px;font-size:10px;background:var(--pale);border:1px solid var(--ink);padding:4px 8px;box-shadow:2px 2px 0 #263b2940}.scene-name{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);font-size:10px;letter-spacing:1px;background:var(--ink);color:var(--pale);padding:3px 12px}.dialogue{display:flex;align-items:center;gap:13px;padding:16px;background:var(--paper);min-height:83px;border-top:2px solid var(--ink)}.dialogue-mark{flex-shrink:0;width:30px;height:30px;background:var(--ink);color:var(--pale);display:grid;place-items:center;font:bold 20px monospace}.dialogue small{color:var(--mid);font-size:10px;display:block;margin-bottom:3px}.dialogue p{font-size:12px;line-height:1.7}.dialogue-arrow{margin-left:auto;font-size:12px;color:var(--mid)}.vitals{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:15px;margin:20px 0 23px}.vital{display:flex;align-items:center;gap:10px;font-size:11px}.vital-label{white-space:nowrap}.vital strong{font:15px monospace;font-weight:bold}.meter{height:9px;border:1px solid var(--mid);background:#e3e7cf;flex:1;min-width:20px}.meter i{display:block;height:100%;background:var(--mid);max-width:100%}.mood-dots{font:16px monospace;letter-spacing:1px;color:var(--mid)}.section-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}.section-head h2{font-size:15px}.section-head small{font-size:10px;color:var(--mid)}.training-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.train-card{border:1px solid var(--ink);padding:13px 12px 11px;text-align:left;position:relative;background:#eeefde;box-shadow:2px 2px 0 var(--shadow);min-height:142px;transition:background .12s}.train-card:hover:not(:disabled){background:var(--pale)}.train-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.train-num{font:9px monospace;letter-spacing:1px;color:var(--mid)}.train-card h3{font-size:13px;letter-spacing:.3px}.train-card .desc{font-size:9px;color:var(--mid);margin:3px 0 12px}.train-gain{font-size:10px;display:flex;align-items:center;justify-content:space-between;gap:4px}.train-gain b{font:15px monospace}.train-gain small{font-size:9px;color:var(--mid)}.train-card.rest{background:var(--pale)}.risk-label{display:block;font-size:9px;margin-top:5px;color:var(--mid);font-weight:bold}.micro-note{font-size:10px;color:var(--mid);margin-top:13px;display:flex;align-items:center;gap:7px}.profile{padding:18px}.card-label{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:11px;margin-bottom:14px;font-size:11px;font-weight:bold}.card-label span:last-child{font:9px monospace;color:var(--mid);letter-spacing:1px}.identity{display:flex;align-items:center;gap:14px;margin:8px 0 17px}.mini-sprite{width:66px;height:60px;image-rendering:pixelated}.identity h2{font-size:22px;letter-spacing:2px}.identity small{font-size:10px;display:block;margin-top:3px;color:var(--mid)}.identity .tag{background:var(--pale);font-size:9px;padding:2px 5px}.stat-row{display:grid;grid-template-columns:77px 1fr 27px 19px;gap:7px;align-items:center;margin:13px 0;font-size:11px}.stat-bar{height:8px;background:#e4e8d2}.stat-bar i{display:block;height:100%;background:var(--mid)}.stat-row .stat-value{font:bold 15px monospace;text-align:right}.stat-grade{font:bold 11px monospace;text-align:center;border:1px solid var(--line);line-height:18px}.skill-pill{font-size:10px;border:1px solid var(--mid);padding:8px;background:#e8ecd6;margin-top:17px;display:flex;gap:8px;align-items:center}.skill-pill span:first-child{font-size:15px}.profile .detail-link{font-size:10px;border:0;border-top:1px solid var(--line);padding:13px 0 0;margin-top:14px;background:none;width:100%;text-align:right}.roadmap{padding:17px 18px;margin-top:21px;border:1px solid var(--line);background:#ecefde}.roadmap h3{font-size:12px;margin-bottom:15px}.road-step{display:flex;gap:12px;position:relative;font-size:11px;padding-bottom:19px}.road-step:last-child{padding-bottom:0}.road-step:not(:last-child):before{content:'';width:1px;background:var(--line);position:absolute;left:8px;top:20px;bottom:1px}.step-icon{width:17px;height:17px;flex-shrink:0;display:grid;place-items:center;border:1px solid var(--mid);font:10px monospace;background:var(--paper);margin-top:2px}.road-step.current .step-icon,.road-step.done .step-icon{background:var(--ink);color:var(--pale)}.road-step small{display:block;font-size:9px;color:var(--mid);margin-top:2px}.road-step.final strong{font-weight:900}.goal-note{margin-top:15px;border-top:1px solid var(--line);padding-top:12px;font-size:10px;color:var(--mid);text-align:center}.goal-note b{font:18px monospace;color:var(--ink)}.aside-quote{font-size:10px;color:var(--mid);line-height:1.9;padding:19px 8px;text-align:center}.site-footer{display:flex;justify-content:space-between;gap:15px;padding-top:32px;padding-bottom:25px;font:9px monospace;color:var(--mid);letter-spacing:.8px}.site-footer span:last-child{font-family:var(--font);font-size:10px;letter-spacing:0}.site-footer .pixel-dot{margin-right:6px;width:5px;height:5px}.primary{background:var(--ink);color:var(--pale);border:2px solid var(--ink);padding:13px 22px;font-size:13px;font-weight:bold;box-shadow:3px 3px 0 var(--olive);min-height:48px}.secondary{border:1px solid var(--mid);background:transparent;padding:11px 16px;font-size:12px;min-height:44px}.full{width:100%}.select-banner{border:2px solid var(--ink);background:var(--pale);padding:24px;margin-bottom:21px;display:flex;justify-content:space-between;align-items:center;gap:20px}.select-banner h1{font-size:25px;letter-spacing:1.5px;line-height:1.5}.select-banner p{font-size:11px;line-height:1.9;margin-top:8px}.select-banner .eyebrow{margin-bottom:8px}.select-banner .primary{white-space:nowrap}.welcome-training{background:#e9edda;border:1px dashed var(--mid);padding:20px;text-align:center;font-size:12px;line-height:1.9;margin-bottom:10px}.race-ready{background:var(--pale);border:2px solid var(--ink);padding:22px;text-align:center}.race-ready .eyebrow{margin-bottom:7px}.race-ready h2{font-size:23px;margin-bottom:10px;letter-spacing:1px}.race-ready p{font-size:11px;margin-bottom:17px}.race-route{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:18px 0}.route-item{border:1px solid var(--mid);padding:9px 3px;background:#e7ecd0;font-size:10px;text-align:center}.route-item span{display:block;font:10px monospace;color:var(--mid)}.wide-panel{padding:26px;margin-bottom:22px}.page-heading{margin:0 0 22px;display:flex;justify-content:space-between;align-items:end}.page-heading h1{font-size:24px}.page-heading p{font-size:11px;color:var(--mid);margin-top:5px}.ability-grid{display:grid;grid-template-columns:1fr 1fr;gap:25px}.ability-entry{padding:17px 0;border-bottom:1px solid var(--line)}.ability-entry h3{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}.ability-entry p{font-size:11px;color:var(--mid);line-height:1.8}.ability-entry .stat-bar{height:12px;margin-bottom:9px}.skills-list{display:grid;gap:10px;margin-top:15px}.skill-entry{border:1px solid var(--line);padding:13px;font-size:12px;background:#e8ecd6}.skill-entry small{display:block;color:var(--mid);margin-top:4px;line-height:1.8}.empty-state{padding:32px 15px;text-align:center;color:var(--mid);font-size:12px}.race-history{display:grid;gap:12px}.history-card{border:1px solid var(--line);padding:15px;background:#ecefde;display:flex;justify-content:space-between;align-items:center;gap:15px}.history-card h3{font-size:13px}.history-card p{font-size:10px;color:var(--mid)}.history-card .rank{font:bold 23px monospace}.history-card .secondary{padding:8px 11px;font-size:10px}.log-list{margin-top:18px;max-height:400px;overflow:auto}.log-entry{display:grid;grid-template-columns:70px 1fr;gap:15px;padding:13px 0;border-bottom:1px solid var(--line);font-size:11px}.log-entry small{font-size:10px;color:var(--mid)}.modal-backdrop{position:fixed;inset:0;background:#17251caa;z-index:50;display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto;backdrop-filter:blur(2px)}.modal{width:min(100%,750px);border:3px solid var(--ink);box-shadow:7px 7px 0 #16231970;background:var(--paper);max-height:calc(100dvh - 48px);overflow:auto;position:relative}.modal-header{padding:17px 22px;border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;gap:20px;align-items:center;background:var(--pale)}.modal-header h2{font-size:14px;letter-spacing:1px}.close-button{background:transparent;border:1px solid var(--mid);width:36px;height:36px;font:22px monospace}.modal-body{padding:25px}.modal-body>h3{font-size:23px;letter-spacing:1px;margin-bottom:7px}.modal-body>p{font-size:12px;color:var(--mid);line-height:1.9}.partner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}.partner-card{border:2px solid var(--line);padding:13px 12px;text-align:center;background:#e9edda}.partner-card.selected{border-color:var(--ink);background:var(--pale);box-shadow:3px 3px 0 var(--olive)}.partner-card canvas{width:100%;max-width:135px;aspect-ratio:1;image-rendering:pixelated}.partner-card h3{font-size:17px;margin:5px 0}.partner-card small{font-size:10px;color:var(--mid)}.partner-stats{text-align:left;font-size:10px;margin-top:13px;line-height:1.9}.partner-footer{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:20px}.partner-footer small{font-size:10px;color:var(--mid)}.help-steps{display:grid;gap:18px;margin:23px 0}.help-step{display:flex;gap:15px}.help-step>b{background:var(--ink);color:var(--pale);width:28px;height:28px;display:grid;place-items:center;flex-shrink:0;font:14px monospace}.help-step h3{font-size:13px}.help-step p{font-size:11px;color:var(--mid);margin-top:4px;line-height:1.8}.result-heading{text-align:center;padding:5px 0 20px}.result-heading .eyebrow{margin-bottom:8px}.big-rank{font-size:15px;line-height:1.1;margin:15px 0}.big-rank strong{font:bold 75px/1 monospace}.big-rank span{font-size:12px;color:var(--mid)}.result-heading h3{font-size:21px;margin:12px 0}.result-heading p{font-size:12px;line-height:1.8;color:var(--mid)}.split-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:15px 0}.split{background:#e7ecd2;padding:11px 4px;border:1px solid var(--line);text-align:center;font-size:10px}.split strong{font:17px monospace;display:block;margin-top:4px}.result-list{max-height:250px;overflow:auto;border:1px solid var(--line);margin-top:10px}.result-row{display:grid;grid-template-columns:45px 1fr 80px;gap:8px;padding:9px 13px;font-size:11px;border-bottom:1px solid var(--line)}.result-row.player{background:var(--ink);color:var(--pale);font-weight:bold}.result-row.cutline{border-bottom:3px dashed var(--mid)}.result-row span:last-child{text-align:right;font-family:monospace}.result-actions{margin-top:23px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.cutline-note{font-size:10px;color:var(--mid);margin:8px 0}.race-canvas{width:100%;aspect-ratio:2/1;image-rendering:pixelated;border:2px solid var(--ink);background:var(--pale);display:block;margin:18px 0}.race-live{display:flex;justify-content:space-between;align-items:center;font-size:12px}.race-live strong{font:bold 23px monospace}.race-live-message{font-size:12px;line-height:1.8;min-height:45px;margin:12px 0}.race-progress{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.race-progress span{padding:8px 2px;text-align:center;border:1px solid var(--line);font-size:10px}.race-progress span.done{background:var(--ink);color:var(--pale)}.action-summary{border:1px solid var(--mid);padding:12px 15px;margin:0 0 15px;background:var(--pale);font-size:11px;display:flex;gap:12px;align-items:center}.action-summary>b{white-space:nowrap;font:12px monospace}.learned{font-size:10px;display:block;margin-top:5px}.pixel-icon{width:28px;height:28px;image-rendering:pixelated;display:inline-block}.finished-badge{font:10px monospace;background:var(--ink);color:var(--pale);padding:4px 8px}#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--pale);border:2px solid var(--olive);padding:12px 20px;font-size:12px;z-index:100;pointer-events:none;opacity:0;transition:opacity .15s;max-width:90vw;white-space:pre-line}#toast.visible{opacity:1}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(min-width:1250px){.site-header{padding-top:32px;padding-bottom:32px}.training-grid{gap:12px}.train-card{padding:15px;min-height:151px}}
+@media(max-width:900px){.shell{padding-left:22px;padding-right:22px}.dashboard{grid-template-columns:minmax(0,1fr) 270px;gap:18px}.training-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.next-race{display:none}.stat-row{grid-template-columns:70px 1fr 26px 18px;gap:5px}.profile{padding:15px}.vitals{gap:10px}.vital{gap:6px}.vital-label{font-size:10px}.timeline{gap:10px}.brand strong{font-size:20px}}
+@media(max-width:700px){.shell{padding-left:16px;padding-right:16px}.topline{padding:7px 16px;font-size:8px;letter-spacing:1px}.topline span:last-child{font-size:8px;letter-spacing:0}.site-header{padding-top:18px;padding-bottom:18px;gap:8px}.brand{gap:9px}.brand strong{font-size:17px;letter-spacing:.5px}.brand small{font-size:9px;letter-spacing:2px}.brand-sprite{width:27px;height:26px;flex-shrink:0}.brand-sprite:before{left:5px;top:12px;box-shadow:13px 0 var(--paper)}.brand-sprite:after{left:10px;top:20px}.help-button{font-size:0;padding:7px;border:0}.help-button span{width:25px;height:25px;margin:0;font-size:15px}.game-toolbar{padding:11px 0}.tablist{display:grid;grid-template-columns:1fr 1fr 1fr;width:100%;gap:7px}.tab{padding:10px 5px;font-size:11px}.tab .num{font-size:9px;margin-right:5px}.toolbar-note{display:none}.season-strip{padding:12px;gap:14px;margin:3px 0 15px}.date-info{min-width:93px}.date-info strong{font-size:15px}.date-info .eyebrow{font-size:8px}.date-info small{font-size:9px}.timeline{gap:8px}.months{grid-template-columns:repeat(12,1fr);gap:2px}.month{height:5px}.year-track>span{font-size:8px;margin-bottom:5px}.dashboard{display:flex;flex-direction:column;gap:20px}.left-column,.right-column{width:100%}.scene-top{padding:9px 11px}.scene-top h2{font-size:10px}.scene-top span{font-size:8px}.scene-location{top:10px;left:10px;font-size:8px;padding:3px 6px}.scene-name{bottom:10px;font-size:9px;padding:2px 9px}.dialogue{padding:12px;min-height:80px;gap:10px}.dialogue p{font-size:11px}.dialogue small{font-size:9px}.dialogue-mark{width:25px;height:25px;font-size:17px}.vitals{margin:17px 0 21px;gap:12px}.vital{font-size:10px;gap:6px}.vital strong{font-size:13px}.mood-dots{font-size:12px}.section-head h2{font-size:14px}.section-head small{font-size:9px}.training-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.train-card{min-height:136px;padding:12px}.train-card h3{font-size:14px}.train-card .desc{font-size:10px}.train-gain{font-size:10px}.train-gain small{font-size:10px}.pixel-icon{width:27px;height:27px}.right-column{display:grid;grid-template-columns:1fr;gap:18px}.profile{padding:17px}.identity{margin-bottom:13px}.stat-row{grid-template-columns:80px 1fr 28px 21px;margin:12px 0}.identity h2{font-size:23px}.roadmap{margin:0}.aside-quote{display:none}.site-footer{padding-top:26px;padding-bottom:23px;font-size:7px;gap:5px;letter-spacing:.3px}.site-footer span:last-child{font-size:8px}.select-banner{padding:19px;display:block;margin-bottom:16px}.select-banner h1{font-size:23px}.select-banner p{font-size:11px}.select-banner .primary{width:100%;margin-top:18px}.select-banner .eyebrow{font-size:9px}.ability-grid{grid-template-columns:1fr;gap:15px}.wide-panel{padding:18px}.page-heading{margin-bottom:17px}.page-heading h1{font-size:21px}.modal-backdrop{padding:12px}.modal{max-height:calc(100dvh - 24px);box-shadow:4px 4px 0 #16231970}.modal-header{padding:11px 15px}.modal-header h2{font-size:12px}.modal-body{padding:18px}.modal-body>h3{font-size:20px}.partner-grid{gap:8px;margin:18px 0}.partner-card{padding:10px 4px}.partner-card h3{font-size:13px;letter-spacing:0}.partner-card small{font-size:8px}.partner-stats{font-size:8px;padding:0 3px;margin-top:9px}.partner-footer{display:block}.partner-footer .primary{width:100%;margin-top:12px}.partner-footer small{font-size:9px}.big-rank strong{font-size:64px}.result-heading h3{font-size:18px}.split{font-size:8px}.split strong{font-size:15px}.result-row{grid-template-columns:32px 1fr 65px;padding:9px;font-size:10px}.result-actions .primary{width:100%}.race-ready{padding:20px 15px}.race-ready h2{font-size:21px}.route-item{font-size:9px}.race-live{font-size:10px}.race-live strong{font-size:19px}.race-live-message{font-size:11px}.race-progress span{font-size:9px}.history-card{padding:12px}.history-card h3{font-size:11px}.history-card .rank{font-size:20px}.action-summary{padding:11px;font-size:10px;gap:9px}.log-entry{grid-template-columns:54px 1fr;gap:10px}.micro-note{font-size:9px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Sample uploaded item pixels on the existing cream controls. */
+.conversation-entry{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 20px;padding:16px;border:2px solid #503000;background:#fff3d2;box-shadow:3px 3px 0 #d9a24e}.conversation-entry p{font-size:12px;margin-top:4px}.conversation-entry button{min-height:48px;flex-shrink:0}
+.conversation{width:100%;min-width:0}.conversation-kicker{font-size:11px;line-height:1.7;overflow-wrap:anywhere;margin-bottom:12px;color:#65451e}.conversation-cast{display:flex;align-items:flex-end;gap:12px;overflow-x:auto;max-width:100%;min-height:198px;padding:10px 4px 0;background:linear-gradient(#fcf0b0 80%,#b88232 80%,#b88232 83%,#503000 83%,#503000 86%,#d9a24e 86%);border:2px solid #503000;scrollbar-width:thin}.conversation-character{flex:1 0 132px;max-width:200px;min-width:0;text-align:center;align-self:stretch;display:flex;flex-direction:column;justify-content:flex-end}.conversation-portrait{height:130px;position:relative;display:flex;align-items:flex-end;justify-content:center;filter:brightness(.38)}.conversation-character.is-speaking .conversation-portrait{filter:brightness(1)}.conversation-portrait canvas{width:132px;height:120px;image-rendering:pixelated;image-rendering:crisp-edges}.conversation-character-name{display:block;font-size:12px;background:#503000;color:#fcf0b0;padding:4px 2px;overflow-wrap:anywhere;border:2px solid transparent}.is-speaking .conversation-character-name{background:#f8b800;color:#38271c;border-color:#503000;font-weight:bold}.conversation-speaker-status{display:block;height:24px;font-size:11px;font-weight:bold;background:#fcf0b0;color:#503000}.conversation-placeholder{display:block;width:80px;height:96px;background:#855932;clip-path:polygon(10% 0,35% 0,35% 10%,65% 10%,65% 0,90% 0,90% 25%,80% 25%,80% 55%,100% 55%,100% 100%,0 100%,0 55%,20% 55%,20% 25%,10% 25%)}.portrait-pending{position:absolute;bottom:6px;left:0;right:0;font-size:10px;color:#fff7df;background:#503000}.conversation-window{position:relative;margin-top:12px;padding:18px;border:3px solid #503000;background:#fff7df;box-shadow:4px 4px 0 #b88232;overflow-wrap:anywhere}.conversation-caption{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:10px;border-bottom:2px solid #d9a24e}.conversation-caption strong{font-size:17px}.conversation-caption small{font:12px monospace;white-space:nowrap}.conversation-live{padding:16px 0;min-height:108px;font-size:16px;line-height:1.9}.conversation-controls{display:flex;justify-content:flex-end}.conversation-controls button{min-height:48px;max-width:100%;white-space:normal;overflow-wrap:anywhere}.conversation-choices{display:grid;gap:10px;width:100%}.conversation-choices button{text-align:left;font-size:15px}.conversation-later{background:transparent;border:0;text-decoration:underline;min-height:48px;margin-top:14px;padding:8px 0;font-size:12px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:700px){.conversation-entry{align-items:stretch;flex-direction:column;padding:12px;gap:10px}.conversation-entry p{font-size:12px}.conversation-cast{gap:8px;min-height:177px}.conversation-character{flex-basis:132px;max-width:160px}.conversation-portrait{height:120px}.conversation-portrait canvas{width:132px;height:120px;max-width:none;flex-shrink:0}.conversation-character-name{font-size:11px}.conversation-placeholder{width:64px;height:88px}.conversation-window{padding:14px;margin-top:10px}.conversation-live{font-size:15px;min-height:116px}.conversation-caption strong{font-size:16px}.conversation-choices button{font-size:14px}}
+.train-card .pixel-icon{width:32px;height:32px;object-fit:contain;mix-blend-mode:multiply}.partner-card canvas{max-width:155px}.scene-name{background:#263b29e8}.scene-location{background:#f4f4e5ed}.scene-panel{background:#dce7b8}.race-canvas{background:#dce7b8}
+
+.scene-name{left:auto;right:12px;bottom:12px;transform:none}
+
+/* Famicom presentation: one logical pixel grid, warm white and vermilion. */
+.topline{background:#8c3024;color:#fff0c7}.tab.active,.primary{background:#a83b29;color:#fff3ce;border-color:#6b291f}.primary{box-shadow:3px 3px 0 #d9a24e}.season-strip{background:#f9eac5}.train-card{background:#fff3d2}.train-card:hover:not(:disabled),.train-card.rest{background:#f9e5af}.profile,.dialogue{background:#fff9e8}.roadmap,.partner-card,.skill-entry,.history-card{background:#f7ebca}.stat-bar,.meter{background:#eadcb6}.stat-bar i,.meter i{background:#b27837}.scene-top{background:#f8e5b5}.scene-panel{background:#f9e5af}.scene-location{background:#fff5d6ed;color:#503000;top:8px;left:8px;padding:2px 5px;font-size:8px}.scene-name{background:#503000e8;color:#fff0c7;font-size:8px;bottom:6px;right:8px}.brand-sprite{background:#a83b29}.brand-sprite:before{background:#fff7df;box-shadow:15px 0 #fff7df}.modal-header{background:#f9e5b5}.split,.route-item{background:#f9edcb}.month{background:#e1cfa0}.month.done{background:#ba7d38}.month.current{background:#a83b29}.skill-pill{background:#f9e9be}.modal-backdrop{backdrop-filter:none}#scene,.race-canvas{aspect-ratio:2/1;image-rendering:pixelated;image-rendering:crisp-edges}#scene{width:100%;height:auto;display:block}.train-card .pixel-icon{width:32px;height:32px;mix-blend-mode:normal}
+.save-notice{padding:12px 15px;margin:0 0 15px;border:1px solid var(--mid);background:#fff0c7;color:var(--ink);font-size:11px;line-height:1.8}
+
+/* Stage 3: individuality, discipline selection and race broadcast. */
+.individual-tags{display:flex;flex-wrap:wrap;gap:5px;font-size:10px;margin-top:18px}.individual-tags span{padding:4px 7px;background:#f9e9be;border:1px solid var(--line)}
+.individuality-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}.individuality-card,.relationship-card{padding:16px;background:#f7ebca;border:1px solid var(--line)}.individuality-card h2{margin:4px 0 8px}.individuality-card p,.relationship-card p{font-size:12px;line-height:1.9}.relationship-card h3{margin:8px 0}.partner-traits{display:grid;gap:4px;font-size:10px;margin-top:10px;text-align:left}.partner-traits b{color:#a83b29}.partner-traits span{font-size:10px;line-height:1.6}
+.course-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.course-option{text-align:left;padding:13px 10px;background:#fff7df;border:2px solid var(--line);min-height:80px}.course-option b,.course-option small{display:block}.course-option b{font-size:12px}.course-option small{font-size:10px;margin-top:6px;line-height:1.7}.course-option.selected{border-color:#a83b29;box-shadow:3px 3px 0 #d9a24e;background:#f9e5af}.course-label{text-align:center;font-weight:bold;font-size:12px;margin:12px 0}.split-grid,.race-progress{grid-template-columns:repeat(var(--columns,4),minmax(0,1fr))}.race-route{grid-template-columns:repeat(auto-fit,minmax(75px,1fr))}
+.race-broadcast{border:2px solid #503000;background:#fff3d2;box-shadow:4px 4px 0 #d9a24e;padding:14px}.broadcast-head{display:flex;justify-content:space-between;gap:12px;font:10px monospace;letter-spacing:1px;border-bottom:2px solid #503000;padding-bottom:10px;margin-bottom:12px}.live-light{color:#a83b29;font-weight:900}.race-broadcast>h3{font-size:18px;margin:10px 0 14px}.race-broadcast .race-live{background:#503000;color:#fcf0b0;padding:10px 12px}.race-broadcast .race-live strong{font-size:32px;color:#f8b800}.race-broadcast .race-canvas{margin:0;border-top:0}.race-gaps{display:flex;justify-content:space-between;gap:10px;background:#f9e5af;padding:8px;font-size:11px}.race-gaps b{color:#a83b29}.live-leaders{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0;font-size:10px}.live-leaders span{padding:8px 6px;background:#f9e5af;overflow-wrap:anywhere}.live-leaders b{background:#503000;color:#fff7df;padding:1px 4px}.live-leaders .is-player{outline:2px solid #a83b29}.race-progress .active{border:2px solid #a83b29;color:#a83b29;font-weight:bold}.race-live-message{border-left:4px solid #a83b29;padding-left:10px}.race-live #rank-change{font:12px monospace;color:#fcf0b0}
+@media(max-width:700px){.course-picker{grid-template-columns:1fr}.course-option{min-height:64px;padding:10px 12px}.course-option small{margin-top:3px}.individuality-grid{grid-template-columns:1fr}.partner-grid{grid-template-columns:1fr}.partner-card{padding:16px}.partner-card small,.partner-stats,.partner-traits,.partner-traits span{font-size:11px}.partner-traits{text-align:center}.race-broadcast{padding:9px}.race-broadcast>h3{font-size:15px}.broadcast-head{font-size:9px;letter-spacing:0}.race-live{gap:8px;flex-wrap:wrap}.race-live>span:first-child{font-size:10px}.race-broadcast .race-live strong{font-size:28px}.race-gaps{font-size:10px}.live-leaders{font-size:9px}.race-live-message{min-height:60px}}
+
+/* v6: late handheld color palette. One pixel scale for characters and scenery. */
+:root{--ink:#403046;--mid:#795367;--olive:#eaa35c;--pale:#f6e4ba;--paper:#fff9ed;--line:#d8c4b3;--shadow:#dec5b0}
+body{background-color:#f4e9da;background-image:linear-gradient(90deg,#79536705 1px,transparent 1px),linear-gradient(#79536705 1px,transparent 1px);background-size:12px 12px}
+.topline{background:#795367;color:#fff0d2}.brand-sprite{background:#ab6b78}.brand strong{letter-spacing:0;font-size:22px}.primary,.tab.active{background:#795367;border-color:#403046;color:#fff0d2}.primary{box-shadow:3px 3px 0 #e79c9a}.primary:hover{background:#62445b}.panel{background:#fff9ed;border-color:#795367;box-shadow:4px 4px 0 #dec5b0}.scene-top,.modal-header{background:#f6e4ba}.season-strip{background:#e9f2d2}.train-card,.history-card,.course-info{background:#fff4df}.train-card:hover:not(:disabled),.train-card.rest{background:#f6e4ba}.roadmap{background:#e9f0dd}.profile,.dialogue{background:#fff9ed}.stat-bar i,.meter i{background:#ab6b78}.month.done{background:#689c99}.month.current{background:#ab6b78}.month{background:#cddbc0}.title-screen{display:grid;grid-template-columns:1fr 1.2fr;overflow:hidden;margin:12px 0 22px}.title-copy{padding:38px 30px}.title-copy h1{font-size:34px;line-height:1.55;letter-spacing:1px;margin:15px 0}.title-copy h1 span{color:#ab6b78}.title-copy p{font-size:13px;line-height:2;margin:18px 0}.title-copy>small{font-size:10px;color:#795367}.title-buttons{display:grid;gap:10px;margin:22px 0}.title-visual{display:flex;flex-direction:column;justify-content:center;background:#dce8ce;border-left:2px solid #795367;position:relative;min-width:0}.title-visual canvas{width:100%;height:auto;image-rendering:pixelated}.title-stamp{align-self:center;transform:rotate(-4deg);padding:12px 22px;color:#795367;border:2px dashed #ab6b78;background:#fff0d2;font-size:17px;font-weight:bold;margin:22px;box-shadow:3px 3px 0 #dec5b0}.intro-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:18px 0}.intro-cards p{border-top:3px solid #ab6b78;padding:15px 8px;font-size:12px}.intro-cards b{display:block;font-size:17px;margin-bottom:6px}
+#scene,.race-canvas{aspect-ratio:16/9;image-rendering:pixelated;image-rendering:crisp-edges}.scene-wrap{background:#b3dce3}.scene-name{bottom:8px;background:#403046;color:#fff0d2}.vital strong{font-family:var(--font);font-size:13px;white-space:nowrap}.vitals{grid-template-columns:1.5fr 1.3fr 1fr}.train-card .desc{min-height:30px}.train-card{min-height:162px}.risk-label{font-weight:normal;line-height:1.7}.course-info{border:1px solid #dec5b0;text-align:left;padding:15px;margin:15px 0}.course-info p{margin:5px 0}.course-info small{line-height:1.8}.style-picker{border:0;padding:0;margin:15px 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.style-picker legend{padding:8px 0;font-weight:bold;font-size:12px;text-align:left}.course-option.selected{border-color:#795367;background:#e9f2d2;box-shadow:2px 2px 0 #9fc5b1}.course-option{min-width:0;overflow-wrap:anywhere}.race-ready{background:#f6e4ba;border-color:#795367}.race-ready>.secondary{margin:12px}.name-field{display:block;font-size:12px;margin:12px 0 18px}.name-field input{display:block;width:100%;min-height:48px;font:16px var(--font);margin-top:6px;padding:10px;border:2px solid #d8c4b3;background:#fff9ed;color:#403046}.name-field input:focus-visible{outline:3px solid #9fc5b1}.partner-card{background:#fff4df}.partner-card.selected{background:#e9f2d2;border-color:#795367;box-shadow:3px 3px 0 #9fc5b1}.partner-traits b{color:#795367}.partner-card canvas{height:100px;max-width:120px;aspect-ratio:1.1}
+.conversation-cast{border-color:#795367;background-color:#b3dce3;background-image:url('./assets/visual-polish-v4/daily-scenes-v4.png');background-size:200% auto;background-position:left top;background-repeat:no-repeat;image-rendering:pixelated}.conversation-character-name{background:#795367;color:#fff0d2}.conversation-speaker-status{background:#f6e4ba;color:#795367}.is-speaking .conversation-character-name{background:#ffd382;border-color:#795367;color:#403046}.conversation-window{border-color:#795367;background:#fff9ed;box-shadow:4px 4px 0 #dec5b0}.conversation-caption{border-color:#e79c9a}.conversation-portrait{filter:brightness(.43)}.conversation-entry{border-color:#795367;background:#e9f2d2}.conversation-kicker{color:#795367}
+.race-broadcast{border-color:#795367;background:#fff9ed;box-shadow:3px 3px 0 #dec5b0}.race-broadcast .race-live{background:#403046;color:#fff0d2}.race-broadcast .race-live strong{color:#ffd382}.race-broadcast .race-canvas{border-color:#403046}.tracking-legend{display:flex;flex-wrap:wrap;gap:6px 12px;padding:8px;font-size:10px;background:#403046;color:#9fc5b1}.legend-player{color:#fff0d2}.legend-top{color:#ffd382}.legend-rival{color:#e79c9a}.race-canvas-wrap{position:relative}.race-countdown{position:absolute;inset:0;display:grid;place-items:start center;padding-top:11%;font:900 64px monospace;color:#fff0d2;text-shadow:4px 4px #403046;pointer-events:none;background:#40304633}.race-countdown:empty{display:none}.race-progress{grid-template-columns:repeat(auto-fit,minmax(48px,1fr))}.race-progress span{overflow-wrap:anywhere}.race-progress span.active{border-color:#ab6b78;color:#795367}.race-live-message{border-left-color:#ab6b78;font-size:13px;min-height:65px}.playback-controls{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:16px}.playback-controls button{min-height:48px}.race-gaps,.live-leaders span{background:#f6e4ba}.live-leaders b{background:#795367}.finish-time{font:bold 25px monospace!important;color:#795367!important}.result-row.player{background:#795367;color:#fff0d2}.analysis{margin:18px 0;padding:16px;background:#e9f2d2;border:1px solid #c4d3b2}.analysis p{font-size:11px;margin:10px 0}.analysis-row{display:grid;grid-template-columns:1fr auto;gap:4px 12px;border-bottom:1px solid #c4d3b2;padding:10px 0;font-size:12px}.analysis-row small{grid-column:1/-1;line-height:1.8}.ending-portrait{display:flex;justify-content:center;margin-bottom:12px}.ending-portrait canvas{image-rendering:pixelated;width:132px;height:120px}.new-zodiac{padding:18px 0}.new-zodiac p{font-size:11px;margin:12px 0}.zodiac-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}.zodiac-slot{display:flex;flex-direction:column;border:1px solid #d8c4b3;background:#e9f2d2;min-height:70px;padding:8px;align-items:center;justify-content:center;font-size:11px;overflow-wrap:anywhere}.zodiac-slot small{font-family:monospace}.zodiac-slot.is-new-player{background:#ffd382;border:2px solid #795367}.zodiac-slot span{font-size:9px}.history-card{margin:12px 0;flex-wrap:wrap}.history-card>div{flex:1;min-width:120px}.history-card p{overflow-wrap:anywhere}.modal{border-color:#795367}.close-button{width:44px;height:44px}.modal-backdrop{background:#403046aa}#toast{background:#403046;border-color:#ffd382}
+@media(max-width:900px){.title-screen{grid-template-columns:1fr 1fr}.title-copy{padding:26px 20px}.title-copy h1{font-size:28px}.style-picker{grid-template-columns:1fr}.course-option{min-height:64px}.course-option small{margin-top:3px}.vitals{grid-template-columns:1fr 1fr}.vital:first-child{grid-column:1/-1}.brand strong{font-size:20px}}
+@media(max-width:700px){.brand strong{font-size:16px}.shell{padding-left:14px;padding-right:14px}.title-screen{display:flex;flex-direction:column}.title-copy{padding:25px 20px}.title-copy h1{font-size:29px}.title-visual{border-left:0;border-top:2px solid #795367}.title-stamp{margin:12px;font-size:14px;padding:8px 16px}.intro-cards{grid-template-columns:1fr;gap:8px}.intro-cards p{padding:12px 8px}.intro-cards b{display:inline;margin-right:12px}.game-toolbar{gap:8px}.game-toolbar>.secondary{font-size:10px;padding:8px;white-space:nowrap}.tablist{width:auto;flex:1;gap:4px}.tab{padding:10px 7px;min-width:0}.vitals{grid-template-columns:1fr 1fr}.train-card{min-height:166px;padding:11px}.train-card h3{font-size:14px}.train-card .desc{font-size:10px;min-height:32px}.risk-label{font-size:10px}.modal-backdrop{padding:8px}.modal{max-height:calc(100dvh - 16px)}.modal-body{padding:14px}.modal-header{padding:8px 12px}.partner-grid{grid-template-columns:1fr}.partner-card canvas{height:90px;max-width:105px}.conversation-cast{min-height:175px}.conversation-live{font-size:15px}.race-countdown{font-size:44px}.live-leaders{grid-template-columns:1fr}.live-leaders span{font-size:11px;padding:5px 8px}.race-live-message{font-size:12px;min-height:72px}.tracking-legend{font-size:9px;gap:5px 9px}.playback-controls{grid-template-columns:1fr}.result-list{max-height:230px}.result-row{grid-template-columns:32px minmax(0,1fr) 75px}.zodiac-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.analysis{padding:12px}.page-heading h1{font-size:20px}.stat-row{grid-template-columns:75px 1fr 28px 20px}.conversation-controls button{min-width:110px}}
+
+
+/* Training-card clarity: readable gains, training partners, and outcome feedback. */
+.training-guide{font-size:12px;line-height:1.7;color:var(--mid);margin:0 0 12px}
+.train-card{min-height:220px}
+.train-card .desc{min-height:24px}
+.train-details{margin-top:12px;padding-top:11px;border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:6px 8px;align-items:start}
+.train-details span{font-size:10px;color:var(--mid);line-height:1.5}
+.train-details strong{font-size:12px;line-height:1.5;text-align:right;overflow-wrap:anywhere}
+.training-feedback{border:2px solid var(--mid);background:var(--pale);padding:12px;margin:0 0 12px;font-size:12px;line-height:1.6}
+.training-feedback>strong{display:block;font-size:13px;margin-bottom:4px}
+.training-feedback p{margin:0 0 6px}
+.effect-chip{display:inline-block;margin:3px 5px 0 0;padding:4px 7px;border:1px solid var(--mid);background:var(--paper);font-weight:bold}
+@media(max-width:700px){.train-card{min-height:245px}.train-details{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr)}.train-details strong{font-size:11px}.training-guide{font-size:11px}}
+
+
+/* Event rewards: exact state deltas shown after the dialogue finishes. */
+.event-effect-summary{display:grid;gap:7px;margin-bottom:18px}
+.event-effect-summary>p{font-size:12px;line-height:1.6;margin:0 0 8px}
+.event-effect-line{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--pale);border:1px solid var(--line);padding:10px 12px;font-size:13px}
+.event-effect-line strong{font:700 16px/1.2 monospace}
+.event-effect-line .positive{color:#216b3b}
+.event-effect-line .negative{color:#a12d32}
+.event-effect-summary .no-effect{text-align:center;padding:14px;border:1px dashed var(--mid)}
+
+
+/* Race broadcast upgrade: cinematic checkpoint cut-ins, without rerolling results. */
+.race-broadcast{position:relative}
+.race-canvas-wrap{overflow:hidden;isolation:isolate;border:3px solid #403046;background:#403046}
+.race-broadcast .race-canvas{border:0;margin:0;width:100%;display:block}
+.zone-spotlight[hidden]{display:none!important}
+.zone-spotlight{position:absolute;left:4%;right:4%;top:18%;bottom:auto;z-index:4;padding:7px 8px 8px;background:#fff9ed;border:4px solid #403046;box-shadow:5px 6px 0 #40304688;animation:zone-pop .18s steps(3,end) both}
+.zone-spotlight .zone-caption{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px 10px;background:#403046;color:#fff0d2;padding:7px 9px}
+.zone-spotlight .zone-caption strong{font-size:15px}
+.zone-spotlight .zone-caption span{font-size:10px}
+.zone-spotlight canvas{display:block;width:100%;height:auto;max-height:55vh;aspect-ratio:16/7;image-rendering:pixelated;image-rendering:crisp-edges;background:#f6e4ba}
+.zone-spotlight>small{font-size:10px;display:block;padding:4px 5px 0;color:#795367}
+.race-broadcast .race-live-message{font-size:14px;line-height:1.8;background:#fff0d2;padding:9px 12px;border-left:5px solid #ab6b78}
+.race-broadcast .tracking-legend{font-size:11px}
+.race-broadcast .broadcast-head{font-size:12px}
+@keyframes zone-pop{from{opacity:.2;transform:translateY(7px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:700px){
+ .zone-spotlight{left:1%;right:1%;top:19%;border-width:2px;padding:3px;box-shadow:2px 3px 0 #40304688}
+ .zone-spotlight .zone-caption{padding:5px 6px;gap:3px}
+ .zone-spotlight .zone-caption strong{font-size:11px}
+ .zone-spotlight .zone-caption span{font-size:8px}
+ .zone-spotlight>small{font-size:8px;line-height:1.5}
+ .race-broadcast .race-live-message{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){.zone-spotlight{animation:none}}
+
+/* Three equally usable broadcast controls, including the sound toggle. */
+.race-broadcast .playback-controls{grid-template-columns:1fr 1fr 1.6fr}
+@media(max-width:700px){.race-broadcast .playback-controls{grid-template-columns:1fr 1fr}.race-broadcast .playback-controls button:last-child{grid-column:1/-1}}
+
+/* Readable training choices: actual effects and participants share one prediction. */
+.training-guide{font-size:13px;line-height:1.8;margin:0 0 14px;color:#795367}.training-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.training-card-v2{display:flex;flex-direction:column;gap:10px;padding:16px;min-height:290px;border:2px solid #d8c4b3;border-radius:3px;background:#fff9ed;box-shadow:3px 3px #dec5b0}.training-card-v2:hover:not(:disabled){border-color:#ab6b78;background:#fff4df}.training-card-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;width:100%}.training-card-head>strong{font-size:16px}.training-cost{margin-left:auto;font-size:12px;white-space:nowrap;color:#795367}.training-description{font-size:12px;line-height:1.7;color:#795367}.training-stat-list{display:grid;gap:5px;width:100%;background:#f6e4ba;padding:10px;border-left:4px solid #ab6b78}.training-stat{display:flex;justify-content:space-between;gap:8px;font-size:13px;line-height:1.7}.training-stat b{font:bold 18px monospace;color:#795367}.training-stat.main-stat>span{font-weight:800}.training-companion{display:block;margin-top:auto;min-height:44px;padding-top:8px;border-top:1px dashed #dec5b0}.training-buddy{display:flex;gap:9px;align-items:center}.training-buddy canvas{width:44px;height:40px;image-rendering:pixelated;flex-shrink:0}.training-buddy>span{display:grid}.training-buddy b{font-size:13px}.training-buddy small{font-size:12px;color:#795367}.training-solo{font-size:13px;line-height:2.5}.training-effect{font-size:11px;line-height:1.8;color:#795367;min-height:36px}.training-risk{font-size:11px;line-height:1.7;padding:6px 9px;background:#e9f2d2;display:block;width:100%}.training-risk b{font-size:14px}.training-risk.high-risk{background:#f9dfd5;color:#8c3024}.recovery-card .training-stat-list{background:#e9f2d2;border-color:#689c99}.training-card-v2:focus-visible{outline:3px solid #ab6b78;outline-offset:4px}
+/* A second broadcast camera; the overview and controls remain visible. */
+.zone-focus[hidden]{display:none}.zone-focus{border:3px solid #795367;background:#fff9ed;margin:12px 0;box-shadow:3px 3px #dec5b0;overflow:hidden}.zone-focus-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;align-items:center;padding:9px 12px;background:#f6e4ba}.zone-focus-head b{font-size:15px}.zone-focus-head span{font-size:11px;color:#795367}.zone-focus canvas{display:block;width:100%;height:auto;aspect-ratio:384/174;image-rendering:pixelated}.zone-focus>p{font-size:11px;margin:0;padding:7px 12px;background:#e9f2d2;line-height:1.8}.zone-focus-rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:9px}.zone-focus-rows>span{font-size:10px;line-height:1.6;overflow-wrap:anywhere;background:#f6e4ba;padding:5px}.zone-focus-rows b{display:block}.zone-focus-rows .is-player{outline:2px solid #ab6b78}.zone-focus.is-entering{animation:zone-enter .24s steps(4)}@keyframes zone-enter{from{transform:translateY(8px);filter:brightness(1.15)}to{transform:none;filter:none}}
+@media(max-width:700px){.training-grid{grid-template-columns:1fr;gap:12px}.training-card-v2{min-height:0;padding:15px;gap:9px}.training-card-head>strong{font-size:17px}.training-description,.training-buddy b,.training-solo{font-size:13px}.training-stat{font-size:14px}.training-effect,.training-risk{font-size:12px}.training-companion{min-height:44px}.zone-focus-head{padding:7px 9px}.zone-focus-head b{font-size:13px}.zone-focus-head span{font-size:10px}.zone-focus>p{font-size:11px;padding:7px 9px}.zone-focus-rows{grid-template-columns:1fr;padding:7px;gap:4px}.zone-focus-rows>span{font-size:11px;display:flex;flex-wrap:wrap;gap:3px 8px}.zone-focus-rows b{display:inline}.race-broadcast .race-canvas{max-height:32vh;object-fit:contain}.training-card-v2 .pixel-icon{width:28px;height:28px}}
+@media(prefers-reduced-motion:reduce){.zone-focus.is-entering{animation:none}}
+/* The checkpoint is a dedicated stage below the overview, never over the minimap. */
+.zone-spotlight{position:relative!important;inset:auto!important;transform:none!important;width:100%!important;margin:12px 0 0;border:3px solid #795367;background:#fff9ed;box-shadow:3px 3px #dec5b0;overflow:hidden}.zone-spotlight[hidden]{display:none!important}.zone-spotlight canvas{display:block;width:100%;height:auto;aspect-ratio:384/174;image-rendering:pixelated}.zone-caption{display:flex;flex-wrap:wrap;gap:5px 12px;justify-content:space-between;padding:9px 12px;background:#f6e4ba}.zone-caption strong{font-size:15px}.zone-caption span{font-size:11px}.zone-spotlight>small{font-size:10px;display:block;padding:5px 10px;color:#795367}.race-broadcast .race-canvas-wrap{aspect-ratio:16/9}.race-broadcast .race-canvas{max-height:none}.race-countdown{font-size:48px;background:transparent;text-shadow:3px 3px #403046}.race-broadcast .race-live{position:relative;z-index:1}.race-live>span:first-child{max-width:75%;overflow-wrap:anywhere}.playback-controls{grid-template-columns:1fr 1fr 2fr}
+@media(max-width:700px){.zone-caption strong{font-size:13px}.zone-caption span{font-size:11px}.zone-spotlight{margin-top:8px}.playback-controls{grid-template-columns:1fr 1fr}.playback-controls button:last-child{grid-column:1/-1}.race-countdown{font-size:32px}.zone-focus-rows{grid-template-columns:1fr}.race-broadcast .race-canvas-wrap{height:auto!important}}
+/* Official saved results: presentation has no replay or progression side effects. */
+.ceremony{position:relative;border:3px solid #795367;background:#f6e4ba;padding:0 12px 12px;margin:15px 0;overflow:hidden}.ceremony>canvas{display:block;width:calc(100% + 24px);margin:0 -12px;height:auto;aspect-ratio:384/108;image-rendering:pixelated}.ceremony-title{position:relative;margin:-24px 0 12px;padding:6px;background:#403046;color:#fff0d2;text-align:center;font-size:13px}.ceremony-winners{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.ceremony-winner{display:grid;justify-items:center;gap:4px;padding:10px 4px;background:#fff9ed;border:2px solid #d6bd93;min-width:0;animation:award-reveal .35s steps(3,end) both;animation-delay:var(--reveal)}.ceremony-winner:first-child{border-color:#eaa35c;background:#fff0d2}.ceremony-winner canvas{width:96px;max-width:100%;height:auto;aspect-ratio:96/84;image-rendering:pixelated}.ceremony-winner strong,.ceremony-winner span{font-size:12px;text-align:center;overflow-wrap:anywhere}.ceremony-winner>b{font-size:18px;color:#795367}.ceremony-hero{display:flex;gap:12px;align-items:center;margin-top:12px;padding:8px;background:#e9f2d2}.ceremony-hero canvas{width:72px;height:63px;image-rendering:pixelated;flex-shrink:0}.ceremony-hero p{font-size:13px;line-height:1.8;margin:0}.ceremony-shrine{background:#795367;border-color:#ffd382}.ceremony-shrine .ceremony-title{color:#ffd382}.ceremony-shrine .ceremony-hero{background:#fff0d2}.rank-change{animation:rank-pop .25s steps(3)}@keyframes rank-pop{50%{transform:scale(1.2);color:#eaa35c}}@keyframes award-reveal{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}@media(max-width:700px){.ceremony{padding:0 7px 8px}.ceremony>canvas{width:calc(100% + 14px);margin:0 -7px}.ceremony-winners{gap:4px}.ceremony-winner{padding:7px 2px}.ceremony-winner strong,.ceremony-winner span{font-size:11px}.ceremony-hero p{font-size:12px}.zone-spotlight .zone-caption strong{font-size:13px}.zone-spotlight .zone-caption span{font-size:11px}.zone-spotlight>small{font-size:10px}}@media(prefers-reduced-motion:reduce){.ceremony-winner,.rank-change{animation:none}}
+
+.ceremony:not(.ceremony-initial) .ceremony-winner{animation:none}
+/* Dedicated stages occupy the main camera; the fixed rank/map never scroll away. */
+.zone-spotlight[data-mode="embedded"]{box-shadow:none;border-width:1px;margin:6px 0}.zone-spotlight[data-mode="embedded"] #zone-canvas{display:none}.zone-spotlight[data-mode="embedded"]>small{display:none}.zone-spotlight[data-mode="embedded"] .zone-caption{padding:6px 9px}.zone-spotlight[data-mode="embedded"] .zone-focus-rows{padding:5px 9px;grid-template-columns:repeat(2,minmax(0,1fr))}.race-broadcast .race-canvas{margin:6px 0}.race-broadcast .tracking-legend{gap:6px 12px}.race-broadcast .live-leaders{font-size:11px}.race-broadcast .playback-controls{position:sticky;bottom:0;background:#fff9ed;padding:8px 0;z-index:5}@media(max-width:700px){.zone-spotlight[data-mode="embedded"] .zone-caption strong{font-size:12px}.zone-spotlight[data-mode="embedded"] .zone-focus-rows{grid-template-columns:1fr}.race-broadcast h3{font-size:14px}.race-broadcast .tracking-legend{font-size:10px}.race-broadcast .playback-controls button{min-height:48px}}
+.selected-twelve{margin-top:12px;padding:12px;background:#fff0d2;border:2px solid #eaa35c}.selected-twelve h4{margin:0 0 6px;font-size:15px}.selected-twelve p{font-size:12px;margin:0 0 8px}.selected-twelve>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.selected-twelve span{font-size:12px;padding:5px;background:#fff9ed;overflow-wrap:anywhere}.selected-twelve .is-player{outline:2px solid #ab6b78;font-weight:bold}@media(max-width:700px){.selected-twelve>div{grid-template-columns:repeat(2,minmax(0,1fr))}.race-broadcast .playback-controls{grid-template-columns:1fr 1fr}.race-broadcast .playback-controls button:last-child{grid-column:auto}}
+
+/* Town contacts are bounded post-action opportunities, usable at phone width. */
+.town-panel,.boost-status{margin:14px 0;padding:14px;background:#fff3d8;border:2px solid #795367;border-radius:10px}.town-panel h3{margin:0 0 8px}.town-panel p{font-size:12px;line-height:1.6}.town-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.town-option{display:flex;align-items:center;gap:6px;min-height:64px;text-align:left;white-space:normal}.town-option canvas{width:42px;height:40px;flex-shrink:0;image-rendering:pixelated}.town-option small{display:block;font-size:10px}.boost-status{font-size:12px;line-height:1.7;background:#e9f2d2}.conversation-cast{justify-content:center}.conversation-portrait canvas{image-rendering:pixelated}@media(max-width:420px){.town-panel{padding:10px}.town-option{font-size:11px;padding:6px}.town-option canvas{width:34px;height:32px}}
+
+/* Keep long names and horizontally scrollable casts reachable on small screens. */
+.conversation-cast{justify-content:flex-start}.conversation-character:first-child{margin-inline-start:auto}.conversation-character:last-child{margin-inline-end:auto}.identity>div{min-width:0}.identity h2,.scene-name{overflow-wrap:anywhere}.scene-name{max-width:calc(100% - 16px)}
+
+/* Story location backdrops: crop real pixel-art room/town/training paintings
+   and add context-specific pixel-style scenery/weather behind the characters.
+   All presentation only; event / game state stays unchanged. */
+.conversation-place{font-size:12px;font-weight:800;color:#614557;background:#f6e4ba;border:2px solid #795367;padding:6px 10px;margin:0 0 6px;letter-spacing:.05em}
+.conversation-cast{position:relative;isolation:isolate;overflow:hidden;background-color:#b3dce3;background-image:url('./assets/visual-polish-v4/daily-scenes-v4.png');background-repeat:no-repeat;background-size:200% 200%;background-position:0 0;image-rendering:pixelated}
+.conversation-cast[data-scene^="training"],.conversation-cast[data-scene^="bench"],.conversation-cast[data-scene^="race"],.conversation-cast[data-scene="world"]{background-position:100% 0}
+.conversation-cast[data-scene="seedshop-interior"],.conversation-cast[data-scene="workshop"]{background-position:0 100%}
+.conversation-cast[data-scene^="bedroom"]{background-position:100% 100%}
+.conversation-character{position:relative;z-index:3}
+.conversation-cast::before,.conversation-cast::after{content:"";display:block;position:absolute;inset:0;z-index:1;pointer-events:none}
+.conversation-cast::after{z-index:2}
+/* Rain: diagonal pixel strokes over the actual training/seed shop scenery. */
+.conversation-cast[data-scene$="-rain"]::after{background:repeating-linear-gradient(111deg,transparent 0 16px,#bbd9e96b 16px 18px,transparent 18px 30px);opacity:.65;animation:story-rain .8s steps(3,end) infinite}
+@keyframes story-rain{to{background-position:-25px 44px}}
+.conversation-cast[data-scene$="-rain"]{filter:saturate(.86)}
+/* Sunrise, sunset and warm summer light, without flattening the hand-painted scene. */
+.conversation-cast[data-scene$="-morning"]::after{background:linear-gradient(110deg,#fff4aa55 0%,transparent 58%)}
+.conversation-cast[data-scene$="-dusk"]::after,.conversation-cast[data-scene$="-sunset"]::after{background:linear-gradient(0deg,#cf746b77,transparent 73%),linear-gradient(115deg,transparent 30%,#ffd38744)}
+.conversation-cast[data-scene="town-summer"]::after{background:linear-gradient(95deg,#ffdb6970,transparent 68%)}
+.conversation-cast[data-scene="town-summer"]{filter:saturate(1.12)}
+/* Winter flakes float over town scenery and are stationary in reduce-motion. */
+.conversation-cast[data-scene="town-snow"]::after{background-image:radial-gradient(circle,#ffffffee 0 2px,transparent 2.5px),radial-gradient(circle,#fffefa 0 1.5px,transparent 2px),linear-gradient(0deg,#e8f6fe55,transparent 65%);background-size:57px 39px,38px 51px,100% 100%;background-position:5px 6px,24px 12px,0 0;animation:story-snow 6s linear infinite}
+@keyframes story-snow{to{background-position:5px 84px,24px 63px,0 0}}
+/* Seed shop: warm striped awning, a recognizable shop sign, and seed sacks. */
+.conversation-cast[data-scene^="seedshop"]::before{
+ background:
+ linear-gradient(90deg,#e8b25d 0 13%,#fff1c7 13% 25%,#cf875c 25% 39%,#fff1c7 39% 51%,#e8b25d 51% 64%,#fff1c7 64% 77%,#cf875c 77% 89%,#fff1c7 89%) 18% 18% / 39% 15% no-repeat,
+ linear-gradient(#694a39 0 0) 18% 15% / 40% 5% no-repeat,
+ linear-gradient(#ddc39b 0 0) 17% 70% / 39% 12% no-repeat,
+ linear-gradient(#79513d 0 0) 17% 78% / 42% 5% no-repeat
+}
+.conversation-cast[data-scene="seedshop-interior"]::after{background:linear-gradient(90deg,#9d6a4480 0%,transparent 28%),linear-gradient(0deg,#7d4b2a44,transparent 36%)}
+/* The shrine's torii silhouette, lanterns and festival evening sky. */
+.conversation-cast[data-scene^="shrine"]::before{
+ background:
+ linear-gradient(#a74350 0 0) 50% 20% / 46% 10% no-repeat,
+ linear-gradient(#842a40 0 0) 50% 31% / 41% 6% no-repeat,
+ linear-gradient(#a74350 0 0) 34% 68% / 6% 74% no-repeat,
+ linear-gradient(#a74350 0 0) 66% 68% / 6% 74% no-repeat,
+ linear-gradient(#e5ad64 0 0) 12% 69% / 5% 12% no-repeat,
+ linear-gradient(#e5ad64 0 0) 88% 69% / 5% 12% no-repeat
+}
+.conversation-cast[data-scene="shrine-night"]{background-color:#647b91}
+.conversation-cast[data-scene="shrine-night"]::after{background:radial-gradient(circle at 49% 11%,#fff3b8dd 0 5px,transparent 6px),linear-gradient(#18234c77,#50436a55)}
+.conversation-cast[data-scene="shrine"]::after{background:linear-gradient(90deg,#fff1c75b,transparent)}
+/* Beaver workroom: simple shelves of tools in front of the illustrated room. */
+.conversation-cast[data-scene="workshop"]::before{
+ background:
+ linear-gradient(#8c5b3c 0 0) 76% 38% / 32% 7% no-repeat,
+ linear-gradient(#8c5b3c 0 0) 76% 69% / 32% 7% no-repeat,
+ linear-gradient(#d4ab75 0 0) 68% 24% / 4% 20% no-repeat,
+ linear-gradient(#d4ab75 0 0) 80% 53% / 5% 23% no-repeat,
+ linear-gradient(#c7a181 0 0) 91% 58% / 4% 21% no-repeat
+}
+/* The end-of-race bench takes place at dusk, not in the same generic room. */
+.conversation-cast[data-scene="bench-dusk"]::before{
+ background:
+ linear-gradient(#946749 0 0) 53% 64% / 42% 10% no-repeat,
+ linear-gradient(#946749 0 0) 53% 77% / 42% 6% no-repeat,
+ linear-gradient(#795340 0 0) 37% 96% / 5% 32% no-repeat,
+ linear-gradient(#795340 0 0) 69% 96% / 5% 32% no-repeat
+}
+.conversation-cast[data-scene="bench-dusk"]::after{background:linear-gradient(0deg,#bc787a77,transparent 64%)}
+/* World event lighting keeps character drawings readable above the scene. */
+.conversation-cast[data-scene="world"]::after{background:radial-gradient(ellipse at 50% 10%,#fff5cb91,transparent 70%),linear-gradient(0deg,#8570a64f,transparent)}
+@media(prefers-reduced-motion:reduce){.conversation-cast[data-scene$="-rain"]::after,.conversation-cast[data-scene="town-snow"]::after{animation:none}}
+
+
+/* V6 scene-specific illustrated backgrounds. Every file is original crisp-edge
+ * scenery (not an enlarged fragment of the generic 4-panel practice sheet).
+ * Text / cast remain above the scene and no event state is changed by this.
+ */
+.conversation-cast[data-scene="race-day"],
+.conversation-cast[data-scene="race-sunset"]{
+ background-image:url('./assets/story-scenes-v1/race-day.svg');
+ background-size:100% 100%;background-position:center;
+}
+.conversation-cast[data-scene="training-morning"],
+.conversation-cast[data-scene="training"],
+.conversation-cast[data-scene="training-rain"],
+.conversation-cast[data-scene="training-dusk"]{
+ background-image:url('./assets/story-scenes-v1/training-morning.svg');
+ background-size:100% 100%;background-position:center;
+}
+.conversation-cast[data-scene="bedroom"],
+.conversation-cast[data-scene="bedroom-morning"]{
+ background-image:url('./assets/story-scenes-v1/bedroom.svg');
+ background-size:100% 100%;background-position:center;
+}
+.conversation-cast[data-scene="shrine-night"]{
+ background-image:url('./assets/story-scenes-v1/shrine-night.svg');
+ background-size:100% 100%;background-position:center;
+}
+.conversation-cast[data-scene="seedshop"],
+.conversation-cast[data-scene="seedshop-interior"]{
+ background-image:url('./assets/story-scenes-v1/seedshop.svg');
+ background-size:100% 100%;background-position:center;
+}
+.conversation-cast[data-scene="seedshop-rain"]{
+ background-image:url('./assets/story-scenes-v1/seedshop-rain.svg');
+ background-size:100% 100%;background-position:center;
+}
+.conversation-cast[data-scene="bench-dusk"]{
+ background-image:url('./assets/story-scenes-v1/bench-dusk.svg');
+ background-size:100% 100%;background-position:center;
+}
+.conversation-cast[data-scene="race-day"]::before,
+.conversation-cast[data-scene="race-sunset"]::before,
+.conversation-cast[data-scene^="training"]::before,
+.conversation-cast[data-scene^="bedroom"]::before,
+.conversation-cast[data-scene^="seedshop"]::before,
+.conversation-cast[data-scene="bench-dusk"]::before,
+.conversation-cast[data-scene="shrine-night"]::before{display:none}
+.conversation-cast[data-scene="race-sunset"]::after,
+.conversation-cast[data-scene="training-dusk"]::after{background:linear-gradient(0deg,#c17d9077,transparent 75%)}
+.conversation-cast[data-scene="shrine-night"]::after{background:linear-gradient(0deg,#17285266,transparent 45%)}
+.conversation-cast[data-scene="seedshop-rain"]::after{background:repeating-linear-gradient(111deg,transparent 0 18px,#c7dff055 18px 19px,transparent 19px 36px);animation:story-rain .8s steps(3,end) infinite}
+@media(max-width:390px){
+ .conversation-cast{gap:6px;padding:8px 4px 0;min-height:162px}
+ .conversation-character{flex-basis:100px;max-width:126px}
+ .conversation-portrait{height:100px}
+ .conversation-portrait canvas{width:110px;height:100px}
+ .conversation-character-name{font-size:10px}
+ .conversation-speaker-status{height:19px;font-size:9px}
+ .conversation-window{padding:12px}
+ .conversation-live{font-size:15px;min-height:104px;line-height:1.75}
+}
+@media(prefers-reduced-motion:reduce){
+ .conversation-cast[data-scene="seedshop-rain"]::after{animation:none}
+}
+
+
+/* Preserve full silhouettes at 320px when four cast members share a scene.
+ * Five-or-more actor conversations keep the old accessible horizontal scroll. */
+.conversation-cast[data-actor-count="4"],
+.conversation-cast[data-actor-count="3"]{
+ gap:4px;justify-content:space-around;overflow-x:hidden;
+}
+.conversation-cast[data-actor-count="4"] .conversation-character,
+.conversation-cast[data-actor-count="3"] .conversation-character{
+ flex:1 1 0;max-width:none;min-width:0;
+}
+.conversation-cast[data-actor-count="4"] .conversation-portrait,
+.conversation-cast[data-actor-count="3"] .conversation-portrait{
+ height:110px;
+}
+.conversation-cast[data-actor-count="4"] .conversation-portrait canvas,
+.conversation-cast[data-actor-count="3"] .conversation-portrait canvas{
+ width:100%;max-width:110px;height:auto;max-height:110px;
+}
+@media(max-width:390px){
+ .conversation-cast[data-actor-count="4"],
+ .conversation-cast[data-actor-count="3"]{gap:2px;padding:8px 3px 0}
+ .conversation-cast[data-actor-count="4"] .conversation-character,
+ .conversation-cast[data-actor-count="3"] .conversation-character{flex-basis:0;max-width:none}
+ .conversation-cast[data-actor-count="4"] .conversation-portrait,
+ .conversation-cast[data-actor-count="3"] .conversation-portrait{height:90px}
+ .conversation-cast[data-actor-count="4"] .conversation-portrait canvas,
+ .conversation-cast[data-actor-count="3"] .conversation-portrait canvas{max-width:100%;max-height:88px}
+ .conversation-cast[data-actor-count="4"] .conversation-character-name{font-size:9px;line-height:1.4}
+}
+
+
+/* Important final-story environments: different illustrated room, evening practice
+ * and world venue, not repainted copies of the sunny town. */
+.conversation-cast[data-scene="training-dusk"]{
+ background-image:url('./assets/story-scenes-v1/training-dusk.svg');
+ background-position:center;background-size:100% 100%;
+}
+.conversation-cast[data-scene="seedshop-interior"]{
+ background-image:url('./assets/story-scenes-v1/seedshop-interior.svg');
+ background-position:center;background-size:100% 100%;
+}
+.conversation-cast[data-scene="world"]{
+ background-image:url('./assets/story-scenes-v1/world.svg');
+ background-position:center;background-size:100% 100%;
+}
+.conversation-cast[data-scene="world"]::before{display:none}
+
+
+/* Unified gentle GBA-style UI: shared palette with the game Canvas.
+   Keep crisp corners, readable Japanese text and mobile tap targets. */
+body{background-color:var(--paper);background-image:radial-gradient(#e6cfb8 0.7px,transparent 0.7px);background-size:8px 8px}
+.site-header,.game-toolbar{background:var(--paper)}
+.panel,.modal,.train-card,.partner-card,.history-card,.race-ready,.select-banner{border-color:var(--ink);box-shadow:3px 3px 0 var(--shadow)}
+.panel,.modal{background:#fffaf0}
+.scene-panel{background:var(--pale)}
+.scene-top,.modal-header,.race-ready{background:#ffefd9}
+.train-card,.history-card,.skill-entry{background:#f5f0df}
+.train-card:hover:not(:disabled),.partner-card.selected{background:#fff0d2}
+.primary,.tab.active{background:var(--ink);color:var(--paper);box-shadow:3px 3px 0 var(--olive)}
+.secondary,.help-button,.close-button{background:#fff9ed;border:2px solid var(--mid);color:var(--ink)}
+.secondary:hover:not(:disabled),.help-button:hover:not(:disabled){background:#ffefd9}
+.dialogue,.conversation-entry,.growth-dialogue{background:#fff6e7}
+.stat-bar,.meter,.month{background:#eadcca}
+.stat-bar i,.meter i,.month.done{background:#795367}
+.race-canvas,.scene-wrap{background:#fff0d2}
+.progress-card{border:2px solid var(--ink);background:#fff4df;padding:16px;margin:18px 0 20px;box-shadow:3px 3px 0 var(--shadow)}
+.progress-card-title{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}
+.progress-card-title h2{font-size:15px}
+.progress-card-title small{font-size:9px;color:var(--mid)}
+.progress-card>p{font-size:11px;color:var(--mid);line-height:1.7}
+.progress-chart{display:block;width:100%;max-width:600px;height:auto;max-height:190px;margin:12px auto 8px;image-rendering:pixelated;background:#fffaf0;border:1px solid var(--line)}
+.progress-card .progress-stats{font-weight:bold;color:var(--ink)}
+.progress-card .progress-disclaimer{font-size:10px}
+.growth-dialogue{border:2px solid var(--mid);padding:13px 16px;margin:16px 0 19px;box-shadow:3px 3px 0 var(--shadow)}
+.growth-dialogue>b{display:block;font-size:12px;margin-bottom:8px}
+.growth-dialogue p{font-size:12px;line-height:1.8;margin:4px 0}
+.growth-dialogue small{display:block;font-size:10px;color:var(--mid);margin-top:6px}
+@media(max-width:390px){.progress-card{padding:10px}.progress-card-title{align-items:start;flex-direction:column;gap:2px}.growth-dialogue{padding:10px}.progress-chart{max-height:150px}}
+
+
+/* Replace the rejected flat SVG scene backdrops with existing illustrated,
+   multi-layer pixel-art PNGs until bespoke scene paintings are approved.
+   These overrides intentionally supersede the legacy story-scenes-v1 rules. */
+.conversation-cast[data-scene="race-day"],
+.conversation-cast[data-scene="race-sunset"],
+.conversation-cast[data-scene="world"],
+.conversation-cast[data-scene="shrine-night"]{
+ background-image:url('./assets/art-review-v2/race-venues-v2.png');
+ background-size:200% 200%;background-repeat:no-repeat;
+}
+.conversation-cast[data-scene="race-day"]{background-position:0% 0%}
+.conversation-cast[data-scene="race-sunset"]{background-position:100% 0%}
+.conversation-cast[data-scene="world"]{background-position:0% 100%}
+.conversation-cast[data-scene="shrine-night"]{background-position:100% 100%}
+.conversation-cast[data-scene="training-morning"],
+.conversation-cast[data-scene="training"],
+.conversation-cast[data-scene="training-rain"],
+.conversation-cast[data-scene="training-dusk"],
+.conversation-cast[data-scene="bedroom"],
+.conversation-cast[data-scene="bedroom-morning"],
+.conversation-cast[data-scene="seedshop"],
+.conversation-cast[data-scene="seedshop-interior"],
+.conversation-cast[data-scene="seedshop-rain"],
+.conversation-cast[data-scene="bench-dusk"]{
+ background-image:url('./assets/visual-polish-v4/daily-scenes-v4.png');
+ background-size:200% 200%;background-repeat:no-repeat;
+}
+.conversation-cast[data-scene="training-morning"],
+.conversation-cast[data-scene="training"],
+.conversation-cast[data-scene="training-rain"],
+.conversation-cast[data-scene="training-dusk"]{background-position:100% 0%}
+.conversation-cast[data-scene="bedroom"],
+.conversation-cast[data-scene="bedroom-morning"]{background-position:100% 100%}
+.conversation-cast[data-scene="seedshop-interior"]{background-position:0% 100%}
+.conversation-cast[data-scene="seedshop"],
+.conversation-cast[data-scene="seedshop-rain"],
+.conversation-cast[data-scene="bench-dusk"]{background-position:0% 0%}
+
+/* Original night-festival painting: shrine without dialogue or characters in the source. */
+.conversation-cast[data-scene="shrine-night"]{
+ background-image:url('./assets/shrine-festival-new-20261020.png');
+ background-size:100% 100%;background-position:center center;background-repeat:no-repeat;
+ image-rendering:pixelated;
+}
+
+
+/* 2026-10-20: weather and portrait readability fixes.
+   Keep pixel-art sources; the portrait canvas has 2x backing resolution, so
+   browser downscaling should be smooth rather than nearest-neighbour jagged. */
+.conversation-portrait canvas{image-rendering:auto}
+
+/* Morning is warm and luminous; dusk is clearly evening, not the same sunny scene. */
+.conversation-cast[data-scene="training-morning"]{
+ background-image:linear-gradient(115deg,rgba(255,247,177,.33),rgba(255,221,156,.14) 52%,rgba(255,255,255,.03)),url('./assets/visual-polish-v4/daily-scenes-v4.png');
+ background-size:100% 100%,200% 200%;background-position:center,100% 0%;
+}
+.conversation-cast[data-scene="training-morning"]::after{
+ background:linear-gradient(110deg,rgba(255,243,169,.28),transparent 65%);
+}
+.conversation-cast[data-scene="training-dusk"]{
+ background-image:linear-gradient(180deg,rgba(51,45,97,.52),rgba(163,86,127,.45) 54%,rgba(249,156,102,.37)),url('./assets/visual-polish-v4/daily-scenes-v4.png');
+ background-size:100% 100%,200% 200%;background-position:center,100% 0%;
+}
+.conversation-cast[data-scene="training-dusk"]::after{
+ background:linear-gradient(0deg,rgba(241,124,92,.36),transparent 74%);
+}
+
+/* A post-race bench faces the evening stadium, not the seed-shop's sunny garden. */
+.conversation-cast[data-scene="bench-dusk"]{
+ background-image:linear-gradient(180deg,rgba(56,41,83,.23),rgba(226,131,108,.29)),url('./assets/art-review-v2/race-venues-v2.png');
+ background-size:100% 100%,200% 200%;background-position:center,100% 0%;
+}
+.conversation-cast[data-scene="bench-dusk"]::before{
+ display:block;z-index:1;inset:auto 0 26px;height:25px;
+ background:linear-gradient(to bottom,transparent 0 29%,#6c4857 29% 37%,#b98065 37% 48%,#6c4857 48% 53%,transparent 53% 69%,#6c4857 69% 78%,#b98065 78% 90%,#6c4857 90%);
+ opacity:.82;
+}
+.conversation-cast[data-scene="bench-dusk"]::after{
+ background:linear-gradient(0deg,rgba(128,67,116,.29),transparent 78%);
+}
+
+/* Rainy seed shop: overcast sky, muted ground, visible short pixel raindrops
+   falling in front of the scenery and characters, plus shallow puddles.
+   The labels remain unobscured and reduced-motion users get static rain. */
+.conversation-cast[data-scene="seedshop-rain"]{
+ filter:none;
+ background-image:linear-gradient(180deg,rgba(32,51,83,.52) 0%,rgba(53,84,107,.42) 54%,rgba(42,64,91,.33) 100%),url('./assets/visual-polish-v4/daily-scenes-v4.png');
+ background-size:100% 100%,200% 200%;
+ background-position:center,0% 0%;
+}
+.conversation-cast[data-scene="seedshop-rain"]::before{
+ display:block;z-index:1;inset:auto 0 36px;height:18px;
+ background:radial-gradient(ellipse 18px 3px at 12% 72%,rgba(169,214,235,.8) 0 64%,transparent 72%),
+ radial-gradient(ellipse 26px 3px at 59% 45%,rgba(167,215,236,.75) 0 64%,transparent 72%),
+ radial-gradient(ellipse 14px 2px at 89% 80%,rgba(177,223,241,.85) 0 64%,transparent 72%);
+}
+.conversation-cast[data-scene="seedshop-rain"]::after{
+ display:block;z-index:4;inset:0 0 35px;
+ background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2296%22%20height%3D%2296%22%20viewBox%3D%220%200%2096%2096%22%20shape-rendering%3D%22crispEdges%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23e0f3ff%22%20stroke-width%3D%222%22%20opacity%3D%22.9%22%3E%3Cpath%20d%3D%22M8%205l-3%2011%20M38%202l-3%2012%20M70%2011l-4%2013%20M90%203l-3%2011%20M21%2039l-3%2012%20M53%2030l-4%2013%20M80%2044l-4%2013%20M5%2075l-3%2012%20M32%2067l-3%2011%20M64%2076l-4%2013%20M90%2071l-3%2011%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%2386bbda%22%20stroke-width%3D%222%22%20opacity%3D%22.72%22%3E%3Cpath%20d%3D%22M25%2014l-3%208%20M58%2056l-3%209%20M87%2028l-3%208%20M46%2085l-3%209%20M12%2056l-3%208%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+ background-repeat:repeat;background-size:96px 96px;
+ background-position:0 0;opacity:.95;
+ animation:story-rain-visible .8s steps(4,end) infinite;
+}
+@keyframes story-rain-visible{to{background-position:-14px 96px}}
+@media(prefers-reduced-motion:reduce){
+ .conversation-cast[data-scene="seedshop-rain"]::after{animation:none}
+}
+
+
+/* Non-speaking characters should stay recognizable and cute; the old
+   brightness(.43) turned their cream fur into muddy dark patches on phones. */
+.conversation-character.is-listening .conversation-portrait{
+ filter:brightness(.83) saturate(.95);
+}
+
+.intro-stage{display:block;width:100%;height:auto;max-height:34vh;object-fit:contain;image-rendering:pixelated;background:#f6e4ba;border-radius:12px}.broadcast-portrait{border:4px solid #795367;background:#403046}.broadcast-portrait:after{content:'テレビ';display:block;font-size:10px}.coach-notebook{background:#fff9ed;border:2px solid #d8c4b3;padding:12px;border-radius:12px;margin:12px 0}.coach-notebook p{margin:6px 0}.training-purpose{display:block;font-size:11px;color:#685264;line-height:1.5}.conversation-window{min-width:0}.conversation-live p{overflow-wrap:anywhere}
+
+/* Dedicated location PNGs; no CSS shape scenery is treated as completed art. */
+.conversation-place{font-size:12px;font-weight:800;background:#fff2d4;border:1px solid #d8c4b3;padding:7px 10px;margin:6px 0;border-radius:8px}.story-stage{max-height:32vh}.conversation-cast[data-scene]{background:#fff3df;min-height:118px;overflow-x:auto;overflow-y:visible}.conversation-cast[data-scene]::before,.conversation-cast[data-scene]::after{display:none}.side-stories{padding:14px;margin:14px 0;background:#f1f5dc;border:2px solid #aec39f;border-radius:14px}.side-stories h3{margin:0 0 6px}.side-stories p{font-size:12px;line-height:1.6}.side-stories>div{display:grid;gap:8px}.side-stories button{text-align:left;white-space:normal;min-height:48px}.side-stories small{display:block;font-size:11px}.conversation-window{flex-shrink:0}.modal-body:has(.conversation){overflow:auto}.conversation-character-name{white-space:normal;overflow-wrap:anywhere}
+@media(max-width:600px){.story-stage{max-height:27vh}.conversation-character{min-width:84px}.conversation-portrait canvas{width:72px;height:auto}.conversation-cast[data-scene]{min-height:110px;padding:8px 6px}.conversation-live p{font-size:15px;line-height:1.8}.conversation-controls button{min-height:48px}.modal:has(.conversation){max-height:calc(100dvh - 16px);margin:8px}.modal-body:has(.conversation){padding:10px}}
+@media(prefers-reduced-motion:reduce){.story-stage{animation:none}}
+
+/* The integrated painted stage owns the location. Portrait cards stay readable
+   without a second, contradictory CSS backdrop or duplicate weather. */
+.conversation:has(.story-stage) .conversation-cast{background:none!important;min-height:0;padding:8px;overflow-x:auto;justify-content:center}
+.conversation:has(.story-stage) .conversation-cast::before,.conversation:has(.story-stage) .conversation-cast::after{display:none!important}
+.conversation-character.is-listening .conversation-portrait{filter:brightness(.83) saturate(.95)}
+@media(max-width:420px){.conversation:has(.story-stage) .conversation-cast{justify-content:flex-start}.conversation .story-stage{max-height:25vh}}
+
+
+/* Unified story conversation stage (2026-10-20)
+ * One real scene Canvas with two enlarged foreground characters, plus a
+ * single dialogue box tucked into the same frame. No second portrait strip. */
+.conversation-stage{
+ position:relative;overflow:hidden;border:2px solid var(--mid);
+ border-radius:10px;background:#fff4df;
+ box-shadow:3px 3px 0 var(--shadow);
+}
+.conversation-stage .story-stage{
+ display:block;width:100%;height:auto;max-height:none!important;
+ aspect-ratio:16/9;object-fit:contain;
+ border:0;border-radius:0;
+ image-rendering:pixelated;image-rendering:crisp-edges;
+}
+.conversation-stage .conversation-window{
+ position:relative;z-index:2;margin:-12px 7px 7px;
+ padding:12px 14px;border:2px solid var(--mid);
+ border-radius:8px;background:#fff9edf5;
+ box-shadow:none;
+}
+.conversation-stage .conversation-caption{padding-bottom:7px}
+.conversation-stage .conversation-caption strong{font-size:16px}
+.conversation-stage .conversation-live{
+ padding:10px 0 8px;min-height:0;
+ font-size:15px;line-height:1.75;
+}
+.conversation-stage .conversation-controls button{min-height:44px}
+@media(max-width:420px){
+ .conversation-stage .conversation-window{
+  margin:-11px 5px 5px;padding:9px 11px;
+ }
+ .conversation-stage .conversation-live{font-size:14px;min-height:0}
+}
+
+/* V9: one scene for play and conversation; no dimmed second game behind it. */
+#game[hidden]{display:none!important}
+.dialogue-screen{width:min(860px,calc(100% - 24px));margin:14px auto 24px;border:3px solid #795367;background:#fff8ec;box-shadow:0 5px 0 #e7c8a1;padding:12px;color:#403046}
+.dialogue-screen .conversation-theatre{display:grid;gap:0}
+.dialogue-screen .conversation-place{padding:7px 12px;border-radius:0;border:0;border-bottom:2px solid #d8b890;margin:0;background:#fff0d2;font-weight:700}
+.dialogue-screen .story-stage{display:block;width:100%;height:auto;max-height:46svh;object-fit:contain;image-rendering:pixelated;background:#fff0d2;border:0;border-radius:0}
+.dialogue-screen .conversation-cast.stage-names{display:flex;justify-content:center;gap:0;min-height:0;overflow:visible;padding:0;border:0;border-bottom:2px solid #d8b890;background:#fff0d2!important}
+.dialogue-screen .stage-names .conversation-character{display:block;flex:1;min-width:0;width:auto;max-width:none;margin:0;padding:7px 4px;text-align:center;font-size:12px;line-height:1.3;overflow-wrap:anywhere;opacity:1;background:transparent;border:0;filter:none}
+.dialogue-screen .stage-names .is-speaking{background:#ffd382;color:#403046;font-weight:700}
+.dialogue-screen .conversation-window{border:0;border-radius:0;margin:0;padding:12px;background:#fff8ec;box-shadow:none;min-height:0}
+.dialogue-screen .conversation-live p{font-size:16px;line-height:1.65;min-height:3.3em;margin:12px 0}
+.dialogue-screen .conversation-caption{padding-bottom:6px;border-bottom:2px solid #e79c9a}
+.dialogue-screen .conversation-controls{display:flex;justify-content:flex-end;gap:8px}
+.dialogue-screen .conversation-controls button{min-height:48px;padding:10px 20px}
+.dialogue-screen .conversation-footer{border-top:1px solid #e2cfb6;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 10px;font-size:11px;color:#795367}
+.dialogue-screen .conversation-footer button{background:transparent;box-shadow:none;border:0;color:#795367;min-height:44px;white-space:normal;font-size:12px}
+@media(max-width:600px){.dialogue-screen{width:calc(100% - 12px);padding:0;margin:6px auto 14px;border-width:2px}.dialogue-screen .story-stage{max-height:none}.dialogue-screen .conversation-window{padding:12px}.dialogue-screen .conversation-live p{font-size:16px}.dialogue-screen .conversation-footer small{max-width:52%}}
+/* V15: a single warm in-world conversation frame, like the approved reference. */
+.dialogue-screen{border-color:#8c634f;border-radius:12px;background:#fff2d5;box-shadow:0 4px 0 #d9aa77;padding:6px;max-width:860px}
+.dialogue-screen .conversation-kicker{margin:0;padding:5px 9px;font-size:11px;color:#86674f}
+.dialogue-screen .conversation-place{font-size:12px;padding:5px 10px;background:#fff2d5;border:0}
+.dialogue-screen .conversation-stage{border:2px solid #b77f50;border-radius:9px;background:#fff5db;box-shadow:inset 0 0 0 2px #f9cc83}
+.dialogue-screen .conversation-window{margin:0 4px 4px;padding:12px 13px;border:2px solid #d9a462;border-radius:8px;background:#fff6de;box-shadow:inset 0 0 0 2px #ffe6ae}
+.dialogue-screen .conversation-caption{border:0;padding:0;align-items:center}
+.dialogue-screen .conversation-caption strong{border:1px solid #d6a66b;background:#ffecc2;padding:4px 16px;border-radius:16px;font-size:14px;min-width:70px;text-align:center}
+.dialogue-screen .conversation-caption small{font-size:10px;color:#927652}
+.dialogue-screen .conversation-live p{margin:9px 2px;font-size:16px;line-height:1.7;min-height:3.4em}
+.dialogue-screen .conversation-controls .primary{background:#b27c4b;color:#fff9e7;border-color:#835e45;box-shadow:0 3px 0 #d5a16c;border-radius:7px;padding:9px 16px}
+.dialogue-screen .conversation-later{display:block;margin:5px auto 0;min-height:44px;border:0;box-shadow:none;background:transparent;color:#86674f;font-size:12px}
+@media(max-width:600px){.dialogue-screen{padding:3px;width:calc(100% - 10px);margin:6px auto}.dialogue-screen .conversation-window{padding:10px 11px}.dialogue-screen .conversation-live p{font-size:16px}}
+/* Keep the live race large on a phone; fifty checkpoint reports scroll inside
+   their own list instead of pushing the race and controls far apart. */
+.zone-spotlight[data-mode="embedded"] .zone-focus-rows{max-height:152px;overflow-y:auto;overscroll-behavior:contain}
+.modal-body:has(>.race-broadcast){padding:10px}
+@media(max-width:700px){
+ .modal-body:has(>.race-broadcast){padding:3px}
+ .race-broadcast{border:0;box-shadow:none;padding:0}
+ .race-broadcast .race-canvas{margin:0}
+ .race-broadcast .race-live{padding:5px 8px}
+ .race-broadcast .tracking-legend{padding:4px 3px;gap:3px 7px}
+ .zone-spotlight[data-mode="embedded"] .zone-focus-rows{max-height:104px}
+}
+/* V17: actions precede long reports; mobile home remains a playable screen. */
+.training-choices,#town-conversations,#view{scroll-margin-top:70px}.home-shortcuts,.overview-actions{display:none}
+body:has(#game:not([hidden]) #view) .game-toolbar{position:sticky;top:0;z-index:20;background:#fff9ed;box-shadow:0 2px 0 #dfc5b6}
+.home-notebook{margin:12px 0;border:1px solid #d8c4b3;background:#fff5df}
+.home-notebook>summary{padding:12px;font-weight:700;cursor:pointer;min-height:44px}
+.home-notebook .coach-notebook{margin:0;border:0}
+.training-feedback{margin-top:12px}.town-empty{padding:16px;font-size:12px;color:#795367}
+.home-last-growth{padding:6px 9px;margin:0 0 6px;background:#ffe7ad;border-left:3px solid #b77f50;font-size:12px;line-height:1.5}
+@media(max-width:700px){
+ body:has(#game:not([hidden]) .dashboard){padding-bottom:calc(66px + env(safe-area-inset-bottom,0px))}
+ body:has(#game:not([hidden]) .dashboard) .topline{font-size:8px;padding:3px 14px}
+ body:has(#game:not([hidden]) .dashboard) .site-header{padding-top:9px;padding-bottom:9px}
+ body:has(#game:not([hidden]) .dashboard) .brand strong{font-size:15px;letter-spacing:0}
+ body:has(#game:not([hidden]) .dashboard) .brand small{display:none}
+ body:has(#game:not([hidden]) .dashboard) .brand{gap:8px}
+ body:has(#game:not([hidden]) .dashboard) .brand-sprite{width:25px;height:24px;flex-shrink:0}
+ body:has(#game:not([hidden]) .dashboard) .help-button{padding:5px 8px;min-height:40px}
+ .dashboard .right-column{display:block}
+ body:has(#game:not([hidden]) .dashboard) .game-toolbar{padding:7px 0;gap:5px}
+ body:has(#game:not([hidden]) .dashboard) .season-strip{padding:7px 10px;margin:0 0 10px;gap:8px}
+ body:has(#game:not([hidden]) .dashboard) .timeline,body:has(#game:not([hidden]) .dashboard) .date-info .eyebrow{display:none}
+ body:has(#game:not([hidden]) .dashboard) .date-info strong{font-size:14px}
+ body:has(#game:not([hidden]) .dashboard) .date-info{min-width:0}
+ body:has(#game:not([hidden]) .dashboard) .next-race{display:block;font-size:10px}
+ body:has(#game:not([hidden]) .dashboard) .scene-top{padding:5px 9px}
+ body:has(#game:not([hidden]) .dashboard) .scene-top span{display:none}
+ body:has(#game:not([hidden]) .dashboard) .scene-wrap{max-height:none;overflow:hidden}
+ body:has(#game:not([hidden]) .dashboard) .scene-wrap canvas{width:100%;height:auto;max-height:none;object-fit:contain}
+ body:has(#game:not([hidden]) .dashboard) .dialogue{padding:7px 9px;gap:8px;min-height:0}
+ body:has(#game:not([hidden]) .dashboard) .dialogue small{display:none}
+ body:has(#game:not([hidden]) .dashboard) .dialogue p{font-size:12px;line-height:1.6}
+ body:has(#game:not([hidden]) .dashboard) .vitals{margin:8px 0;gap:6px}
+ body:has(#game:not([hidden]) .dashboard) .vital{font-size:11px}
+ .training-choices .section-head{margin-top:10px;margin-bottom:6px}
+ .training-choices .section-head h2{font-size:15px}
+ .training-choices .training-guide{font-size:11px;line-height:1.55;margin:0 0 8px}
+ .training-choices .training-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .training-choices .training-card-v2{padding:9px;gap:5px;min-height:0;text-align:left}
+ .training-choices .training-card-head{gap:5px;align-items:center}
+ .training-choices .training-card-head>strong{font-size:13px}
+ .training-choices .pixel-icon{width:20px;height:20px}
+ .training-choices .training-cost{width:100%;margin:0;font-size:11px}
+ .training-choices .training-description{font-size:11px;line-height:1.4}
+ .training-choices .training-purpose{display:none}
+ .training-choices .training-stat-list{padding:5px;border-left-width:2px;gap:2px}
+ .training-choices .training-stat{font-size:11px;line-height:1.4;gap:4px}
+ .training-choices .training-stat b{font-size:14px}
+ .training-choices .training-companion{padding-top:5px;min-height:0}
+ .training-choices .training-buddy{gap:4px}
+ .training-choices .training-buddy canvas{width:24px;height:22px}
+ .training-choices .training-buddy b,.training-choices .training-solo{font-size:10px;line-height:1.5}
+ .training-choices .training-buddy small{font-size:10px}
+ .training-choices .training-effect{font-size:10px;line-height:1.45;min-height:0}
+ .training-choices .training-risk{font-size:10px;line-height:1.4;padding:4px}
+ .training-choices .training-risk b{font-size:11px}
+ .home-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;position:fixed;bottom:0;left:0;right:0;padding:7px 10px calc(7px + env(safe-area-inset-bottom,0px));border-top:2px solid #b77f50;background:#fff5df;z-index:12}
+ .home-shortcuts button{min-height:46px;padding:6px 3px;font-size:12px}
+}
+
+.home-reference{margin:12px 0;border:1px solid #d8c4b3;background:#fff5df}
+.home-reference>summary{min-height:44px;padding:12px;cursor:pointer;font-weight:700}
+.home-reference .profile,.home-reference .roadmap{margin:10px;box-shadow:none}
+@media(min-width:901px){
+ .dashboard:has(.training-choices){grid-template-columns:minmax(0,1fr)}
+ .dashboard:has(.training-choices)>.left-column{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(400px,1.1fr);gap:16px 22px;align-items:start}
+ .dashboard:has(.training-choices) .home-overview{grid-column:1;grid-row:1;position:sticky;top:74px}
+ .dashboard:has(.training-choices) .home-overview .vitals{margin:10px 0}
+ .dashboard:has(.training-choices) .training-choices{grid-column:2;grid-row:1}
+ .dashboard:has(.training-choices) .training-feedback,.dashboard:has(.training-choices) .home-notebook,.dashboard:has(.training-choices) #town-conversations{grid-column:1 / -1}
+ .training-choices .training-card-v2{min-height:0;padding:12px;gap:7px}
+ .training-choices .training-card-head>strong{font-size:15px}
+ .training-choices .training-description,.training-choices .training-purpose{font-size:11px;line-height:1.5}
+ .training-choices .training-cost{font-size:11px}
+ .training-choices .training-companion{margin-top:0}
+ .overview-actions{display:flex;gap:8px;margin:12px 0}
+ .overview-actions button{min-height:44px;flex:1}
+}
+.race-map{margin:0 0 10px;border:2px solid #795367;padding:10px 12px;background:#fff5df;color:#403046;font-size:12px}
+.race-map header{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px}
+.race-map header b{background:#ffd382;padding:2px 6px;white-space:nowrap}
+.race-map-axis{display:flex;justify-content:space-between;margin-top:7px;font-size:11px;font-weight:bold}
+.race-map-track{height:62px;position:relative;isolation:isolate;margin:0 9px 5px;background:linear-gradient(transparent 36px,#bda88f 36px,#bda88f 39px,transparent 39px);border-left:2px solid #795367;border-right:2px solid #795367}
+.race-map-zone{position:absolute;top:4px;height:54px;background:color-mix(in srgb,var(--zone) 35%,transparent);border-bottom:3px solid var(--zone)}
+.race-map-zone>b{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font:bold 11px monospace;background:#fff9ed;min-width:15px;text-align:center;border:1px solid #795367}
+.race-map-dot{position:absolute;width:4px;height:4px;background:#68908a;transform:translateX(-50%);z-index:2}
+.race-map-dot.map-top{width:5px;height:5px;background:#fff9ed;border:1px solid #403046;z-index:3}
+.race-map-dot.map-rival{width:6px;height:6px;background:#e79c9a;border:1px solid #795367;z-index:4}
+.race-map-dot.map-player{width:8px;height:14px;background:#ffd382;border:2px solid #403046;z-index:6;box-shadow:0 0 0 1px #fff9ed}
+.race-map-dot.map-player:before{content:'YOU';position:absolute;bottom:15px;left:50%;transform:translateX(-50%);font:bold 11px monospace;background:#403046;color:#ffd382;padding:1px 3px}
+.race-map-key{display:flex;flex-wrap:wrap;gap:3px 10px;font-size:11px}.key-player{font-weight:bold}.key-top{color:#795367}.key-rival{color:#a94f69}.key-other{color:#557b75}
+.race-map>p{font-size:12px;font-weight:bold;margin:7px 0}.race-map-route{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:11px}
+.race-map-route>span{padding:3px 5px;border:1px solid #c3b8a5;background:#fff9ed}.race-map-route>span b{display:inline-block;min-width:13px;text-align:center;background:#f6e4ba}.race-map-route>span.active{border:2px solid #795367;background:#ffd382;font-weight:bold}.race-map-route>span.done{color:#74645b;background:#e8ecd6}.race-map-route>i{font-style:normal}
+@media(max-width:400px){.race-map{padding:8px}.race-map header{font-size:12px}.race-map-key{gap:3px 7px}}
+
+/* v22: a complete title illustration; preserve every face without cover cropping. */
+.title-screen{grid-template-columns:minmax(260px,.78fr) minmax(0,1.22fr)}
+.title-visual{margin:0;background:#eedcc1;overflow:hidden}
+.title-keyart{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;image-rendering:pixelated}
+.title-visual figcaption{text-align:center;background:#403046;color:#fff0d2;font-size:12px;line-height:1.7;padding:12px 8px;border-top:2px solid #795367}
+@media(max-width:700px){.title-visual{order:-1;border-top:0;border-bottom:2px solid #795367}.title-copy{padding:20px}.title-copy h1{margin:10px 0;font-size:28px;line-height:1.4}.title-copy p{margin:12px 0}.title-buttons{margin:16px 0}.title-visual figcaption{font-size:11px;padding:8px}}
+
+:root{--font:HamMaru,"Hiragino Maru Gothic ProN","Yu Gothic",sans-serif}body,button,input,summary{font-family:var(--font)}
+/* #30 (owner 2026-10-26): which story this is — the series and episode, then the title. */
+.conversation-kicker.episode-kicker{display:flex;flex-direction:column;gap:1px;line-height:1.35}
+.episode-kicker .kicker-episode{font-size:11px;font-weight:800;letter-spacing:.06em;color:#2a6b4f}
+.episode-kicker .kicker-title{font-size:14px;font-weight:800;color:#3b2533;overflow-wrap:anywhere}
+.episode-kicker .kicker-note{font-size:10px;color:#86674f}
+.event-effect-summary .event-effect-episode{margin:0 0 2px;font-size:11px;font-weight:800;letter-spacing:.06em;color:#2a6b4f}
+/* Game title (owner 2026-10-29「はむちゅたーGP 〜十二支決定戦〜」): the subtitle wraps as one piece, and on a
+   small phone the header keeps only the name (the title screen shows the whole title). */
+.brand .brand-sub{display:inline-block;margin-left:.35em}
+@media(max-width:379px){.brand .brand-sub{display:none}}
+
+/* Title screen as a cover (owner 2026-10-29「タイトルとかボタンをメイン画面に入れて欲しい」→ 絵の上に重ねる).
+   Owner picks: PC — the title in the middle (the zodiac and the rat stay visible), buttons at the bottom;
+   phone — the picture a little larger, the blurred picture above and below it; the top band is hidden here. */
+body[data-screen="title"] .topline,body[data-screen="title"] .site-header{display:none}
+.title-screen.title-cover{position:relative;display:block;overflow:hidden;isolation:isolate;container-type:inline-size;width:min(100%,calc((100vh - 40px)*4/3));margin:16px auto 22px;padding:0}
+.title-cover .title-backdrop{display:none}
+.title-cover .title-visual{margin:0;border:0;background:#eedcc1}
+.title-cover .title-keyart{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+.title-cover .title-copy{position:absolute;left:0;right:0;top:33%;z-index:2;padding:0 16px;text-align:center;pointer-events:none}
+.title-cover .title-copy h1{margin:0;font-size:clamp(28px,6.2cqw,58px);line-height:1.2;letter-spacing:2px;color:#fff9ed;text-shadow:3px 0px 0 #403046,-3px 0px 0 #403046,0px 3px 0 #403046,0px -3px 0 #403046,2px 2px 0 #403046,-2px 2px 0 #403046,2px -2px 0 #403046,-2px -2px 0 #403046,3px 2px 0 #403046,-3px 2px 0 #403046,3px -2px 0 #403046,-3px -2px 0 #403046,2px 3px 0 #403046,-2px 3px 0 #403046,2px -3px 0 #403046,-2px -3px 0 #403046,0 6px 0 #403046}
+.title-cover .title-copy h1 span{color:#ffd0d8}
+.title-cover .title-copy p{margin:10px 0 0;font-size:clamp(13px,1.9cqw,18px);font-weight:bold;line-height:1.6;color:#fff9ed;text-shadow:0 0 3px #403046,0 0 3px #403046,0 0 3px #403046,0 1px 2px #403046}
+.title-cover .title-buttons{position:absolute;left:0;right:0;bottom:22px;z-index:2;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:0;padding:0 16px}
+.title-cover .title-buttons .primary{min-width:min(300px,40cqw)}
+.title-cover .title-buttons .secondary{background:rgba(255,249,237,.94);border:2px solid #795367;color:#3b2533;font-weight:bold}
+.title-cover .title-help{position:absolute;top:12px;right:12px;z-index:3;display:flex;align-items:center;gap:6px;min-height:40px;padding:6px 12px;background:rgba(255,249,237,.94);border:2px solid #795367;color:#3b2533;font-size:12px;font-weight:bold}
+.title-cover .title-help span{display:inline-grid;place-items:center;width:20px;height:20px;background:#403046;color:#fff9ed;font-size:12px}
+/* phones, and any screen taller than wide (a tablet held upright): the picture between the title and the buttons */
+@media(max-width:700px),(max-aspect-ratio:1/1){
+ .title-screen.title-cover{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;width:auto;height:calc(100svh - 24px);min-height:540px;margin:4px 0 18px}
+ .title-cover .title-backdrop{display:block;position:absolute;inset:-24px;z-index:-1;background-position:50% 50%;background-size:cover;background-repeat:no-repeat;filter:blur(max(16px,4.5cqw)) brightness(.92)}
+ .title-cover .title-copy{position:static;grid-row:1;padding:52px 12px 12px}
+ .title-cover .title-copy h1{font-size:clamp(24px,9.2cqw,56px)}
+ .title-cover .title-copy p{font-size:13px;margin-top:8px}
+ .title-cover .title-visual{grid-row:2;display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden;background:none}
+ /* as tall as the space allows, up to 128% of the width (the owner's pick: the zodiac at the edges are only a little cut) */
+ .title-cover .title-keyart{flex:none;height:100%;max-height:96cqw;width:auto;min-width:100%;max-width:none;aspect-ratio:auto}
+ .title-cover .title-buttons{position:static;grid-row:3;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 12px 16px}
+ .title-cover .title-buttons .primary,.title-cover .title-buttons [data-action="restart"]{grid-column:1/-1;min-width:0}
+ .title-cover .title-help{top:10px;right:10px}
+}

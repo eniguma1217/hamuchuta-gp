@@ -1,0 +1,37 @@
+{
+  "method": "built-in image_gen",
+  "sourceCommit": "d1cf042e7a1ecd6a5bb486618725c4889d788b21",
+  "originalsPreserved": true,
+  "productionPngsUnmodified": true,
+  "prompts": [
+    {
+      "asset": "race-gardens-v16.png",
+      "text": "Use case: precise-object-edit. Edit target: supplied production pixel-art background atlas. Keep exact 2x2 equal-panel layout, aspect ratio and ground/contact geometry. Replace ONLY the BOTTOM LEFT stadium/grandstands with a beautiful friendly FOREST CLEARING racecourse: round trees, distant wooden cottage, soft lilac dusk sky, small warm hanging lanterns, flowers and sunflowers beyond a low wooden boundary fence. NO athletics stadium, tiered seating, track lanes, oval track, bleachers, floodlights, grandstands, stone arena or race gates. Keep the other THREE panels' identity, lighting, architecture and soft colorful original handheld pixel-art style. In ALL FOUR panels retain the wide completely clear horizontal pale honey dirt course from 52% to92% of each panel, with distant scenery above52% and low flower verge bottom8%. Foot-ground area at55-84% must remain uninterrupted dirt. NO characters, crowds, obstacles, text, logos or UI baked into image. True chunky crisp pixel clusters matching reference, no soft blur, no vector shapes, no perspective vanishing-point path. Natural outdoor garden racecourse where a living hedge obstacle would make sense. This is actual reusable game BACKGROUND, not a screenshot or concept sheet. Keep original 16:9 panels in exact2x2grid. The BOTTOM LEFT replacement must have no stadium features remaining, and use the same fence height and dirt colour as the neighboring panels.",
+      "references": [
+        "dist/assets/fancy-v15/race-venues-v15.png"
+      ]
+    },
+    {
+      "asset": "banquet-gardens-v16.png",
+      "text": "Use case: precise-object-edit. Image1 is EDIT TARGET banquet/checkpoint 2x2background atlas. Image2 is STYLE/LOCATION REFERENCE new natural racecourse atlas. Preserve exact 2x2 equal16:9panel layout, character-free outdoor checkpoint composition, clear dirt floor bottom55%, pixel density, warm original GBA-style crisp square pixels. Change ONLY BOTTOM LEFT panel's stadium into the SAME lantern-lit forest clearing as image2 bottomleft: rounded leafy trees, distant cozy small wood cottage, purple dusk sky, hanging warm lanterns, sunflower and flower garden beyond low wooden fence, small flower garlands. NO stadium, grandstands, bleachers, arena, floodlights or running-track lanes anywhere. KEEP OTHER THREE target panels: sunny lake checkpoint, sunset lake checkpoint, moonlit shrine checkpoint, all unchanged in identity and scale. No animals, tables, furniture, plates, seeds, obstacles, text, UI or characters baked into the image; these will be animated separate game layers. Allpanels clear warm honey dirt floor from45% to100%, no foreground fence or clutter, same geometry and original colour palette as target. Natural outdoor countryside race banquet. No blur, realistic textures, smudged digital painting, smooth vector gradients. Production reusable original game background, not UI conceptart. The woodland scene must match new reference2 bottom-left colour, trees, cottage and lanterns.",
+      "references": [
+        "dist/assets/fancy-v15/banquet-venues-v15.png",
+        "dist/assets/natural-v16/race-gardens-v16.png"
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "file": "banquet-gardens-v16.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "822154f37a2b71336ff379fd8f23e74c10bd58087cf6838f99164f42f383b22f"
+    },
+    {
+      "file": "race-gardens-v16.png",
+      "width": 1671,
+      "height": 941,
+      "sha256": "08c4d6a823b567a36a0187e3b57fc74ef7355fd0e555c4bd839f21b96c6c0a88"
+    }
+  ]
+}

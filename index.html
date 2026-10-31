@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#795367">
+<meta name="description" content="1匹のはむちゅたーを3年間育成。50種の代表が集まる十二支決定レースで上位12匹をめざす、レトロな育成ゲーム。">
+<title>はむちゅたーGP 〜十二支決定戦〜</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23263b29' d='M4 4h8v4h8V4h8v12h4v12H0V16h4z'/%3E%3Cpath fill='%23dce7b8' d='M8 8h4v4h8V8h4v8h4v8H4v-8h4z'/%3E%3Cpath fill='%23263b29' d='M8 16h4v4H8zm12 0h4v4h-4z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="home-ui.css">
+<link rel="stylesheet" href="home-one.css">
+<script type="module" src="app.js?v=6.1"></script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="はむちゅたーGP">
+<meta name="hamuchuta-build" content="202610312114-201d298">
+</head>
+<body>
+<div class="topline"><span>HAMSTER ZODIAC</span><span>3年72ターン / 初代の挑戦</span></div>
+<header class="site-header shell">
+ <a class="brand" href="./" aria-label="はむちゅたーGP 〜十二支決定戦〜 ホーム"><span class="brand-sprite" aria-hidden="true"></span><span><small>めざせ、十二支。</small><strong>はむちゅたーGP<span class="brand-sub">〜十二支決定戦〜</span><span class="cursor">_</span></strong></span></a>
+ <button class="help-button" data-action="help"><span aria-hidden="true">?</span> あそびかた</button>
+</header>
+<main class="shell" id="game" aria-label="はむちゅたー育成ゲーム"></main>
+<div id="modal-root"></div>
+<footer class="site-footer shell"><span><i class="pixel-dot"></i> HAMSTER ZODIAC PROJECT</span><span id="save-status" role="status">この端末に自動セーブ</span></footer>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript>このゲームで遊ぶには、JavaScriptを有効にしてください。</noscript>
+<script>if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));</script>
+</body>
+</html>

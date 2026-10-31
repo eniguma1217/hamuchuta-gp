@@ -1,0 +1,848 @@
+{
+  "mode": "built-in image_gen",
+  "pixelPerfect": false,
+  "assets": [
+    {
+      "path": "dist/assets/story-v5/town-cast-v5.png",
+      "source": "/workspace/scratch/d6ea6d2bc4b0/generated_images/exec-e065ad8c-9c9e-4d00-be6c-e08fc88ad3d7.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "sha256": "853a4392f918ae6b7567b835aebc76d5cbaba21e81d5f51bca417b5d54b937eb",
+      "columns": 6,
+      "rows": 3,
+      "alphaHistogram": {
+        "transparent": 787699,
+        "opaque": 2063,
+        "partial": 783776
+      },
+      "cells": [
+        {
+          "id": "trainer",
+          "expression": "neutral",
+          "row": 0,
+          "col": 0,
+          "cell": [
+            0,
+            0,
+            296,
+            320
+          ],
+          "alphaBounds": [
+            53,
+            74,
+            274,
+            305
+          ],
+          "sourceRect": [
+            53,
+            74,
+            221,
+            231
+          ],
+          "paddedSourceRect": [
+            50,
+            71,
+            227,
+            237
+          ]
+        },
+        {
+          "id": "rival",
+          "expression": "neutral",
+          "row": 0,
+          "col": 1,
+          "cell": [
+            296,
+            0,
+            586,
+            320
+          ],
+          "alphaBounds": [
+            319,
+            73,
+            553,
+            305
+          ],
+          "sourceRect": [
+            319,
+            73,
+            234,
+            232
+          ],
+          "paddedSourceRect": [
+            316,
+            70,
+            240,
+            238
+          ]
+        },
+        {
+          "id": "child",
+          "expression": "neutral",
+          "row": 0,
+          "col": 2,
+          "cell": [
+            586,
+            0,
+            845,
+            320
+          ],
+          "alphaBounds": [
+            619,
+            114,
+            818,
+            308
+          ],
+          "sourceRect": [
+            619,
+            114,
+            199,
+            194
+          ],
+          "paddedSourceRect": [
+            616,
+            111,
+            205,
+            200
+          ]
+        },
+        {
+          "id": "seed_shop",
+          "expression": "neutral",
+          "row": 0,
+          "col": 3,
+          "cell": [
+            845,
+            0,
+            1130,
+            320
+          ],
+          "alphaBounds": [
+            871,
+            64,
+            1103,
+            308
+          ],
+          "sourceRect": [
+            871,
+            64,
+            232,
+            244
+          ],
+          "paddedSourceRect": [
+            868,
+            61,
+            238,
+            250
+          ]
+        },
+        {
+          "id": "tanuki",
+          "expression": "neutral",
+          "row": 0,
+          "col": 4,
+          "cell": [
+            1130,
+            0,
+            1425,
+            320
+          ],
+          "alphaBounds": [
+            1156,
+            75,
+            1401,
+            308
+          ],
+          "sourceRect": [
+            1156,
+            75,
+            245,
+            233
+          ],
+          "paddedSourceRect": [
+            1153,
+            72,
+            251,
+            239
+          ]
+        },
+        {
+          "id": "beaver",
+          "expression": "neutral",
+          "row": 0,
+          "col": 5,
+          "cell": [
+            1425,
+            0,
+            1774,
+            320
+          ],
+          "alphaBounds": [
+            1449,
+            78,
+            1724,
+            308
+          ],
+          "sourceRect": [
+            1449,
+            78,
+            275,
+            230
+          ],
+          "paddedSourceRect": [
+            1446,
+            75,
+            281,
+            236
+          ]
+        },
+        {
+          "id": "trainer",
+          "expression": "delighted",
+          "row": 1,
+          "col": 0,
+          "cell": [
+            0,
+            320,
+            296,
+            580
+          ],
+          "alphaBounds": [
+            53,
+            338,
+            274,
+            568
+          ],
+          "sourceRect": [
+            53,
+            338,
+            221,
+            230
+          ],
+          "paddedSourceRect": [
+            50,
+            335,
+            227,
+            236
+          ]
+        },
+        {
+          "id": "rival",
+          "expression": "delighted",
+          "row": 1,
+          "col": 1,
+          "cell": [
+            296,
+            320,
+            586,
+            580
+          ],
+          "alphaBounds": [
+            319,
+            335,
+            553,
+            568
+          ],
+          "sourceRect": [
+            319,
+            335,
+            234,
+            233
+          ],
+          "paddedSourceRect": [
+            316,
+            332,
+            240,
+            239
+          ]
+        },
+        {
+          "id": "child",
+          "expression": "delighted",
+          "row": 1,
+          "col": 2,
+          "cell": [
+            586,
+            320,
+            845,
+            580
+          ],
+          "alphaBounds": [
+            619,
+            378,
+            819,
+            571
+          ],
+          "sourceRect": [
+            619,
+            378,
+            200,
+            193
+          ],
+          "paddedSourceRect": [
+            616,
+            375,
+            206,
+            199
+          ]
+        },
+        {
+          "id": "seed_shop",
+          "expression": "delighted",
+          "row": 1,
+          "col": 3,
+          "cell": [
+            845,
+            320,
+            1130,
+            580
+          ],
+          "alphaBounds": [
+            871,
+            330,
+            1103,
+            571
+          ],
+          "sourceRect": [
+            871,
+            330,
+            232,
+            241
+          ],
+          "paddedSourceRect": [
+            868,
+            327,
+            238,
+            247
+          ]
+        },
+        {
+          "id": "tanuki",
+          "expression": "delighted",
+          "row": 1,
+          "col": 4,
+          "cell": [
+            1130,
+            320,
+            1425,
+            580
+          ],
+          "alphaBounds": [
+            1156,
+            340,
+            1401,
+            571
+          ],
+          "sourceRect": [
+            1156,
+            340,
+            245,
+            231
+          ],
+          "paddedSourceRect": [
+            1153,
+            337,
+            251,
+            237
+          ]
+        },
+        {
+          "id": "beaver",
+          "expression": "delighted",
+          "row": 1,
+          "col": 5,
+          "cell": [
+            1425,
+            320,
+            1774,
+            580
+          ],
+          "alphaBounds": [
+            1449,
+            341,
+            1724,
+            571
+          ],
+          "sourceRect": [
+            1449,
+            341,
+            275,
+            230
+          ],
+          "paddedSourceRect": [
+            1446,
+            338,
+            281,
+            236
+          ]
+        },
+        {
+          "id": "trainer",
+          "expression": "worried",
+          "row": 2,
+          "col": 0,
+          "cell": [
+            0,
+            580,
+            296,
+            887
+          ],
+          "alphaBounds": [
+            53,
+            598,
+            274,
+            830
+          ],
+          "sourceRect": [
+            53,
+            598,
+            221,
+            232
+          ],
+          "paddedSourceRect": [
+            50,
+            595,
+            227,
+            238
+          ]
+        },
+        {
+          "id": "rival",
+          "expression": "worried",
+          "row": 2,
+          "col": 1,
+          "cell": [
+            296,
+            580,
+            586,
+            887
+          ],
+          "alphaBounds": [
+            319,
+            598,
+            553,
+            830
+          ],
+          "sourceRect": [
+            319,
+            598,
+            234,
+            232
+          ],
+          "paddedSourceRect": [
+            316,
+            595,
+            240,
+            238
+          ]
+        },
+        {
+          "id": "child",
+          "expression": "worried",
+          "row": 2,
+          "col": 2,
+          "cell": [
+            586,
+            580,
+            845,
+            887
+          ],
+          "alphaBounds": [
+            619,
+            640,
+            818,
+            833
+          ],
+          "sourceRect": [
+            619,
+            640,
+            199,
+            193
+          ],
+          "paddedSourceRect": [
+            616,
+            637,
+            205,
+            199
+          ]
+        },
+        {
+          "id": "seed_shop",
+          "expression": "worried",
+          "row": 2,
+          "col": 3,
+          "cell": [
+            845,
+            580,
+            1130,
+            887
+          ],
+          "alphaBounds": [
+            871,
+            590,
+            1103,
+            833
+          ],
+          "sourceRect": [
+            871,
+            590,
+            232,
+            243
+          ],
+          "paddedSourceRect": [
+            868,
+            587,
+            238,
+            249
+          ]
+        },
+        {
+          "id": "tanuki",
+          "expression": "worried",
+          "row": 2,
+          "col": 4,
+          "cell": [
+            1130,
+            580,
+            1425,
+            887
+          ],
+          "alphaBounds": [
+            1156,
+            601,
+            1401,
+            833
+          ],
+          "sourceRect": [
+            1156,
+            601,
+            245,
+            232
+          ],
+          "paddedSourceRect": [
+            1153,
+            598,
+            251,
+            238
+          ]
+        },
+        {
+          "id": "beaver",
+          "expression": "worried",
+          "row": 2,
+          "col": 5,
+          "cell": [
+            1425,
+            580,
+            1774,
+            887
+          ],
+          "alphaBounds": [
+            1449,
+            601,
+            1724,
+            833
+          ],
+          "sourceRect": [
+            1449,
+            601,
+            275,
+            232
+          ],
+          "paddedSourceRect": [
+            1446,
+            598,
+            281,
+            238
+          ]
+        }
+      ],
+      "uniformGrid": false,
+      "alphaInteriorPercentiles": [
+        129.0,
+        251.0,
+        253.0,
+        253.0,
+        255.0
+      ],
+      "visibleIssues": [
+        "AI-generated pixel style includes fine edge detail and nonbinary alpha; not strict fixed-grid pixel-perfect.",
+        "Atlas spacing is nonuniform; use measured per-sprite sourceRect, never divide image dimensions.",
+        "Very low-alpha scattered pixels exist outside main sprites; measured tight sprite bounds exclude these."
+      ],
+      "cropMethod": "Main connected sprite alpha>32 bounding box with3px gutter; excludes invisible scattered low-alpha generation noise."
+    },
+    {
+      "path": "dist/assets/story-v5/zodiac-champions-v5.png",
+      "source": "/workspace/scratch/d6ea6d2bc4b0/generated_images/exec-7d8fdbed-f05a-4ff2-a0a4-adc7a0c43d9e.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "sha256": "ff4c1f32316ed3dd06c278e1cba156458f01e23783a77700093d15e912f621dd",
+      "columns": 4,
+      "rows": 2,
+      "alphaHistogram": {
+        "transparent": 895623,
+        "opaque": 1699,
+        "partial": 676216
+      },
+      "cells": [
+        {
+          "id": "ox",
+          "expression": "neutral",
+          "row": 0,
+          "col": 0,
+          "cell": [
+            0,
+            0,
+            480,
+            470
+          ],
+          "alphaBounds": [
+            86,
+            98,
+            451,
+            447
+          ],
+          "sourceRect": [
+            86,
+            98,
+            365,
+            349
+          ],
+          "paddedSourceRect": [
+            83,
+            95,
+            371,
+            355
+          ]
+        },
+        {
+          "id": "snake",
+          "expression": "neutral",
+          "row": 0,
+          "col": 1,
+          "cell": [
+            480,
+            0,
+            875,
+            470
+          ],
+          "alphaBounds": [
+            550,
+            164,
+            854,
+            449
+          ],
+          "sourceRect": [
+            550,
+            164,
+            304,
+            285
+          ],
+          "paddedSourceRect": [
+            547,
+            161,
+            310,
+            291
+          ]
+        },
+        {
+          "id": "horse",
+          "expression": "neutral",
+          "row": 0,
+          "col": 2,
+          "cell": [
+            875,
+            0,
+            1300,
+            470
+          ],
+          "alphaBounds": [
+            898,
+            79,
+            1271,
+            454
+          ],
+          "sourceRect": [
+            898,
+            79,
+            373,
+            375
+          ],
+          "paddedSourceRect": [
+            895,
+            76,
+            379,
+            381
+          ]
+        },
+        {
+          "id": "sheep",
+          "expression": "neutral",
+          "row": 0,
+          "col": 3,
+          "cell": [
+            1300,
+            0,
+            1774,
+            470
+          ],
+          "alphaBounds": [
+            1348,
+            158,
+            1703,
+            449
+          ],
+          "sourceRect": [
+            1348,
+            158,
+            355,
+            291
+          ],
+          "paddedSourceRect": [
+            1345,
+            155,
+            361,
+            297
+          ]
+        },
+        {
+          "id": "monkey",
+          "expression": "neutral",
+          "row": 1,
+          "col": 0,
+          "cell": [
+            0,
+            470,
+            480,
+            887
+          ],
+          "alphaBounds": [
+            64,
+            499,
+            467,
+            814
+          ],
+          "sourceRect": [
+            64,
+            499,
+            403,
+            315
+          ],
+          "paddedSourceRect": [
+            61,
+            496,
+            409,
+            321
+          ]
+        },
+        {
+          "id": "rooster",
+          "expression": "neutral",
+          "row": 1,
+          "col": 1,
+          "cell": [
+            480,
+            470,
+            875,
+            887
+          ],
+          "alphaBounds": [
+            494,
+            484,
+            843,
+            821
+          ],
+          "sourceRect": [
+            494,
+            484,
+            349,
+            337
+          ],
+          "paddedSourceRect": [
+            491,
+            481,
+            355,
+            343
+          ]
+        },
+        {
+          "id": "dog",
+          "expression": "neutral",
+          "row": 1,
+          "col": 2,
+          "cell": [
+            875,
+            470,
+            1300,
+            887
+          ],
+          "alphaBounds": [
+            912,
+            517,
+            1265,
+            816
+          ],
+          "sourceRect": [
+            912,
+            517,
+            353,
+            299
+          ],
+          "paddedSourceRect": [
+            909,
+            514,
+            359,
+            305
+          ]
+        },
+        {
+          "id": "boar",
+          "expression": "neutral",
+          "row": 1,
+          "col": 3,
+          "cell": [
+            1300,
+            470,
+            1774,
+            887
+          ],
+          "alphaBounds": [
+            1326,
+            502,
+            1716,
+            815
+          ],
+          "sourceRect": [
+            1326,
+            502,
+            390,
+            313
+          ],
+          "paddedSourceRect": [
+            1323,
+            499,
+            396,
+            319
+          ]
+        }
+      ],
+      "uniformGrid": false,
+      "alphaInteriorPercentiles": [
+        129.0,
+        251.0,
+        253.0,
+        253.0,
+        255.0
+      ],
+      "visibleIssues": [
+        "AI-generated pixel style includes fine edge detail and nonbinary alpha; not strict fixed-grid pixel-perfect.",
+        "Atlas spacing is nonuniform; use measured per-sprite sourceRect, never divide image dimensions.",
+        "Very low-alpha scattered pixels exist outside main sprites; measured tight sprite bounds exclude these."
+      ],
+      "cropMethod": "Main connected sprite alpha>32 bounding box with3px gutter; excludes invisible scattered low-alpha generation noise."
+    }
+  ]
+}

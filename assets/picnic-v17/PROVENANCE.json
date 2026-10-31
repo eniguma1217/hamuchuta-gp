@@ -1,0 +1,45 @@
+{
+  "method": "built-in image_gen",
+  "production": "low-table-v17.png",
+  "originalPngsUnmodified": true,
+  "assets": [
+    {
+      "file": "simple-table-v17.png",
+      "status": "first design retained, not used by the game",
+      "width": 1983,
+      "height": 793,
+      "sha256": "525587e67625043e58ff5d235b386798d9f77a2d80b69e75fe91f38bc36de160",
+      "prompt": "Use case: precise-object-edit. EDIT TARGET image1 is an existing game prop; image2 is visual style reference. Replace the overly massive carved banquet table with a SIMPLE LIGHT WOOD PICNIC TABLE suitable for tiny original hamster racers. Keep a single very long horizontal table, exactly TEN small empty cream plates equally spaced left to right. Front/side view with only a narrow top surface visible. Thin honey-brown plank top, a very thin plain apron, FOUR slender straight wooden legs at spaced supports, absolutely NO massive square pillars or ornate carving, no flower medallions, no sculpted scrollwork. Match image2's cute rustic natural countryside pixel art and scale. Proportions: whole table silhouette should be about1600pixelswide and160pixels tall, long and low, NOT a tall counter; tabletop+apron only about40pixels tall; slim support legs about95pixels tall below. Empty transparent margins around full silhouette. Plates tiny relative to table length, each about75x20pixels. Keep ten plates centered in10equal places. Genuine TRANSPARENT BACKGROUND, no floor, shadows, scenery, characters, seeds, writing or logos. Clear coarse original handheld GBA pixel clusters, warm plum outlines, soft honey woodgrain highlights, no realism, no blur, no smooth vector gradients. Entire table and every foot visible, no cropping. SINGLE standalone sprite asset for actual game, not a mockup or multiple scenes."
+    },
+    {
+      "file": "low-table-v17.png",
+      "status": "production",
+      "width": 1708,
+      "height": 921,
+      "sha256": "2501c39348ecfba45648007ec3ab703a716ec18e18a16d274bdc062dfb81786f",
+      "prompt": "Use case: precise-object-edit. Refine supplied standalone transparent game table asset into a genuinely LOW outdoor picnic table for tiny hamster diners. Keep exactly TEN equally spaced empty plates, same horizontal front/side view, same warm cute crisp original pixel-art palette. Keep the table LONG, about1900pixelswide, but REDRAW it with a total silhouette height only about110pixels. This is not an image squeeze: draw MUCH THINNER wood planks and genuinely SHORT legs. Desired anatomy: small empty plates about22pixels tall; thin tabletop/apron about32pixels tall; FOUR short slender legs about50pixels tall below. Complete table width-to-height ratio approximately17:1. Absolutely no tall table/counter, no massive apron, no ornate carving, no pillars, no hanging decorations. Keep each complete foot visible. Place whole tiny low table horizontally across middle of a wide transparent canvas, leaving plenty of transparent margin above and below. Plate spacing even. Genuine TRANSPARENT BACKGROUND, no floor, cast shadows, scenery, characters, seeds, labels, UI or grid. Do not simply proportionally shrink the old object: it needs the SAME long width with a newly designed narrow board and very short legs. Pixel clusters, not vector lines or blur. Single production sprite asset.",
+      "references": [
+        "dist/assets/picnic-v17/simple-table-v17.png"
+      ],
+      "alphaBounds": [
+        39,
+        430,
+        1669,
+        559
+      ],
+      "completeSourceWithGutter": [
+        35,
+        426,
+        1638,
+        137
+      ],
+      "measuredFirstPlateCenter": 172.5,
+      "measuredPlatePitch": 151.5,
+      "gamePixelScale": "34 / 151.5",
+      "gameOpaqueFeet": 136,
+      "runnerGround": 132,
+      "note": "Whole low table at native aspect. No squash, no per-seat pillars; joins between plates."
+    }
+  ],
+  "styleReference": "docs/references/approved/sunflower-race-approved-20261020.png"
+}
