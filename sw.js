@@ -1,5 +1,5 @@
 // はむちゅたーGP：オンラインなら最新を読み込み、読み込んだファイルはスマホに保存してオフラインでも遊べるようにする
-const CACHE="hamuchuta-202610312114-201d298";
+const CACHE="hamuchuta-202610312140-2307a68";
 const CORE=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png","./apple-touch-icon.png"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)));self.skipWaiting();});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith("hamuchuta-")&&k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});

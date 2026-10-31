@@ -269,3 +269,23 @@ body[data-screen="training"] .home-one .cmd{min-height:58px;font-size:14px}
 @media(min-width:900px) and (min-aspect-ratio:4/3){body[data-screen="training"] .home-one[data-mode="train"] .home-bottom{width:min(780px,calc(100% - 24px))}body[data-screen="training"] .home-one .tr{min-height:58px}}
 /* Short phones: smaller commands so the hamster's feet stay clear. */
 @media(max-height:700px){body[data-screen="training"] .home-one .cmd{min-height:48px;font-size:13px}body[data-screen="training"] .home-one .tr{min-height:56px}}
+/* Phones and upright tablets (#30, owner 2026-10-31 「スマホだとハムスターに画面が寄りすぎ」 → 「描き足さずに少し引く」):
+   the stats on top, the room in the band between them and the commands, the commands below; nothing lies on the
+   picture. The camera follows the hamster across the room (home-art.js homeCamera) and draws nothing extra. */
+@media not ((min-width:900px) and (min-aspect-ratio:4/3)){
+ body[data-screen="training"] .home-one{display:flex;flex-direction:column;gap:6px}
+ body[data-screen="training"] .home-one .home-top,body[data-screen="training"] .home-one .home-bottom{position:static;left:auto;right:auto;top:auto;bottom:auto;transform:none;width:auto}
+ body[data-screen="training"] .home-one .home-top{order:1}
+ body[data-screen="training"] .home-one .home-room-one{order:2;position:relative;inset:auto;flex:1 1 auto;min-height:120px}
+ body[data-screen="training"] .home-one .home-bottom{order:3}
+ body[data-screen="training"] .home-one .home-room-one .scene-wrap{position:absolute;inset:0;border:3px solid #285f52}
+ body[data-screen="training"] .home-one .home-say{margin-right:0}
+}
+/* Picking the partner (#30, owner 2026-10-31 「どのキャラが選ばれてるか色が薄くてわかりにくい」 → pick A): the chosen one
+   gets an orange frame, a 「★ この子」 tag and lifts a little; the others fade. */
+#modal-root .partner-grid{padding-top:12px}
+#modal-root .partner-card{position:relative;overflow:visible;transition:opacity .15s,filter .15s,transform .15s}
+#modal-root .partner-card:not(.selected){opacity:.5;filter:grayscale(.6)}
+#modal-root .partner-card.selected{opacity:1;filter:none;background:#fff6c9;border:4px solid #e0582f;box-shadow:0 0 0 3px #ffd36b,3px 5px 0 #b8432a;transform:translateY(-4px)}
+#modal-root .partner-card.selected::before{content:'★ この子';position:absolute;top:-13px;left:50%;transform:translateX(-50%);padding:1px 10px;font-size:12px;font-weight:bold;line-height:1.5;color:#fff;background:#e0582f;border-radius:10px;white-space:nowrap}
+@media(prefers-reduced-motion:reduce){#modal-root .partner-card{transition:none}}

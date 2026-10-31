@@ -41,18 +41,15 @@ export function drawHomePose(c,variant,pose,x,ground,height){
 // The camera (#30, owner 2026-10-30 「もっとプレイ中のメイン画面を大きくして」 → the Uma Musume-style home): the room
 // covers the canvas, and when the canvas is narrower than 16:9 (a phone) the view follows the hamster across
 // the room. A 16:9 canvas sees the whole room exactly as before. Display only.
-// On a tall canvas the floor goes on below the room (up to 40 more units of wooden boards), so the commands that sit
-// at the foot of the screen stand on the floor, not on the hamster's feet; a 16:9 canvas has none.
-export function homeFloor(w,h){return Math.round(40*Math.max(0,Math.min(1,(384/216-w/h)/(384/216-.5))));}
-export function homeCamera(w,h,x){const total=216+homeFloor(w,h),scale=Math.max(w/384,h/total),vw=w/scale,vh=h/scale;
- return {scale,w:vw,h:vh,floor:total-216,x:Math.max(0,Math.min(384-vw,x-vw/2)),y:Math.max(0,(total-vh)*.7)};}
+// Nothing is drawn beyond the room (owner 2026-10-31 「描き足さずに少し引く」): on a phone the room fills the band
+// between the stats and the commands, and the camera follows the hamster across it.
+export function homeCamera(w,h,x){const scale=Math.max(w/384,h/216),vw=w/scale,vh=h/scale;
+ return {scale,w:vw,h:vh,x:Math.max(0,Math.min(384-vw,x-vw/2)),y:Math.max(0,(216-vh)*.7)};}
 export function drawHomeScene(cv,variant=0,pose=0){
  if(!cv)return;const c=cv.getContext('2d');if(!c)return;c.save();c.imageSmoothingEnabled=false;c.clearRect(0,0,cv.width,cv.height);
  const {ground,height}=HOME_ACTOR,m=homeMotionAt(pose),{x}=m,shrink=m.lift/3,cam=homeCamera(cv.width,cv.height,x);
  c.setTransform(cam.scale,0,0,cam.scale,-cam.x*cam.scale,-cam.y*cam.scale);
  if(room)c.drawImage(room,0,0,384,216);else drawFancyScene(c,'bedroom');
- // The floor below the room: the bottom row of boards (the last 9 units of the picture), repeated.
- if(cam.floor){if(room){const sh=room.naturalHeight||room.height,sw=room.naturalWidth||room.width,strip=9/216*sh;for(let y=216;y<216+cam.floor;y+=9)c.drawImage(room,0,sh-strip,sw,strip,0,y,384,9);}else{c.fillStyle='#b97a45';c.fillRect(0,216,384,cam.floor);}}
  // Stepped contact shadow stays on the straw; it narrows while the hamster hops.
  c.fillStyle='#95603f55';c.fillRect(x-22+shrink,ground-2,44-2*shrink,3);c.fillRect(x-16+shrink,ground+1,32-2*shrink,2);
  c.save();if(m.flipped){c.translate(2*x,0);c.scale(-1,1);}
