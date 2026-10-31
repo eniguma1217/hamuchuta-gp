@@ -13,18 +13,20 @@ export function trackerModel(live){
  const points=[...live.standings].sort((a,b)=>a.id.localeCompare(b.id)).map((row,index)=>({id:row.id,name:row.name||row.species||'選手',rank:row.rank,distance:clamp(row.distance),lane:index%4,kind:row.id==='player'?'player':row.id===live.spotlightId?'rival':row.rank<=3?'top':'other',finished:row.finished}));
  return {points,stages:trackerStages(live.course),rank:live.rank,entrants:live.entrants,remaining:Math.ceil((1-clamp(live.player.distance))*100),percent:Math.floor(clamp(live.player.distance)*100),stageIndex:live.player.stageIndex,finished:live.player.finished};
 }
-export function drawRaceTracker(c,live){
- const m=trackerModel(live);
+// view: the part of the 384-wide frame that is on screen (#30, owner 2026-10-31: phones show the race 1.5× larger with
+// the sides cut), so the whole tracker stays in sight.
+export function drawRaceTracker(c,live,view={x0:0,x1:384}){
+ const m=trackerModel(live),x0=view.x0,x1=view.x1,bar=x1-x0-32;
  c.save();c.fillStyle='#403046';c.fillRect(0,182,384,34);
- c.font='bold 9px HamMaru,sans-serif';c.fillStyle='#ffd382';c.textAlign='left';c.fillText('YOU '+m.rank+'位 / '+m.entrants+'匹',10,192);
- c.textAlign='right';c.fillStyle='#fff0d2';c.fillText(m.finished?'ゴール！':'ゴールまで '+m.remaining+'%',374,192);
- c.fillStyle='#795367';c.fillRect(16,203,352,2);
+ c.font='bold 9px HamMaru,sans-serif';c.fillStyle='#ffd382';c.textAlign='left';c.fillText('YOU '+m.rank+'位 / '+m.entrants+'匹',x0+10,192);
+ c.textAlign='right';c.fillStyle='#fff0d2';c.fillText(m.finished?'ゴール！':'ゴールまで '+m.remaining+'%',x1-10,192);
+ c.fillStyle='#795367';c.fillRect(x0+16,203,bar,2);
  // Small underlines identify checkpoints without hiding the field's dots.
- for(const s of m.stages)if(s.special){c.fillStyle=s.color;c.fillRect(16+s.start*350,213,Math.max(1,(s.end-s.start)*350),2);}
- c.fillStyle='#fff0d2';c.fillRect(15,197,1,14);c.fillRect(368,197,1,14);
+ for(const s of m.stages)if(s.special){c.fillStyle=s.color;c.fillRect(x0+16+s.start*(bar-2),213,Math.max(1,(s.end-s.start)*(bar-2)),2);}
+ c.fillStyle='#fff0d2';c.fillRect(x0+15,197,1,14);c.fillRect(x1-16,197,1,14);
  // Keep all entrants, including runners outside the main camera and finishers.
  const ordered=[...m.points.filter(p=>p.kind!=='player'),...m.points.filter(p=>p.kind==='player')];
- for(const p of ordered){const x=Math.round(16+p.distance*347),y=p.kind==='player'?199:199+p.lane*3;c.fillStyle=color[p.kind];c.fillRect(x,y,p.kind==='player'||p.kind==='rival'?5:3,p.kind==='player'?10:p.kind==='rival'?5:3);}
+ for(const p of ordered){const x=Math.round(x0+16+p.distance*(bar-5)),y=p.kind==='player'?199:199+p.lane*3;c.fillStyle=color[p.kind];c.fillRect(x,y,p.kind==='player'||p.kind==='rival'?5:3,p.kind==='player'?10:p.kind==='rival'?5:3);}
  c.restore();
 }
 export function trackerMarkup(course,entrants){

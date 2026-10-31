@@ -263,15 +263,18 @@ export function drawRace(cv,live,variant=0,options={}){
  raceMarker(c,hx,markerY,'player','YOU');
  if(p.obstacle?.phase==='landing'){rect(c,center-22,heroGround-2,5,2,'#eacfa6');rect(c,center-30,heroGround-3,3,2,'#fff0d2');}
  // Captions sit in the sky band (y 32..52), clear of the runners on the start grid (#30 C1).
- if(p.intro){rect(c,4,32,124,20,'#403046');c.fillStyle='#fff0d2';c.font='bold 9px HamMaru,sans-serif';c.textAlign='left';c.fillText(p.introPhase==='stadium'?live.entrants+'匹、一斉スタート！':'スタートの合図を待つ',10,45);}
+ // options.view: the part of the 384-wide frame on screen (phones cut the sides to show the race 1.5× larger, #30
+ // owner 2026-10-31); captions, the HUD and the tracker are laid out inside it. Default: the whole frame, as before.
+ const view=options.view||{x0:0,x1:384},vx=view.x0,vw=view.x1-view.x0,wide=vw>=300;
+ if(p.intro){rect(c,vx+4,32,124,20,'#403046');c.fillStyle='#fff0d2';c.font='bold 9px HamMaru,sans-serif';c.textAlign='left';c.fillText(p.introPhase==='stadium'?live.entrants+'匹、一斉スタート！':'スタートの合図を待つ',vx+10,45);}
  // Camera always discloses when a broadcast cut leaves the hero.
- if(focus.id!=='player'){rect(c,4,32,159,20,'#403046');c.textAlign='left';c.fillStyle='#ffd382';c.font='bold 10px HamMaru,sans-serif';c.fillText('先頭争いを中継中',11,46);}
+ if(focus.id!=='player'){rect(c,vx+4,32,159,20,'#403046');c.textAlign='left';c.fillStyle='#ffd382';c.font='bold 10px HamMaru,sans-serif';c.fillText('先頭争いを中継中',vx+11,46);}
  // Fixed broadcast HUD and whole-field tracker are painted last, outside the course.
- rect(c,0,0,384,25,'#403046');c.textAlign='left';c.font='bold 10px HamMaru,sans-serif';c.fillStyle='#fff0d2';c.fillText(p.intro?'スタート / '+live.entrants+'匹':live.rank+'位 / '+live.entrants+'匹',8,16);c.textAlign='right';c.fillText(liveStageLabel(live.course,live.stageIndex,{spurt:p.spurt,finished:live.player.finished}).short||'RACE',375,16);
- drawContestant(c,{...player,variant},88,21,17,false,pulse);
- if(p.recent){c.fillStyle='#ffd382';c.textAlign='center';c.fillText(p.recent.direction==='passed'?'▲':'▼',117,16);}
- if(!p.intro&&p.close){const opponent=live.standings.find(r=>r.id===p.nearbyIds?.[0]);if(opponent){drawContestant(c,opponent,180,21,17,false,pulse);c.font='bold 7px HamMaru,sans-serif';c.fillStyle='#fff0d2';c.textAlign='left';c.fillText(String(opponent.species==='hamster'?opponent.name:opponent.species).slice(0,13),194,16);}}
- drawRaceTracker(c,live);
+ rect(c,0,0,384,25,'#403046');c.textAlign='left';c.font='bold 10px HamMaru,sans-serif';c.fillStyle='#fff0d2';c.fillText(p.intro?'スタート / '+live.entrants+'匹':live.rank+'位 / '+live.entrants+'匹',vx+8,16);c.textAlign='right';c.fillText(liveStageLabel(live.course,live.stageIndex,{spurt:p.spurt,finished:live.player.finished}).short||'RACE',view.x1-9,16);
+ const heroX=vx+(wide?88:70);drawContestant(c,{...player,variant},heroX,21,17,false,pulse);
+ if(p.recent){c.fillStyle='#ffd382';c.textAlign='center';c.fillText(p.recent.direction==='passed'?'▲':'▼',heroX+(wide?29:20),16);}
+ if(!p.intro&&p.close){const opponent=live.standings.find(r=>r.id===p.nearbyIds?.[0]);if(opponent){const ox=vx+(wide?180:122);drawContestant(c,opponent,ox,21,17,false,pulse);c.font='bold 7px HamMaru,sans-serif';c.fillStyle='#fff0d2';c.textAlign='left';c.fillText(String(opponent.species==='hamster'?opponent.name:opponent.species).slice(0,wide?13:6),ox+14,16);}}
+ drawRaceTracker(c,live,view);
  c.restore();
 }
 // Only real competitors currently inside the player's checkpoint can appear.

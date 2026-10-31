@@ -292,3 +292,22 @@ body[data-screen="training"] .home-one .cmd{min-height:58px;font-size:14px}
 /* 町へ takes a turn (#30, owner 2026-10-31): say so at the top of the town list. */
 .town-turn{margin:0 0 8px;padding:7px 10px;font-size:12px;line-height:1.5;color:#214a40;background:#fff8dd;border:2px solid #b1c88a}
 .town-turn b{display:block;color:#a83b29}
+/* A bigger race (#30, owner 2026-10-31 「レース画面をおおきくして」). Phones (pick 「1.5倍に拡大」): the race fills the
+   screen and the picture is 1.5× larger, the sides cut (the camera keeps the hero in the middle; the HUD is drawn
+   inside what is seen, app.js raceView). PC (pick 「広げる」): the window grows to about half the screen. */
+@media(max-width:700px){
+ #modal-root .modal-backdrop:has(.race-one-screen){padding:0}
+ #modal-root .modal:has(.race-one-screen){width:100%;max-width:none;height:100dvh;max-height:100dvh;border:0;box-shadow:none;display:flex;flex-direction:column}
+ #modal-root .modal:has(.race-one-screen) .modal-header{padding:6px 10px}
+ #modal-root .modal:has(.race-one-screen) .modal-body{flex:1;padding:6px 6px 8px}
+ .race-one-screen .race-canvas-wrap{display:flex;justify-content:center;align-items:center;overflow:hidden;aspect-ratio:1.1852}
+ .race-one-screen .race-canvas-wrap .race-canvas{flex:none;width:150%;max-width:none;aspect-ratio:16/9}
+ /* At a checkpoint the picture is a whole-frame view (the maze from its entrance to its exit): show all of it. */
+ .race-one-screen:has(#zone-spotlight:not([hidden])) .race-canvas-wrap .race-canvas{width:100%}
+}
+@media(min-width:900px){#modal-root .modal:has(.race-one-screen){width:min(100%,calc((100dvh - 330px)*16/9 + 60px));max-width:none}}
+/* A race with checkpoints shows a 関門 panel (about 105px) below the picture while a runner is in one; it takes the
+   place of the one-line comment, and the rest of its room is kept from the start, so nothing scrolls mid-race. */
+.race-one-screen:has(#zone-spotlight:not([hidden])) .race-live-message{display:none}
+@media(min-width:900px){#modal-root .modal:has(.race-one-screen:not([data-zones="0"])){width:min(100%,calc((100dvh - 425px)*16/9 + 60px))}}
+@media(max-width:700px) and (max-height:700px){.race-one-screen .playback-controls button{min-height:40px;padding:6px 4px}.race-one-screen .race-live-message{margin:0;padding:4px 8px;font-size:12px}}
