@@ -1,5 +1,5 @@
 import {raceReflection} from './early-feedback.js';
-import {queueEvent,hasPendingDialogue} from './events.js';
+import {queueEvent,hasPendingDialogue,validEventDefinition} from './events.js';
 import {ZODIAC_CAST,TOWN_CAST,formerChampion} from './cast.js';
 import {storyBeats,sideStoryBeats,bigSuccessBeat} from './story-expansion.js';
 import * as V3 from './story-v3.js';
@@ -273,7 +273,9 @@ export function afterOrdinary(s){
  queue(s,D(s,'ordinary-response-'+r.year,'反省会のベンチ',lines,['trainer','rival',...afterBench.ids],{scene:'bench-dusk'}));
 }
 const townFriends=s=>['seedshop','tanuki','beaver',...(done(s,'rival-first')?['rival']:[]),...(isV3(s)&&s.events.storyProgress['cat-met']?['cat']:[])];
-export function townOffer(s){return isToday(s)&&s.phase==='training'&&!hasPendingDialogue(s)&&s.social.offerTurn===s.turn&&!s.social.visits.some(v=>v.turn===s.turn)?townFriends(s).map(person):[];}
+// 町へ takes a turn (#30, owner 2026-10-31 「街へのコマンドは行くと1ターン進むようにして」), so any friend can be met on any
+// training turn; the old 「3ターンに1回」 offer is gone.
+export function townOffer(s){return isToday(s)&&s.phase==='training'&&!hasPendingDialogue(s)?townFriends(s).map(person):[];}
 // One town visit as a dialogue definition (also used by the album to re-read a visit).
 export function visitDefinition(s,id,count){
  const scene=visitScene(s,id,count);if(!scene)return null;let choices;
@@ -282,8 +284,23 @@ export function visitDefinition(s,id,count){
  if(id==='beaver'&&count===3)choices=keys.map((key,i)=>({id:key,label:names[i]+'の道具を試す（3ターン＋10%）'}));
  return D(s,`visit-${id}-${count}`,person(id).name+'とひと息',scene.lines,['trainer',id],{...(scene.scene?{scene:scene.scene}:{}),...(choices?{choices}:{}),progress:{['contact-'+id]:Math.min(100,count)}});
 }
+// What going to town brings this turn: a friend's next talk, or one of the side stories read in town.
+export function townTalk(s,{visit,side}={}){
+ if(visit){if(!townOffer(s).some(x=>x.id===visit))return null;const count=s.social.visits.filter(v=>v.id===visit).length+1,def=visitDefinition(s,visit,count);return def?{def,visit,name:person(visit).name}:null;}
+ if(side){const def=sideOffers(s).find(d=>d.id===side);return def?{def:{...def,mandatory:true},side,name:def.title}:null;}
+ return null;
+}
+// Called by game.goToTown after the turn has moved on: the talk is this turn's talk. goToTown checks canQueueTownTalk
+// first, so the turn never moves on without its talk.
+const townCheckpoint=talk=>(talk.visit?'today-':'side-open-')+talk.def.id;
+export function canQueueTownTalk(s,talk){return !!talk&&!hasPendingDialogue(s)&&validEventDefinition(talk.def)&&!s.events.checkpoints.includes(townCheckpoint(talk));}
+export function queueTownTalk(s,talk){
+ if(talk.visit){const ok=queue(s,talk.def);if(ok){s.social.visits.push({turn:s.turn,id:talk.visit});s.social.offerTurn=null;}return ok;}
+ return queueEvent(s,[talk.def],townCheckpoint(talk));
+}
+// Reads a visit without spending the turn (the album and the story tests use this; the game goes through goToTown).
 export function visitTown(s,id){
- if(!townOffer(s).some(x=>x.id===id))return false;
+ if(!townOffer(s).some(x=>x.id===id)||s.social.visits.some(v=>v.turn===s.turn))return false;
  const count=s.social.visits.filter(v=>v.id===id).length+1,def=visitDefinition(s,id,count);if(!def)return false;
  s.social.visits.push({turn:s.turn,id});s.social.offerTurn=null;return queue(s,def);
 }

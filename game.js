@@ -2,6 +2,21 @@ import * as Today from './story-today.js';
 import {setEventCompletionHandler} from './events.js';
 setEventCompletionHandler(Today.afterDialogue);
 export {townOffer,visitTown} from './story-today.js';
+// 町へ (#30, owner 2026-10-31 「街へのコマンドは行くと1ターン進むようにして」, pick 「話す＋体力少し回復・やる気アップ」): going
+// to town takes the turn. A little rest (less than お出かけ), the mood one level up, then the talk with a friend or a
+// side story read in town; that talk is the turn's talk, so no random talk or rare event comes with it.
+export const TOWN_REST=10;
+export function goToTown(s,{visit,side}={}){
+ if(isLegacy(s)||!Today.isToday(s)||hasPendingDialogue(s)||s.phase!=='training'||s.turn>=72)return false;
+ const talk=Today.townTalk(s,{visit,side});if(!Today.canQueueTownTalk(s,talk))return false;
+ const old=[...s.stats],beforeEnergy=s.energy,beforeBond=s.trainerBond;
+ s.energy=clamp(s.energy+TOWN_REST);s.mood=clamp(s.mood+25);s.trainerBond=clamp(s.trainerBond+2);s.turn++;
+ const text=`町へ。${visit?talk.name+'とひと息':'「'+talk.name+'」'}。体力＋${s.energy-beforeEnergy}、やる気1段階アップ。`;
+ s.lastAction={key:'town',outcome:'town',friendship:false,gains:[0,0,0,0,0],text,event:'',learned:[],beforeStats:old,afterStats:[...s.stats],energyDelta:s.energy-beforeEnergy,bondDelta:s.trainerBond-beforeBond};
+ s.log.unshift({turn:s.turn,text,trainingKey:'town',beforeStats:old,afterStats:[...s.stats]});s.log=s.log.slice(0,72);
+ if(!Today.queueTownTalk(s,talk))return false;
+ schedule(s);Today.afterTraining(s);return true;
+}
 import * as Legacy from './legacy-game.js';
 import {MODERN_INDIVIDUALITY,personalityOf,talentOf,validIndividuality,talentCandidates,TALENTS,TALENT_POOL,startingTalent,talentEffects} from './individuality.js';
 import {freshEvents,validEvents,hasPendingDialogue,queueEvent} from './events.js';

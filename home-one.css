@@ -289,3 +289,6 @@ body[data-screen="training"] .home-one .cmd{min-height:58px;font-size:14px}
 #modal-root .partner-card.selected{opacity:1;filter:none;background:#fff6c9;border:4px solid #e0582f;box-shadow:0 0 0 3px #ffd36b,3px 5px 0 #b8432a;transform:translateY(-4px)}
 #modal-root .partner-card.selected::before{content:'★ この子';position:absolute;top:-13px;left:50%;transform:translateX(-50%);padding:1px 10px;font-size:12px;font-weight:bold;line-height:1.5;color:#fff;background:#e0582f;border-radius:10px;white-space:nowrap}
 @media(prefers-reduced-motion:reduce){#modal-root .partner-card{transition:none}}
+/* 町へ takes a turn (#30, owner 2026-10-31): say so at the top of the town list. */
+.town-turn{margin:0 0 8px;padding:7px 10px;font-size:12px;line-height:1.5;color:#214a40;background:#fff8dd;border:2px solid #b1c88a}
+.town-turn b{display:block;color:#a83b29}

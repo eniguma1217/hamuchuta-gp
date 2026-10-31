@@ -18,6 +18,11 @@ export function makeRacePlan(seed){
  }
  return {id:'v6-'+typeId,version:6,typeId,name:type.name,description:type.description,baseTime:type.baseTime,stages,zones,planSeed:seed>>>0};
 }
+// How much each ability counts (#30, owner 2026-10-31 「スピードの能力の重要さが強すぎる　も少し他の能力の重要度をあげて
+// ほしい」, pick 「スピードとスタミナを少し下げる」): on the running sections a fifth of the ability is 食欲 (the energy to
+// keep running) and かしこさ (pacing), half each. Measured over 3,000 courses × the three styles, +10 in one ability saves:
+// before スピード29% スタミナ32% 食欲9% かしこさ8% きようさ21%; now 24% / 26% / 16% / 16% / 19%. The average time is the same.
+export const PACE_SHARE=.2;
 export const moodLevel=n=>Math.max(0,Math.min(4,Math.round(n/25)));
 export const MOOD_NAMES=['絶不調','不調','ふつう','好調','絶好調'];
 export function styleFactor(style,course,stats,stage){
@@ -41,7 +46,7 @@ export function simulateRace({seed,course,runners,player,style='skitter'}){
   // The sole fatigue adjustment: no separate fatigue meter or second time penalty.
   const fatigue=p?Math.max(0,35-player.energy)*.09:0;let elapsed=0;
   for(let i=0;i<course.stages.length;i++){
-   const z=course.stages[i],ability=Math.max(0,z.keys.reduce((n,k)=>n+stats[k],0)/z.keys.length-fatigue+(p&&player.skills.includes(z.keys[0])?3:0)),factor=z.action==='speed'?styleFactor(selected,course,stats,i):1;
+   const z=course.stages[i],keyAbility=z.keys.reduce((n,k)=>n+stats[k],0)/z.keys.length,mixed=z.action==='speed'?(1-PACE_SHARE)*keyAbility+PACE_SHARE*(stats[2]+stats[3])/2:keyAbility,ability=Math.max(0,mixed-fatigue+(p&&player.skills.includes(z.keys[0])?3:0)),factor=z.action==='speed'?styleFactor(selected,course,stats,i):1;
    const basic=z.action==='speed'?course.baseTime*z.length*(1.25-ability*.006)*factor*condition:(20-ability*.12)*condition;
    const variation=.98+r.next()*.04;let loss=0;
    if(z.action!=='speed'&&r.next()<Math.max(.012,.14-ability*.0012))loss=3+r.next()*2;
