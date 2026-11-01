@@ -311,3 +311,15 @@ body[data-screen="training"] .home-one .cmd{min-height:58px;font-size:14px}
 .race-one-screen:has(#zone-spotlight:not([hidden])) .race-live-message{display:none}
 @media(min-width:900px){#modal-root .modal:has(.race-one-screen:not([data-zones="0"])){width:min(100%,calc((100dvh - 425px)*16/9 + 60px))}}
 @media(max-width:700px) and (max-height:700px){.race-one-screen .playback-controls button{min-height:40px;padding:6px 4px}.race-one-screen .race-live-message{margin:0;padding:4px 8px;font-size:12px}}
+/* Phones: a little wider still (#30, owner 2026-11-01 「スマホ画面はこれ以上引けないの？」 → pick 「約6割」). The room band
+   keeps the shape of 6 tenths of the room (384×0.6 : 216), so about 60% of it is seen and the camera still follows the
+   hamster; the commands grow into the rest. On short screens the band gives way first (never below 120px). */
+@media not ((min-width:900px) and (min-aspect-ratio:4/3)){
+ body[data-screen="training"] .home-one{container-type:inline-size}
+ body[data-screen="training"] .home-one .home-room-one{flex:0 1 auto;height:calc(100cqw / 1.0667);min-height:120px}
+ body[data-screen="training"] .home-one .home-bottom{flex:1 0 auto;display:flex;flex-direction:column;justify-content:flex-end}
+ body[data-screen="training"] .home-one .home-bottom>.home-panel{flex:1;display:flex;flex-direction:column;justify-content:flex-end}
+ body[data-screen="training"] .home-one .home-commands{flex:1;grid-auto-rows:1fr;max-height:240px}
+ body[data-screen="training"] .home-one .home-commands .cmd{min-height:58px}
+}
+@media not ((min-width:900px) and (min-aspect-ratio:4/3)) and (max-height:700px){body[data-screen="training"] .home-one .home-commands .cmd{min-height:48px}}
