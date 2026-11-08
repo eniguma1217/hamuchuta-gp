@@ -19,6 +19,8 @@ export const TOWN_SERIES={seedshop:'種屋さん',tanuki:'神社の管理役',be
 export function episodeOf(id,storyVersion=3,book=false){
  const all=[...MAIN_V3,...MAIN_V2,...DAILY_IDS,...SIDE_IDS,...EVENT_IDS],base=all.includes(id)?id:String(id).replace(/-answer$/,''),n=list=>list.indexOf(base)+1;
  if(base==='main-ending')return {series:'エンディング'};
+ // 夏合宿と年ごとのできごと (#30, owner 2026-11-08): no number; the year says which.
+ const yearly=base.match(/^(year|camp-start|camp-rat|camp-mid|camp-end|omikuji)-([123])$/);if(yearly)return {series:{year:'今年のできごと',omikuji:'お正月'}[yearly[1]]||'夏合宿',note:yearly[2]+'年目'};
  // Rare events (#30, owner 2026-10-30): no number (they come by chance); a gold one says so.
  const rare=String(id).match(/^rare-(.+)$/);if(rare)return TALENTS[rare[1]]?.gold?{series:'レアイベント',note:'金の才能'}:{series:'レアイベント'};
  // The four stories: 「ネコとネズミ 第1話・幕間」.

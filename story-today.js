@@ -7,6 +7,8 @@ import {trainingLine,dailyScenes,visitScene,benchExtras,v3SideStoryBeats} from '
 import {withStoryEffects} from './story-effects.js';
 import {RARE_CHANCE,RARE_MAX,RARE_SCENES,rareRoll,rareTalentPick} from './story-rare.js';
 import * as Book from './story-book.js';
+import * as YE from './year-events.js';
+import * as YS from './year-scenes.js';
 const keys=['speed','stamina','appetite','intelligence','technique'];
 const names=['走る','持久力','早食い','勉強','迷路'];
 export const isToday=s=>s.storyVersion===2||s.storyVersion===3;
@@ -27,7 +29,7 @@ const done=(s,id)=>s.events.history.some(h=>h.eventId===id);
 // The twelve never join local practice (PR #22); the Cat is not one of them.
 const FRIENDS=[['domestic-0','rival','appetite',s=>done(s,'rival-first')&&s.rivals?.some(n=>n.id==='domestic-0')],['child','child','speed',s=>done(s,'child-first')],
  ['seedshop','seedshop','appetite',()=>true],['tanuki','tanuki','intelligence',()=>true],['beaver','beaver','technique',()=>true],['cat','cat','stamina',s=>isV3(s)&&done(s,'cat-slope')]];
-export function localTrainingBuddies(s){return FRIENDS.filter(f=>f[3](s)).map(([id,portraitId,favorite])=>({id,name:person(portraitId).name,favorite,portraitId}));}
+export function localTrainingBuddies(s){const away=YE.inCamp(s);return FRIENDS.filter(f=>f[3](s)&&!(away&&YE.CAMP_STAYS.includes(f[0]))).map(([id,portraitId,favorite])=>({id,name:person(portraitId).name,favorite,portraitId}));}
 export function knownContacts(s){return [...TOWN_CAST.filter(c=>['seedshop','tanuki','beaver'].includes(c.id)),...(done(s,'rival-first')&&s.rivals?.some(n=>n.id==='domestic-0')?[{id:'domestic-0',name:person('rival').name}]:[]),...(done(s,'child-first')?[{id:'child',name:person('child').name}]:[]),...ZODIAC_CAST.filter(c=>s.events.storyProgress['world-met']||c.id==='rat'&&s.events.storyProgress['rat-met']),...(isV3(s)&&s.events.storyProgress['cat-met']?[V3.CAT]:[])];}
 
 function queue(s,d){return queueEvent(s,[d],'today-'+d.id);}
@@ -166,12 +168,31 @@ export function bookDefinition(s,id,{replay=false,choiceId=null}={}){
  const c=Book.bookChapter(id);if(!c)return null;
  return D(s,c.id,c.title,replay?Book.bookReplayLines(s,c,choiceId):Book.bookLines(c.lines,s),c.ids,{...c.extra,...(c.choices&&!replay?{choices:c.choices}:{})});
 }
+// 夏合宿と年ごとのできごと (#30, owner 2026-11-08): the year's event at its start, the camp in years 2 and 3, the omikuji
+// each January. New runs only (YE.hasYearEvents).
+const campDone=(s,y)=>done(s,'camp-start-'+y);
+function yearEntries(s){
+ const out=[];
+ for(const y of [1,2,3]){const e=YE.yearEventOf(s,y);if(e)out.push([[1,25,49][y-1],'year-'+y,`${y}年目：${e.name}`,s=>YS.yearLines(s,y),['trainer'],{scene:'training-morning'}]);
+  out.push([YE.OMIKUJI_TURN[y],'omikuji-'+y,'お正月のおみくじ',s=>YS.omikujiLines(s,y),['trainer'],{scene:'shrine',progress:{['omikuji-'+y]:YE.OMIKUJI.indexOf(YE.omikujiDraw(s,y))+1},effects:YS.OMIKUJI_EFFECTS[YE.omikujiDraw(s,y).id]}]);}
+ for(const y of [2,3]){
+  out.push([YE.CAMP_START[y],'camp-start-'+y,'夏合宿へ',s=>YS.campStartLines(s,y),['trainer'],{scene:'bedroom',choices:YS.CAMP_CHOICES}]);
+  if(campDone(s,y)){const place=YE.campPlaceOf(s,y);
+   if(y===3&&done(s,'rat-confession'))out.push([YE.CAMP_START[y]+1,'camp-rat-3','合宿の二日目',s=>YS.campRatLines(s),['rat'],{scene:place.scene}]);
+   out.push([YE.CAMP_START[y]+2,'camp-mid-'+y,'合宿の三日目',s=>YS.campMidLines(s,y),['trainer','rival'],{scene:place.scene}]);
+   out.push([YE.CAMP_END[y],'camp-end-'+y,'合宿の終わり',s=>YS.campEndLines(s,y),['trainer'],{scene:place.scene}]);}}
+ return out;
+}
+const campTurn=s=>!!YE.CAMP_TURNS[Math.floor(s.turn/24)+1]?.includes(s.turn);
 export function pumpStory(s){
  if(!isToday(s)||hasPendingDialogue(s)||!['training','race-ready'].includes(s.phase))return false;
  // Story v3 also has the hero's own three scenes (#30, owner 2026-10-30).
- const list=Book.isBook(s)?[...timelineBook,...V3.heroTimeline(s),...Book.BOOK.filter(c=>Book.bookReady(s,c)).map(bookEntry)]:isV3(s)?[...timelineV3,...V3.heroTimeline(s)]:timeline;
+ let list=Book.isBook(s)?[...timelineBook,...V3.heroTimeline(s),...Book.BOOK.filter(c=>Book.bookReady(s,c)).map(bookEntry)]:isV3(s)?[...timelineV3,...V3.heroTimeline(s)]:timeline;
+ // During the camp only the camp's own talks; the town's stories wait until the camp is over.
+ if(YE.hasYearEvents(s))list=campTurn(s)?yearEntries(s).filter(t=>t[1].startsWith('camp-')):[...list,...yearEntries(s)];
  const t=(isV3(s)?list.sort((a,b)=>a[0]-b[0]):list).find(([turn,id])=>s.turn>=turn&&!done(s,id));
  if(t){const [,id,title,lines,ids,extra]=t;return queue(s,D(s,id,title,lines(s),ids,extra||{}));}
+ if(campTurn(s)&&YE.hasYearEvents(s))return false;
  const added=storyBeats.find(e=>s.turn>=e.turn&&!(isV3(s)&&e.id==='exp-notebook-first')&&!(Book.isBook(s)&&Book.BOOK_IDS.includes(e.id))&&s.turn<=(e.max??e.turn+2)&&!done(s,e.id)&&(e.requires||[]).every(id=>done(s,id))
   &&(e.id!=='exp-rival-hard-question'||(s.races.some(r=>r.competitionId==='ordinary-2')&&done(s,'ordinary-response-2')))
   &&(e.id!=='exp-rival-make-up'||done(s,'exp-rival-hard-question')));
@@ -192,13 +213,15 @@ export function pumpStory(s){
   ];
   return queue(s,D(s,'exp-unsold-seeds','売れ残りの種',lines,['trainer','seedshop'],{scene:'seedshop-rain'}));
  }
- const great=bigSuccessBeat(s);
+ const great=YE.inCamp(s)?null:bigSuccessBeat(s);
  if(great&&!done(s,great.id))return queue(s,D(s,great.id,great.title,great.lines,great.ids,{scene:great.scene}));
  return false;
 }
 export function afterDialogue(s,p,choice){
  if(!isToday(s))return;
  if(p.id==='rat-imitation'&&p.lines.some(l=>l.text.includes('もし、だめだったら')))s.events.storyProgress['notebook-page-seen']=1;
+ const camp=choice&&p.id.match(/^camp-start-([23])$/);
+ if(camp){const place=YE.CAMP_PLACES.find(x=>x.id===choice.id);if(place)return queue(s,D(s,p.id+'-answer',p.title,YS.campAnswerLines(s,place),['trainer'],{scene:place.scene,followUp:true}));}
  const chapter=Book.isBook(s)&&choice&&Book.bookChapter(p.id);
  if(chapter?.answer?.cases[choice.id])return queue(s,D(s,p.id+'-answer',chapter.answer.title,Book.bookLines([...chapter.answer.cases[choice.id],...(chapter.answer.after||[])],s),chapter.ids,{scene:chapter.answer.scene,followUp:true}));
  if(p.id==='visit-seedshop-1')s.social.seedPreference=choice?.id||'crunchy';
@@ -251,7 +274,7 @@ export function talkWeight(s,d){const there=s.lastAction?.with||[],ids=talkFrien
 export const randomTalkChance=s=>s.lastAction?.with?.length?RANDOM_TALK_WITH_FRIEND_CHANCE:RANDOM_TALK_CHANCE;
 export function randomTalkRoll(s){let z=(s.events.seed^Math.imul(s.turn+1,0x9e3779b1))>>>0;z=Math.imul(z^(z>>>16),0x85ebca6b)>>>0;z=Math.imul(z^(z>>>13),0xc2b2ae35)>>>0;return ((z^(z>>>16))>>>0)/4294967296;}
 export function randomTalk(s){
- if(!isToday(s)||hasPendingDialogue(s)||s.phase!=='training'||s.turn<1||s.events.history.some(h=>h.turn===s.turn)||s.events.checkpoints.includes('turn-event-'+s.turn)||randomTalkRoll(s)>=randomTalkChance(s))return false;
+ if(!isToday(s)||hasPendingDialogue(s)||s.phase!=='training'||s.turn<1||YE.inCamp(s)||s.events.history.some(h=>h.turn===s.turn)||s.events.checkpoints.includes('turn-event-'+s.turn)||randomTalkRoll(s)>=randomTalkChance(s))return false;
  if(!queueEvent(s,randomDefinitions(s).map(d=>({...d,weight:talkWeight(s,d)})),'turn-event-'+s.turn))return false;
  const v=s.events.pending.id.match(/^visit-([a-z]+)-\d+$/);if(v)s.social.visits.push({turn:s.turn,id:v[1]});
  return true;
@@ -259,7 +282,7 @@ export function randomTalk(s){
 // Rare events (#30, owner 2026-10-30): on a turn with no other talk, now and then a scene that gives a talent
 // (story-rare.js). Only for runs whose first talent came at random; at most three.
 export function rareTalentEvent(s){
- if(!isToday(s)||s.talentRule!=='random'||!Array.isArray(s.extraTalents)||s.extraTalents.length>=RARE_MAX||hasPendingDialogue(s)||s.phase!=='training'||s.turn<2||s.events.history.some(h=>h.turn===s.turn)||s.events.checkpoints.includes('turn-event-'+s.turn)||rareRoll(s,1)>=RARE_CHANCE)return false;
+ if(!isToday(s)||s.talentRule!=='random'||!Array.isArray(s.extraTalents)||s.extraTalents.length>=RARE_MAX||hasPendingDialogue(s)||s.phase!=='training'||s.turn<2||YE.inCamp(s)||s.events.history.some(h=>h.turn===s.turn)||s.events.checkpoints.includes('turn-event-'+s.turn)||rareRoll(s,1)>=RARE_CHANCE*YE.rareMul(s))return false;
  const id=rareTalentPick(s);if(!id)return false;const [title,scene,ids,lines]=RARE_SCENES[id];
  return queueEvent(s,[D(s,'rare-'+id,title,lines(s,L,reaction),ids,{scene,effects:{talent:id}})],'turn-event-'+s.turn);
 }
@@ -296,7 +319,7 @@ export function afterOrdinary(s){
 const townFriends=s=>['seedshop','tanuki','beaver',...(done(s,'rival-first')?['rival']:[]),...(isV3(s)&&s.events.storyProgress['cat-met']?['cat']:[]),...(Book.isBook(s)&&done(s,'rat-confession')?['rat']:[])];
 // 町へ takes a turn (#30, owner 2026-10-31 「街へのコマンドは行くと1ターン進むようにして」), so any friend can be met on any
 // training turn; the old 「3ターンに1回」 offer is gone.
-export function townOffer(s){return isToday(s)&&s.phase==='training'&&!hasPendingDialogue(s)?townFriends(s).map(person):[];}
+export function townOffer(s){return isToday(s)&&s.phase==='training'&&!hasPendingDialogue(s)&&!YE.inCamp(s)?townFriends(s).map(person):[];}
 // One town visit as a dialogue definition (also used by the album to re-read a visit).
 export function visitDefinition(s,id,count){
  const scene=visitScene(s,id,count);if(!scene)return null;let choices;
@@ -364,5 +387,5 @@ export function endingDefinition(s){
 }
 
 export function sideDefinitions(s){if(!isToday(s))return [];return [...sideStoryBeats,...v3SideStoryBeats.filter(e=>!e.v3||isV3(s))].filter(e=>s.turn>=e.min&&s.turn<=e.max&&(e.requires||[]).every(id=>done(s,id))&&!done(s,e.id)).map(e=>D(s,e.id,e.title,e.lines(s),e.ids,{mandatory:false,once:true,scene:e.scene,...(e.requires?{requires:e.requires}:{}),...(e.choices?{choices:e.choices}:{})}));}
-export function sideOffers(s){return s.phase==='training'&&!hasPendingDialogue(s)?sideDefinitions(s):[];}
+export function sideOffers(s){return s.phase==='training'&&!hasPendingDialogue(s)&&!YE.inCamp(s)?sideDefinitions(s):[];}
 export function readSideStory(s,id){const d=sideOffers(s).find(d=>d.id===id);return d?queueEvent(s,[{...d,mandatory:true}],'side-open-'+id):false;}

@@ -1,6 +1,7 @@
 import * as Today from './story-today.js';
 import {setEventCompletionHandler} from './events.js';
 import {isBook,BOOK_FLAG} from './story-book.js';
+import * as YE from './year-events.js';
 setEventCompletionHandler(Today.afterDialogue);
 export {townOffer,visitTown} from './story-today.js';
 // 町へ (#30, owner 2026-10-31 「街へのコマンドは行くと1ターン進むようにして」, pick 「話す＋体力少し回復・やる気アップ」): going
@@ -11,7 +12,7 @@ export function goToTown(s,{visit,side}={}){
  if(isLegacy(s)||!Today.isToday(s)||hasPendingDialogue(s)||s.phase!=='training'||s.turn>=72)return false;
  const talk=Today.townTalk(s,{visit,side});if(!Today.canQueueTownTalk(s,talk))return false;
  const old=[...s.stats],beforeEnergy=s.energy,beforeBond=s.trainerBond;
- s.energy=clamp(s.energy+TOWN_REST);s.mood=clamp(s.mood+25);s.trainerBond=clamp(s.trainerBond+bondGain(s,'town'));s.turn++;
+ s.energy=clamp(s.energy+TOWN_REST);s.mood=clamp(s.mood+25+YE.moodBonus(s));s.trainerBond=clamp(s.trainerBond+bondGain(s,'town'));s.turn++;
  const text=`町へ。${visit?talk.name+'とひと息':'「'+talk.name+'」'}。体力＋${s.energy-beforeEnergy}、やる気1段階アップ。`;
  s.lastAction={key:'town',outcome:'town',friendship:false,gains:[0,0,0,0,0],text,event:'',learned:[],beforeStats:old,afterStats:[...s.stats],energyDelta:s.energy-beforeEnergy,bondDelta:s.trainerBond-beforeBond};
  s.log.unshift({turn:s.turn,text,trainingKey:'town',beforeStats:old,afterStats:[...s.stats]});s.log=s.log.slice(0,72);
@@ -84,12 +85,14 @@ export function start(s,instanceId,profile,talentId){
  if(s.storyVersion===3)Object.assign(s,{talentRule:'random',extraTalents:[]});
  // The four stories (#30, owner 2026-11-01): new runs only (owner pick 「前のお話のまま最後まで」).
  if(s.storyVersion===3)s.events.storyProgress[BOOK_FLAG]=1;
+ // 夏合宿と年ごとのできごと (#30, owner 2026-11-08): new runs only.
+ if(s.storyVersion===3)s.events.storyProgress[YE.YEAR_FLAG]=1;
  const r=rng(s.seed^0x917a21e3);s.rivals=Array.from({length:49},(_,i)=>({id:'domestic-'+i,name:['こむぎ','まめた','ぴの','くるみ','ぽてと','あずき','こはく'][i%7]+(Math.floor(i/7)+1),species:'hamster',dna:STAT_KEYS.map(()=>r.int(19,36)),growth:r.int(9,14),style:Object.keys(STYLES)[r.int(0,2)],variant:i%3}));
  if(Today.isToday(s))Object.assign(s.rivals[0],{name:'ぽてち',variant:1});
  s.domestic=createDomesticSelection(s.id,h.id,[{id:'player',species:'hamster'},...s.rivals]);for(const id of Object.keys(COMPETITIONS))s.plans[id]=makeRacePlan(r.int(0,0xffffffff));
  s.log=[{turn:0,text:`${s.individualName}との3年間がはじまった！`}];queueMain(s,'prologue');return true;
 }
-export function failureChance(s,key){if(isLegacy(s))return Legacy.failureChance(s,key);if(['rest','outing','scout'].includes(key))return 0;return Math.max(0,Math.min(65,Math.round((40-s.energy)*1.3+(2-moodLevel(s.mood))*4+personalityOf(s).failureOffset)-(friendsHelp(s,key)?FRIEND_FAIL:0)-(Today.isToday(s)?talentEffects(s).failMinus||0:0)));}
+export function failureChance(s,key){if(isLegacy(s))return Legacy.failureChance(s,key);if(['rest','outing','scout'].includes(key))return 0;return Math.max(0,Math.min(65,Math.round((40-s.energy)*1.3+(2-moodLevel(s.mood))*4+personalityOf(s).failureOffset)-(friendsHelp(s,key)?FRIEND_FAIL:0)-(Today.isToday(s)?talentEffects(s).failMinus||0:0)+YE.failAdd(s,key)));}
 // Training friends (#30 B2, owner 2026-10-25): in the today story every friend met so far comes on their own,
 // 20% a turn, to their favourite training (65%) or any training. With at least one friend the training costs
 // 40% less energy and fails 15 points less often; the growth bonus by friendship is unchanged.
@@ -102,13 +105,17 @@ export const STORY_TARGET_SHIFT=6;
 // aim a little lower each year so the zodiac rate stays where it was (measured in docs/qa/talent-rare-v69).
 // Same seeds, 1,200 runs × 2 ways of playing: before 94.3% / 90.3%, after 94.0% / 90.0% (another 1,500: 93.7 / 89.3 → 93.9 / 89.3).
 export const RARE_TARGET_SHIFT=2.2;
+// 夏合宿と年ごとのできごと (#30, owner 2026-11-08, pick 「今と同じくらいに合わせる」): runs with them aim this much lower
+// each year so the zodiac rate stays where it was (docs/qa/year-events-v78). 3 heroes x 60 seeds x 5 ways of playing,
+// average zodiac rate: before 80.9%, with no shift 85.8%, 0.5 → 81.5%, 1 → 79.4%, 2 → 73.3%.
+export const YEAR_TARGET_SHIFT=0.5;
 const idHash=id=>[...id].reduce((h,c)=>Math.imul(h^c.charCodeAt(0),16777619)>>>0,2166136261);
 const friendsHelp=(s,key)=>Today.isToday(s)&&trainingNPCs(s,key).length>0;
-export function trainingCost(s,key){const t=TRAININGS.find(x=>x.key===key);if(!t)return 0;return Math.round(t.cost*(friendsHelp(s,key)?FRIEND_COST:1)*(Today.isToday(s)?talentEffects(s).costMul??1:1));}
+export function trainingCost(s,key){const t=TRAININGS.find(x=>x.key===key);if(!t)return 0;return Math.round(t.cost*(friendsHelp(s,key)?FRIEND_COST:1)*(Today.isToday(s)?talentEffects(s).costMul??1:1)*YE.costMul(s));}
 export function trainingNPCs(s,key){
  if(isLegacy(s)||!s.plans?.['ordinary-1'])return [];
  // Each friend has one independent, stable offer for the whole turn; querying another card cannot reroll it.
- if(Today.isToday(s)){const chance=talentEffects(s).friendChance??FRIEND_CHANCE;return Today.localTrainingBuddies(s).filter(n=>{const r=rng(s.plans['ordinary-1'].planSeed^Math.imul(s.turn+1,0x9e3779b1)^0x63a14bc7^idHash(n.id));if(r.next()>=chance)return false;return (n.favorite&&r.next()<.65?n.favorite:TRAININGS[r.int(0,4)].key)===key;});}
+ if(Today.isToday(s)){const chance=Math.max(talentEffects(s).friendChance??FRIEND_CHANCE,YE.friendChanceOf(s));return Today.localTrainingBuddies(s).filter(n=>{const r=rng(s.plans['ordinary-1'].planSeed^Math.imul(s.turn+1,0x9e3779b1)^0x63a14bc7^idHash(n.id));if(r.next()>=chance)return false;return (n.favorite&&r.next()<.65?n.favorite:TRAININGS[r.int(0,4)].key)===key;});}
  const r=rng(s.plans['ordinary-1'].planSeed^Math.imul(s.turn+1,0x9e3779b1)^0x63a14bc7);
  if(r.next()>=.60)return [];
  const available=Today.isToday(s)?Today.localTrainingBuddies(s):NPCS;if(!available.length)return [];
@@ -120,9 +127,9 @@ export function trainingPreview(s,key){
  const t=TRAININGS.find(x=>x.key===key),gains=[0,0,0,0,0];
  if(!t||t.target===undefined)return {gains,greatGains:[...gains],remainders:[...(s.growthRemainder||gains)],friendshipBonus:0,accumulating:false};
  if(isLegacy(s)){gains[t.target]=Math.min(100-s.stats[t.target],Legacy.previewGain(s,key));gains[t.secondary]=Math.min(100-s.stats[t.secondary],1);const greatGains=[...gains];greatGains[t.target]=Math.min(100-s.stats[t.target],gains[t.target]+2);return {gains,greatGains,friendshipBonus:0,accumulating:false};}
- const friendshipBonus=Math.max(0,...trainingNPCs(s,key).map(n=>(s.npcRelations[n.id]||0)/100*.25)),year=Math.min(2,Math.floor(s.turn/24)),target=[75,88,102][year]-(Today.isToday(s)?STORY_TARGET_SHIFT:0)-(s.talentRule==='random'?RARE_TARGET_SHIFT:0);
+ const friendshipBonus=Math.max(0,...trainingNPCs(s,key).map(n=>(s.npcRelations[n.id]||0)/100*.25)),year=Math.min(2,Math.floor(s.turn/24)),target=[75,88,102][year]-(Today.isToday(s)?STORY_TARGET_SHIFT:0)-(s.talentRule==='random'?RARE_TARGET_SHIFT:0)-(YE.hasYearEvents(s)?YEAR_TARGET_SHIFT:0);
  const attenuate=(i,n)=>n*Math.max(.04,Math.min(1,(target-s.stats[i])/35));
- const tal=Today.isToday(s)?talentEffects(s):talentOf(s),base=(t.gain+personalityOf(s).growth[t.target]+tal.growth[t.target])*(1+(moodLevel(s.mood)-2)*.05)*(tal.yearGrowth?.[year]??1),friendsHere=friendshipBonus>0||trainingNPCs(s,key).length>0;
+ const tal=Today.isToday(s)?talentEffects(s):talentOf(s),base=(t.gain+personalityOf(s).growth[t.target]+tal.growth[t.target])*(1+(moodLevel(s.mood)-2)*.05)*(tal.yearGrowth?.[year]??1)*YE.growthMul(s,key),friendsHere=friendshipBonus>0||trainingNPCs(s,key).length>0;
  const boost=Today.isToday(s)&&s.social.boost?.key===key?1+s.social.boost.percent:1;
  const raw=[0,0,0,0,0];raw[t.target]=attenuate(t.target,base)*(1+friendshipBonus+(friendsHere&&tal.friendGrowth||0));raw[t.secondary]=attenuate(t.secondary,.8);for(let i=0;i<5;i++)raw[i]*=boost;
  const carry=s.growthRemainder||[0,0,0,0,0],project=great=>{const remaining=[],values=raw.map((n,i)=>{const total=n+carry[i]+(great&&i===t.target?attenuate(i,.6)*boost:0),v=Math.min(100-s.stats[i],Math.floor(total+1e-9));remaining[i]=s.stats[i]+v>=100?0:Math.max(0,total-Math.floor(total+1e-9));return v;});return {values,remaining};};
@@ -135,10 +142,10 @@ export function train(s,key){
  if(isLegacy(s))return Legacy.train(s,key);if(hasPendingDialogue(s)||s.phase!=='training'||s.turn>=72)return false;
  const t=TRAININGS.find(x=>x.key===key);if(!t)return false;const old=[...s.stats],beforeEnergy=s.energy,beforeBond=s.trainerBond,r=rng(s.seed);let outcome='success',text='',friendship=false,helpers=[];
  if(key==='rest'){s.energy=clamp(s.energy+46);s.trainerBond=clamp(s.trainerBond+bondGain(s,'rest'));outcome='rest';text='おふとんでぐっすり。体力＋46。';}
- else if(key==='outing'){s.energy=clamp(s.energy+18);s.mood=clamp(s.mood+25);s.trainerBond=clamp(s.trainerBond+bondGain(s,'outing'));outcome='outing';text='町をのんびりお散歩。体力＋18、やる気1段階アップ。';}
+ else if(key==='outing'){s.energy=clamp(s.energy+18);s.mood=clamp(s.mood+25+YE.moodBonus(s));s.trainerBond=clamp(s.trainerBond+bondGain(s,'outing'));outcome='outing';text='町をのんびりお散歩。体力＋18、やる気1段階アップ。';}
  else if(key==='scout'){const next=nextScheduledCompetition(s);if(!next||s.scouted.includes(next.id))return false;s.scouted.push(next.id);outcome='scout';text=`${next.title}を下見。コースとゾーンの位置がわかった！`;}
  else{
-  const fail=r.next()*100<failureChance(s,key),great=!fail&&r.next()<personalityOf(s).greatChance+(Today.isToday(s)?talentEffects(s).greatPlus||0:0);helpers=trainingNPCs(s,key);friendship=!fail&&helpers.some(n=>(s.npcRelations[n.id]||0)>=80);
+  const fail=r.next()*100<failureChance(s,key),great=!fail&&r.next()<personalityOf(s).greatChance+(Today.isToday(s)?talentEffects(s).greatPlus||0:0)+YE.greatAdd(s);helpers=trainingNPCs(s,key);friendship=!fail&&helpers.some(n=>(s.npcRelations[n.id]||0)>=80);
   if(!fail){const growth=trainingPreview(s,key);s.stats=s.stats.map((v,i)=>clamp(v+(great?growth.greatGains:growth.gains)[i]));s.growthRemainder=great?growth.greatRemainders:growth.remainders;s.balanceVersion=2;}
   s.energy=clamp(s.energy-trainingCost(s,key));s.mood=clamp(s.mood+(fail?-25:1));s.trainerBond=clamp(s.trainerBond+bondGain(s,fail?'failure':'training'));for(const n of helpers)s.npcRelations[n.id]=clamp((s.npcRelations[n.id]||0)+20);
   outcome=fail?'failure':friendship?'friendship':great?'great':'success';text=`${t.name}、${fail?'失敗……能力は上がらなかった。':friendship?'友情練習！':great?'大成功！':'成功！'}${fail?'':` ${STAT_NAMES[t.target]}＋${s.stats[t.target]-old[t.target]}`}`;text+=' '+trainingReaction(s,outcome,helpers[0],key,helpers);

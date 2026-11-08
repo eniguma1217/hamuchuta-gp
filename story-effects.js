@@ -36,6 +36,12 @@ export const STORY_EFFECTS={
  'goal-y3':{mood:UP},
  'rival-changes':{mood:UP,...rel(R,10)},
  'cat-past':{stats:st(STA,2),mood:DOWN},// the cat runs off without looking back
+ // 夏合宿と年ごとのできごと (#30, owner 2026-11-08). The omikuji's own effect comes with its result (year-scenes.js).
+ 'year-1':{mood:UP},'year-2':{mood:UP},'year-3':{mood:UP},// a new year, a new page
+ 'camp-start-2':{trainerBond:5},'camp-start-3':{trainerBond:5},// planning the summer together
+ 'camp-mid-2':rel(R,8),'camp-mid-3':rel(R,8),// Potechi at the same camp
+ 'camp-rat-3':rel('rat',8),// the Rat's family trains at the same place
+ 'camp-end-2':{energy:-10,mood:UP},'camp-end-3':{energy:-10,mood:UP},// tired, and glad
  // The four stories (#30, owner 2026-11-01). The 幕間 have no hero; what is learned in them brings their side closer,
  // and the first Cat's lonely morning weighs on the hero.
  'book-nn-1':rel('cat',5),'book-nn-3':{mood:DOWN},'book-nn-4':rel('rat',5),
@@ -138,7 +144,7 @@ export const CHOICE_EFFECTS={
  'visit-seedshop-1':{crunchy:{stats:st(APP,2)},small:{stats:st(STA,2)}}
 };
 // The reply that follows a choice belongs to the same talk: no effects of its own.
-const REPLIES=new Set(['cat-first-answer','cat-shortcut-answer','rat-confession-answer','exp-rival-make-up-answer','exp-fireworks-promise-answer','exp-child-wheel-answer','visit-seedshop-1-answer','visit-beaver-3-answer']);
+const REPLIES=new Set(['camp-start-2-answer','camp-start-3-answer','cat-first-answer','cat-shortcut-answer','rat-confession-answer','exp-rival-make-up-answer','exp-fireworks-promise-answer','exp-child-wheel-answer','visit-seedshop-1-answer','visit-beaver-3-answer']);
 export const isReply=id=>REPLIES.has(id);
 const BENCH=/^ordinary-response-[123]$/,VISIT=/^visit-(seedshop|tanuki|beaver|rival|cat|rat)-(\d+)$/;
 export function storyEffects(s,id){

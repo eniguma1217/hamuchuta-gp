@@ -335,3 +335,6 @@ body[data-screen="training"] .home-one .cmd{min-height:58px;font-size:14px}
 .book-waiting li{display:grid;gap:1px;font-size:12px;line-height:1.4}
 .book-waiting li span{color:#a83b29;font-variant-numeric:tabular-nums}
 .book-waiting li small{font-size:10px;color:#6d6650}
+/* 夏合宿と年ごとのできごと (#30, owner 2026-11-08): a small tag beside the home's label */
+.home-say small .year-tag{float:right;font-style:normal;font-weight:700;color:#7a4a1f}
+.home-say small .year-tag.camp{color:#1f5a7a}

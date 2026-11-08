@@ -15,7 +15,9 @@ export const CONVERSATION_BACKGROUNDS=Object.freeze({
  shrine:['shrine-approach'],'shrine-night':['shrine-festival-night'],
  'race-day':['race-countryside'],'race-sunset':['race-countryside','dusk'],world:['race-temple'],
  // The four stories (#30, owner 2026-11-01). The 幕間 are drawn in sepia by the page (dialogue stage CSS).
- 'past-slope':['town-slope-dusk'],'past-plaza':['shrine-approach'],'slope-night':['town-slope-dusk','night'],'slope-snow':['town-snow','night'],'shrine-dawn':['shrine-approach','dawn']
+ 'past-slope':['town-slope-dusk'],'past-plaza':['shrine-approach'],'slope-night':['town-slope-dusk','night'],'slope-snow':['town-snow','night'],'shrine-dawn':['shrine-approach','dawn'],
+ // 夏合宿 (#30, owner 2026-11-08): the nearest pictures until the camp pictures come (art request 2026-11-08).
+ 'camp-sea':['dusk-lookout'],'camp-mountain':['training-ranch'],'camp-forest':['training-sunny']
 });
 const images={};let pending;
 export function loadConversationBackgrounds(){

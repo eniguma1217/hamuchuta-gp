@@ -9,7 +9,9 @@ const names={
  'bench-dusk':'大会帰りのベンチ',bedroom:'こよりの部屋','bedroom-morning':'朝のこよりの部屋',
  'race-day':'大会の控え場所','race-sunset':'大会後の会場',world:'世界大会の控え場所',
  // The four stories (#30, owner 2026-11-01): the 幕間 long ago, and the slope and steps at night and at dawn.
- 'past-slope':'むかしの坂','past-plaza':'むかしの広場','slope-night':'夜の神社の坂','slope-snow':'雪の夜の坂','shrine-dawn':'夜明け前の神社の石段'
+ 'past-slope':'むかしの坂','past-plaza':'むかしの広場','slope-night':'夜の神社の坂','slope-snow':'雪の夜の坂','shrine-dawn':'夜明け前の神社の石段',
+ // 夏合宿 (#30, owner 2026-11-08).
+ 'camp-sea':'海の合宿所','camp-mountain':'山の合宿所','camp-forest':'森の合宿所'
 };
 const mapped={
  'main-prologue':'seedshop','main-year1':'race-sunset','main-year2':'race-sunset',
