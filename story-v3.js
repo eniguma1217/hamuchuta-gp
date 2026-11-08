@@ -5,6 +5,7 @@
 // Each year opens with a goal and a wall in Koyori's notebook; three choices (first meeting with the
 // Cat, the Cat's shortcut, the Rat's confession) come back later and in the endings. Narrative only:
 // no stats, rewards, RNG or race results change.
+import {isBook,bookLines,BOOK_FINAL,BOOK_ENDING,BOOK_TWEAKS} from './story-book.js';
 export const CAT={id:'cat',name:'ネコ'};
 const chosen=(s,id)=>s.events.history.find(h=>h.eventId===id)?.choiceId;
 const said=(s,a,b,c)=>s.personalityId==='energetic'?a:s.personalityId==='cool'?b:c;
@@ -14,7 +15,8 @@ export const heroSays=(s,by)=>by[s.characterId]||by.mochi;
 const L=(speakerId,text,visibleIds,expressions)=>({speakerId,text,...(visibleIds?{visibleIds}:{}),...(expressions?{expressions}:{})});
 const S=(scene,speakerId,text,visibleIds,expressions)=>({...L(speakerId,text,visibleIds,expressions),scene});
 export const YEAR_GOALS=[
- {year:1,goal:'国内予選で、50匹から25匹に残る',wall:'まだ小さい足と、笑ったネコ'},
+ // The Cat never laughed at anyone (owner 2026-10-30 「猫13位で笑うな」); the wall is the Cat on the slope.
+ {year:1,goal:'国内予選で、50匹から25匹に残る',wall:'まだ小さい足と、坂の上のネコ'},
  {year:2,goal:'25匹から、12匹に残る',wall:'近道したくなる気持ちと、すれ違い'},
  {year:3,goal:'国内代表になって、世界で12の席に入る',wall:'13番目のネコと、憧れの背中'}
 ];
@@ -94,15 +96,17 @@ export function v3Main(s,stage){
   L(null,'世界大会の控え場所。こよりが、三年分の練習ノートを積み上げた。',['player','trainer']),
   L('trainer','最初の坂の印、まだここにあるよ。小さな一歩も、なくなってない。',['player','trainer']),
   ...s.races.filter(r=>r.kind!=='zodiac').slice(-3).map(r=>L(null,`ノートには「${r.title}・${r.rank}位」。実際に走った一戦ずつが残っている。`,['player','trainer'])),
+  ...(isBook(s)?bookLines(BOOK_FINAL.koyori,s):[]),
   L('trainer',s.events.storyProgress['notebook-page-seen']?'「もし、だめだったら」のページ、覚えてる？ 今は「もう一度、一緒に作戦を立てる」って書き足したよ。':'最後のページは、まだ空けてあるよ。どんな結果でも、その次の作戦は一緒に考えよう。',['player','trainer']),
   L('player',said(s,'じゃあ「一番でゴール」って書いとくぜ！','勝敗の欄は、まだ空けておきましょう。今日、一緒に書きます。','ぼくは「みんなで、いちばんいい種、半分こ」って書くよぉ。'),['player','trainer']),
-  ...(s.lastRace?.standings?.some(x=>x.id==='domestic-0')?[L('rival','きみに勝ちたかったな、ぼく。……世界では、ぼくのぶんも本気で走って。',['player','rival']),L('player',said(s,'おう！ 帰ったら、また勝負だ！','はい。帰ったら、また勝負しましょう。','うん。帰ったら、また勝負しようねぇ。'),['player','rival'])]:[]),
+  ...(isBook(s)?bookLines(BOOK_FINAL.potechi,s):s.lastRace?.standings?.some(x=>x.id==='domestic-0')?[L('rival','きみに勝ちたかったな、ぼく。……世界では、ぼくのぶんも本気で走って。',['player','rival']),L('player',said(s,'おう！ 帰ったら、また勝負だ！','はい。帰ったら、また勝負しましょう。','うん。帰ったら、また勝負しようねぇ。'),['player','rival'])]:[]),
   L(null,'控え場所のすみで、ネコが一番早く準備を終えていた。前の日から、ここにいたらしい。',['player','cat']),
   L('cat',first==='talk-back'?'あの日、言い返してきたやつだ。……走って取るんだろ？ 見せてみろ。':first==='seed'?'あの日の種、うまかった。……だから今日は、手加減しない。':'あの日、黙って見送ったやつだ。今日は、黙って抜かれるなよ。',['player','cat']),
   L('player',said(s,'もちろんだ！ 12番目にも13番目にも、負けねえ！','席は、走って取ります。','……種のお礼なら、ゴールで聞くねぇ。'),['player','cat']),
+  ...(isBook(s)?[...bookLines(BOOK_FINAL.cat,s),...bookLines(BOOK_FINAL.ratCat,s)]:[
   L('rat','……ネコ。',['rat','cat']),
   L('cat',told?'……話は、ゴールのあとで聞いてやる。':'話すことなんか、ない。',['rat','cat']),
-  L('rat',`${name}。今日は、ぼくも本気で行く。手加減はしない。`,['player','rat']),
+  L('rat',`${name}。今日は、ぼくも本気で行く。手加減はしない。`,['player','rat'])]),
   L('rabbit','その小さな足で、どこまで届くか見せてね。',['player','rabbit']),
   L('dragon','空は広いけど、今日はみんな同じ地面を走るんだねえ。',['player','dragon']),
   L('sheep','持ち物、順番、準備よし。……あっ、ネコさんもう来てる！',['sheep','rooster']),
@@ -299,6 +303,8 @@ export function v3Answer(s,id,choice){
 
 // Extra ending lines for the Cat and the Rat (success / world loss / domestic losses).
 export function v3EndingLines(s){
+ // A run with the four stories ends them in story-book.js (the Cat beside the Rat, the white pebble, the shared seed).
+ if(isBook(s))return bookLines(BOOK_ENDING,s);
  const r=s.lastRace,cat=catResult(r),met=s.events.storyProgress['cat-met'],told=chosen(s,'rat-confession')==='tell',invite=said(s,'次は一緒に練習しようぜ！ 坂の上まで！','次は、坂で一緒に練習しませんか。','今度、種、半分こしようねぇ。練習のあとに。');
  if(s.ending==='zodiac_member'){
   if(cat?.inTwelve)return [L('cat','……13番目じゃ、なかった。',['player','cat']),L('rat',told?'ネコ。……あの日、うその日にちを教えて、ごめん。何百年も、言えなくて。':'ネコ。……ずっと言えなかった。あの日、うその日にちを教えて、ごめん。',['rat','cat'],{rat:'sad'}),L('cat','……おそい。何百年、おそい。',['rat','cat']),L('cat','……でも、聞いた。',['rat','cat']),L(null,'二匹のあいだに、何百年ぶりの沈黙と、ほんの少しの笑い声。',['player','rat','cat'])];
@@ -405,6 +411,7 @@ const HERO_TIMELINE={
    L('player','はむちゅたーが十二支の席に座った記録を、探しています。'),
    L(null,'最後の一冊を閉じても、その名前はどこにもなかった。'),
    L('player','……ゼロ件です。何百年分の記録で、一度も。'),
+   ...(isBook(s)?bookLines(BOOK_TWEAKS['hero-hakase-1'],s):[]),
    L('seedshop','……そうか。'),
    L('player','ゼロは、「できない」の証明ではありません。「まだ、誰もやっていない」の記録です。',undefined,{player:'determined'}),
    L('player','わたしが、最初の一件になります。……それを、証明したいんです。'),

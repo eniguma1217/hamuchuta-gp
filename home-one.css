@@ -165,7 +165,8 @@ body[data-screen="training"] .modal-body{padding:10px}
 
 /* 図鑑 (#30, owner 2026-10-25): five tabs, tiles in two columns, ten per page, one phone screen */
 .album{display:grid;gap:8px}
-.album-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px}
+.album-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}/* six tabs since 物語 (2026-11-01): two even rows */
+@media (min-width:700px){.album-tabs{grid-template-columns:repeat(6,minmax(0,1fr))}}
 .album-tabs button{min-height:0;padding:6px 2px;font-size:11px;line-height:1.25;background:#fff8e2;border:2px solid #8aa575;color:#285f52;white-space:normal}
 .album-tabs button.active{background:#285f52;color:#fff4d0;border-color:#285f52}
 .album-sub{display:flex;gap:6px}
@@ -323,3 +324,14 @@ body[data-screen="training"] .home-one .cmd{min-height:58px;font-size:14px}
  body[data-screen="training"] .home-one .home-commands .cmd{min-height:58px}
 }
 @media not ((min-width:900px) and (min-aspect-ratio:4/3)) and (max-height:700px){body[data-screen="training"] .home-one .home-commands .cmd{min-height:48px}}
+/* 物語 (#30, owner 2026-11-01): the four stories on the album shelf, and which friend the next chapter waits for. */
+.album-book{display:grid;gap:8px}
+.album-shelf h4{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 4px;font-size:13px;color:#214a40}
+.album-shelf h4 small{font-size:10px;color:#6d7a55;font-weight:normal}
+.album-tile i{font-style:normal;font-size:10px;color:#8a6b3c}
+.book-waiting{margin:0 0 8px;padding:7px 10px;background:#fdf3e4;border:2px solid #d9b26f}
+.book-waiting h3{margin:0 0 4px;font-size:13px;color:#7a4a1f}
+.book-waiting ul{display:grid;gap:4px;margin:0;padding:0;list-style:none}
+.book-waiting li{display:grid;gap:1px;font-size:12px;line-height:1.4}
+.book-waiting li span{color:#a83b29;font-variant-numeric:tabular-nums}
+.book-waiting li small{font-size:10px;color:#6d6650}

@@ -1,6 +1,7 @@
 import {storyScene} from './story-scenes.js';
 import {dialogueView} from './events.js';
 import {episodeLabel} from './story-episodes.js';
+import {isBook} from './story-book.js';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function dialogueSample(s){
  const names=['もちまる','ダッシュ','はかせ'],variant=['mochi','dash','hakase'].indexOf(s.characterId);
@@ -14,7 +15,7 @@ export function dialogueSample(s){
 }
 // Which story this is (#30, owner 2026-10-26): 「本編 第12話」 on the first line, the title below it.
 function kicker(s,v){
- const p=s.events.pending,label=episodeLabel(p.id,s.storyVersion??3);
+ const p=s.events.pending,label=episodeLabel(p.id,s.storyVersion??3,isBook(s));
  if(v.mode==='preview'&&!p.album)return '<p class="conversation-kicker">会話サンプル・仮の台詞 / 能力値は変化しません</p>';
  const note=v.mode==='preview'?'<small class="kicker-note">図鑑・読み返し（能力は変わりません）</small>':'';
  return `<p class="conversation-kicker episode-kicker">${note}<span class="kicker-episode">${esc(label||'STORY')}</span><span class="kicker-title">${esc(v.title)}</span></p>`;

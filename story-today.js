@@ -6,6 +6,7 @@ import * as V3 from './story-v3.js';
 import {trainingLine,dailyScenes,visitScene,benchExtras,v3SideStoryBeats} from './story-side.js';
 import {withStoryEffects} from './story-effects.js';
 import {RARE_CHANCE,RARE_MAX,RARE_SCENES,rareRoll,rareTalentPick} from './story-rare.js';
+import * as Book from './story-book.js';
 const keys=['speed','stamina','appetite','intelligence','technique'];
 const names=['走る','持久力','早食い','勉強','迷路'];
 export const isToday=s=>s.storyVersion===2||s.storyVersion===3;
@@ -13,11 +14,13 @@ const isV3=s=>s.storyVersion===3;
 export const freshSocial=()=>({offerTurn:null,visits:[],boost:null,seedPreference:null});
 export function validSocial(s){if(!s)return false;const d=s.social;return s.storyVersion===undefined||((s.storyVersion===2||s.storyVersion===3)&&d&&Array.isArray(d.visits)&&d.visits.length<=72&&d.visits.every(v=>v&&typeof v==='object')&&new Set(d.visits.map(v=>v.turn)).size===d.visits.length&&d.visits.every(v=>Number.isInteger(v.turn)&&v.turn>=1&&v.turn<=s.turn&&['seedshop','tanuki','beaver','rival','cat','rat','tiger','rabbit','dragon'].includes(v.id))&&(d.offerTurn===null||d.offerTurn===s.turn)&&(d.seedPreference===null||['crunchy','small'].includes(d.seedPreference))&&(d.boost===null||(keys.includes(d.boost.key)&&Number.isInteger(d.boost.remaining)&&d.boost.remaining>=1&&d.boost.remaining<=3&&d.boost.percent===.1)));}
 const hero=s=>({id:'player',name:s.individualName||'はむちゅたー',variant:['mochi','dash','hakase'].indexOf(s.characterId)});
-const person=id=>id==='tv-rat'?{id,name:'テレビのネズミ'}:[...TOWN_CAST,...ZODIAC_CAST,V3.CAT].find(c=>c.id===id)||{id,name:id};
+const person=id=>id==='tv-rat'?{id,name:'テレビのネズミ'}:Book.FIRST_CAST[id]?{id,name:Book.FIRST_CAST[id].name}:[...TOWN_CAST,...ZODIAC_CAST,V3.CAT].find(c=>c.id===id)||{id,name:id};
 const L=(speakerId,text,visibleIds,expressions)=>({speakerId,text,...(visibleIds?{visibleIds}:{}),...(expressions?{expressions}:{})});
 const reaction=(s,a,b,c)=>s.personalityId==='energetic'?a:s.personalityId==='cool'?b:c;
 // Every story definition gets its effects (story-effects.js) here.
-function D(s,id,title,lines,ids,extra){return withStoryEffects(s,makeDefinition(s,id,title,lines,ids,extra));}
+function D(s,id,title,lines,ids,extra){return withStoryEffects(s,makeDefinition(s,id,title,Book.isBook(s)?bookWording(id,lines):lines,ids,extra));}
+// A run with the four stories (story-book.js) reads a few older lines in their family-and-slope wording.
+const bookWording=(id,lines)=>lines.map(l=>{const w=Book.BOOK_WORDING.find(([at,from])=>at===id&&from===l.text);return w?{...l,text:w[2]}:l;});
 function makeDefinition(s,id,title,lines,ids=['trainer'],extra={}){return {id,title,mandatory:true,characters:[hero(s),...ids.map(id=>({...person(id),variant:null}))],lines:lines.map(l=>({...l,expressions:l.expressions||({'exp-notebook-first':{trainer:'happy'},'exp-fireworks-promise':{trainer:'worried'},'exp-fireworks-answer':{trainer:'happy',player:'happy'},'exp-rival-hard-question':{player:'determined',rival:'worried'},'exp-rival-make-up':{rival:'happy',player:'happy'},'exp-great-success':{player:'happy',trainer:'happy'},'exp-unsold-seeds':{player:'sad',trainer:'worried'},'exp-child-snow-senior':{child:'happy',trainer:'happy'},'trainer-private':{trainer:'worried'},'trainer-worry':{trainer:'worried',player:'determined'},'rat-imitation':{player:'determined',trainer:'worried'},'coach-return':{trainer:'happy'},'trainer-doubt-2':{trainer:'worried'},'main-year2':{trainer:'happy'},'trainer-confession':{trainer:'worried'},'main-ending':s.ending==='zodiac_member'?{trainer:'happy',child:'happy',player:'happy'}:{trainer:'worried',player:'sad'}}[id]||{}),visibleIds:l.visibleIds||(id==='main-final'?['player',...(l.speakerId?[l.speakerId]:[])]:[...new Set(['player',...ids.slice(0,2),...(l.speakerId?[l.speakerId]:[])])])})),...extra};}
 const done=(s,id)=>s.events.history.some(h=>h.eventId===id);
 // Training friends (#30 B2, owner 2026-10-25): who can come to practice and their favourite training.
@@ -155,12 +158,21 @@ const timeline=[
 ];
 // Story v3 (#30 G1): its own scenes plus the v2 scene it keeps (Potechi's change of heart).
 const timelineV3=[...V3.v3Timeline,...timeline.filter(t=>t[1]==='rival-changes')].sort((a,b)=>a[0]-b[0]);
+// A run with the four stories (#30, owner 2026-11-01): their chapters replace the story v3 scenes with the same ids, and
+// each waits for its friend (Book.bookReady). The other main scenes and the hero's own scenes keep their turns.
+const timelineBook=timelineV3.filter(t=>!Book.BOOK_IDS.includes(t[1]));
+const bookEntry=c=>[c.turn,c.id,c.title,s=>Book.bookLines(c.lines,s),c.ids,{...c.extra,...(c.choices?{choices:c.choices}:{})}];
+export function bookDefinition(s,id,{replay=false,choiceId=null}={}){
+ const c=Book.bookChapter(id);if(!c)return null;
+ return D(s,c.id,c.title,replay?Book.bookReplayLines(s,c,choiceId):Book.bookLines(c.lines,s),c.ids,{...c.extra,...(c.choices&&!replay?{choices:c.choices}:{})});
+}
 export function pumpStory(s){
  if(!isToday(s)||hasPendingDialogue(s)||!['training','race-ready'].includes(s.phase))return false;
  // Story v3 also has the hero's own three scenes (#30, owner 2026-10-30).
- const t=(isV3(s)?[...timelineV3,...V3.heroTimeline(s)].sort((a,b)=>a[0]-b[0]):timeline).find(([turn,id])=>s.turn>=turn&&!done(s,id));
+ const list=Book.isBook(s)?[...timelineBook,...V3.heroTimeline(s),...Book.BOOK.filter(c=>Book.bookReady(s,c)).map(bookEntry)]:isV3(s)?[...timelineV3,...V3.heroTimeline(s)]:timeline;
+ const t=(isV3(s)?list.sort((a,b)=>a[0]-b[0]):list).find(([turn,id])=>s.turn>=turn&&!done(s,id));
  if(t){const [,id,title,lines,ids,extra]=t;return queue(s,D(s,id,title,lines(s),ids,extra||{}));}
- const added=storyBeats.find(e=>s.turn>=e.turn&&!(isV3(s)&&e.id==='exp-notebook-first')&&s.turn<=(e.max??e.turn+2)&&!done(s,e.id)&&(e.requires||[]).every(id=>done(s,id))
+ const added=storyBeats.find(e=>s.turn>=e.turn&&!(isV3(s)&&e.id==='exp-notebook-first')&&!(Book.isBook(s)&&Book.BOOK_IDS.includes(e.id))&&s.turn<=(e.max??e.turn+2)&&!done(s,e.id)&&(e.requires||[]).every(id=>done(s,id))
   &&(e.id!=='exp-rival-hard-question'||(s.races.some(r=>r.competitionId==='ordinary-2')&&done(s,'ordinary-response-2')))
   &&(e.id!=='exp-rival-make-up'||done(s,'exp-rival-hard-question')));
  if(added)return queue(s,D(s,added.id,added.title,added.lines(s),added.ids,{scene:added.id==='exp-notebook-first'&&s.lastAction?.key==='rest'?'bedroom-morning':added.scene,...(added.choices?{choices:added.choices}:{}),...(added.requires?{requires:added.requires}:{})}));
@@ -187,6 +199,8 @@ export function pumpStory(s){
 export function afterDialogue(s,p,choice){
  if(!isToday(s))return;
  if(p.id==='rat-imitation'&&p.lines.some(l=>l.text.includes('もし、だめだったら')))s.events.storyProgress['notebook-page-seen']=1;
+ const chapter=Book.isBook(s)&&choice&&Book.bookChapter(p.id);
+ if(chapter?.answer?.cases[choice.id])return queue(s,D(s,p.id+'-answer',chapter.answer.title,Book.bookLines([...chapter.answer.cases[choice.id],...(chapter.answer.after||[])],s),chapter.ids,{scene:chapter.answer.scene,followUp:true}));
  if(p.id==='visit-seedshop-1')s.social.seedPreference=choice?.id||'crunchy';
  if(p.id==='visit-beaver-3'&&choice)s.social.boost={key:choice.id,remaining:3,percent:.1};
  // No.28: player-selected response is a genuine separate line, not a decorative button.
@@ -228,10 +242,17 @@ const REPLIES={
 // 「空きターンの3回に1回」): on a turn with no other talk, 35% for an everyday scene, a side story or the next
 // story of a town friend. The roll comes from the event seed and the turn, so a reload rolls the same.
 export const RANDOM_TALK_CHANCE=.35;
+// Talks after practice lean to the friends who were there (owner 2026-11-08 「練習後のイベントは一緒に練習したキャラとか
+// 好感度が高いからがでやすくして」, picks 「ふつう」「起きやすくする」): a friend who practised with the hero ×4, a friend at
+// friendship 60 or more ×2, and a turn practised with a friend has a talk half the time.
+export const TALK_WITH_FRIEND=4,TALK_CLOSE_FRIEND=2,TALK_CLOSE_AT=60,RANDOM_TALK_WITH_FRIEND_CHANCE=.5;
+const talkFriends=d=>{const v=d.id.match(/^visit-([a-z]+)-\d+$/);return (v?[v[1]]:(d.characters||[]).map(c=>c.id).filter(id=>!['player','trainer'].includes(id))).map(id=>id==='rival'?'domestic-0':id);};
+export function talkWeight(s,d){const there=s.lastAction?.with||[],ids=talkFriends(d);return (d.weight||1)*(ids.some(id=>there.includes(id))?TALK_WITH_FRIEND:ids.some(id=>(s.npcRelations?.[id]||0)>=TALK_CLOSE_AT)?TALK_CLOSE_FRIEND:1);}
+export const randomTalkChance=s=>s.lastAction?.with?.length?RANDOM_TALK_WITH_FRIEND_CHANCE:RANDOM_TALK_CHANCE;
 export function randomTalkRoll(s){let z=(s.events.seed^Math.imul(s.turn+1,0x9e3779b1))>>>0;z=Math.imul(z^(z>>>16),0x85ebca6b)>>>0;z=Math.imul(z^(z>>>13),0xc2b2ae35)>>>0;return ((z^(z>>>16))>>>0)/4294967296;}
 export function randomTalk(s){
- if(!isToday(s)||hasPendingDialogue(s)||s.phase!=='training'||s.turn<1||s.events.history.some(h=>h.turn===s.turn)||s.events.checkpoints.includes('turn-event-'+s.turn)||randomTalkRoll(s)>=RANDOM_TALK_CHANCE)return false;
- if(!queueEvent(s,randomDefinitions(s),'turn-event-'+s.turn))return false;
+ if(!isToday(s)||hasPendingDialogue(s)||s.phase!=='training'||s.turn<1||s.events.history.some(h=>h.turn===s.turn)||s.events.checkpoints.includes('turn-event-'+s.turn)||randomTalkRoll(s)>=randomTalkChance(s))return false;
+ if(!queueEvent(s,randomDefinitions(s).map(d=>({...d,weight:talkWeight(s,d)})),'turn-event-'+s.turn))return false;
  const v=s.events.pending.id.match(/^visit-([a-z]+)-\d+$/);if(v)s.social.visits.push({turn:s.turn,id:v[1]});
  return true;
 }
@@ -272,7 +293,7 @@ export function afterOrdinary(s){
  ];
  queue(s,D(s,'ordinary-response-'+r.year,'反省会のベンチ',lines,['trainer','rival',...afterBench.ids],{scene:'bench-dusk'}));
 }
-const townFriends=s=>['seedshop','tanuki','beaver',...(done(s,'rival-first')?['rival']:[]),...(isV3(s)&&s.events.storyProgress['cat-met']?['cat']:[])];
+const townFriends=s=>['seedshop','tanuki','beaver',...(done(s,'rival-first')?['rival']:[]),...(isV3(s)&&s.events.storyProgress['cat-met']?['cat']:[]),...(Book.isBook(s)&&done(s,'rat-confession')?['rat']:[])];
 // 町へ takes a turn (#30, owner 2026-10-31 「街へのコマンドは行くと1ターン進むようにして」), so any friend can be met on any
 // training turn; the old 「3ターンに1回」 offer is gone.
 export function townOffer(s){return isToday(s)&&s.phase==='training'&&!hasPendingDialogue(s)?townFriends(s).map(person):[];}
@@ -333,7 +354,7 @@ export function endingDefinition(s){
  L(null,'少し後のひまわりタウン。小さな子が、国内代表募集の紙の前で足を止めた。'),L('child','今度はちょびも、あのスタートラインへ。'),L(null,`${name}という名前も、走った3年間も、そのまま。誰かに憧れた一匹が、誰かの憧れになった。`),L(null,'あこがれは、つづいていく。')];}
  else if(s.ending==='domestic_loss')lines=[L(null,`${s.turn===24?'1':'2'}年目の国内選抜。復活戦でも、次の枠には届かなかった。`),L('player',reaction(s,'……強がれねえや。今日は、ほんとに悔しい。','ここで終わりだと、分かっていても……悔しいです。','今日は種も、ちょっとしょっぱいねぇ。')),
  L('trainer','うん。今は、悔しがっていい。帰り道は一緒に歩こう。'),L('seedshop','おう、おかえり。腹へったろ。いつもの、あるぞ。'),...(isV3(s)?V3.v3EndingLines(s):[]),L(null,'挑戦は、ここでひと区切り。過ごした時間と足あとは、育成記録に残った。')];
- else if(s.ending==='representative_loss')lines=[L(null,'3年目、最後の12匹。国内代表になったのは、別の一匹だった。'),L('player',reaction(s,'勝ちたかった……！ 世界へ、2匹で行きたかった。','勝ちたかったです。世界へ、2匹で行きたかった。','勝ちたかったよぉ。世界へ、2匹で行きたかった。')),L('trainer','僕も。……帰ろうか。少しゆっくりでいいから。'),L(null,'帰り道では、作戦の話はしなかった。坂の先に、いつもの神社が見えた。'),L('seedshop','おかえり、2匹とも。今日は、ゆっくり食ってけ。'),L('child','走ってるところ、見てたよ。……また、一緒に練習しようね。'),...(isV3(s)?V3.v3EndingLines(s):[]),L(null,'悔しさは、まだ消えない。それでも、帰ってこられる場所があった。')];
+ else if(s.ending==='representative_loss')lines=[L(null,Book.isBook(s)&&s.lastRace?.standings?.[0]?.id==='domestic-0'?'3年目、最後の12匹。国内代表に決まったのは、ぽてちだった。':'3年目、最後の12匹。国内代表になったのは、別の一匹だった。'),L('player',reaction(s,'勝ちたかった……！ 世界へ、2匹で行きたかった。','勝ちたかったです。世界へ、2匹で行きたかった。','勝ちたかったよぉ。世界へ、2匹で行きたかった。')),L('trainer','僕も。……帰ろうか。少しゆっくりでいいから。'),L(null,'帰り道では、作戦の話はしなかった。坂の先に、いつもの神社が見えた。'),L('seedshop','おかえり、2匹とも。今日は、ゆっくり食ってけ。'),L('child','走ってるところ、見てたよ。……また、一緒に練習しようね。'),...(isV3(s)?V3.v3EndingLines(s):[]),L(null,'悔しさは、まだ消えない。それでも、帰ってこられる場所があった。')];
  else lines=[L(null,`世界十二支決定戦、${s.lastRace.rank}位。今日は、12の枠に届かなかった。`),L('rat','あの日の「いつか」は、今日になったね。同じレースを走ってくれて、ありがとう。'),L('player',reaction(s,'……勝ちたかった。憧れの背中を見てるだけじゃ、もう足りなかったんだ。','……勝ちたかったです。憧れと並ぶだけでは、もう足りませんでした。','……勝ちたかったなぁ。憧れと走るだけじゃ、もう足りなかったよぉ。')),L('rat','うん。ぼくも、きみに勝ちたかった。本気の相手に会えたから。'),...(isV3(s)?V3.v3EndingLines(s):[]),L('trainer','帰ったら、今日の記録を見よう。落ち着いてからでいい。一緒に。'),L(null,'憧れの背中と、同じ風の中を競った。悔しさも、3年間の確かな結末だった。')];
  if(lines.some(l=>l.speakerId==='cat'||l.visibleIds?.includes('cat')))ids.push(V3.CAT.id);
  const def=D(s,'main-ending',success?'きみが、誰かの憧れになる日':'小さな足あと',lines,ids,{progress:{'ending-read':1,'rat-recognition':success?4:3}});

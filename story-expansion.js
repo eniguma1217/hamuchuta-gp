@@ -1,6 +1,7 @@
 // Curated scenes from the owner's 50-event story drafts.
 // Narrative only: no training effects, race RNG, qualification or reward changes.
 // Existing mandatory milestones in story-today.js retain priority on the same turn.
+import {isBook,bookLines,BOOK_TWEAKS} from './story-book.js';
 export const L=(speakerId,text,visibleIds,expressions)=>({speakerId,text,...(visibleIds?{visibleIds}:{}),...(expressions?{expressions}:{})});
 const seen=(s,id)=>s.events.history.some(h=>h.eventId===id);
 const chosen=(s,id)=>s.events.history.find(h=>h.eventId===id)?.choiceId;
@@ -39,7 +40,7 @@ export const storyBeats=[
   L('player',heroLine(s,'オレも、言い方が悪かった。ぽてちと走るの、好きだぜ。','わたしも、言い方が悪かったです。ぽてちと走るのは、好きです。','ぼくも、言い方が悪かったぁ。ぽてちと走るの、好きだよぉ。')),
   L(null,'ぽてちは安心した拍子に太鼓を鳴らしてしまう。帰り道まで、二匹の笑い声が続いた。')
  ]},
- {turn:58,id:'exp-fireworks-answer',title:'花火と、先に言った答え',scene:'shrine-night',ids:['trainer'],max:59,requires:['exp-fireworks-promise','main-year2'],lines:s=>[
+ {turn:58,id:'exp-fireworks-answer',title:'花火と、先に言った答え',scene:'shrine-night',ids:['trainer'],max:59,requires:['exp-fireworks-promise','main-year2'],lines:s=>isBook(s)?bookLines(BOOK_TWEAKS['exp-fireworks-answer'],s):[
   L(null,'3年目の夏祭り。あの夜と同じ石段で、こよりが先に口を開いた。'),
   L('trainer',chosen(s,'exp-fireworks-promise')==='share'?'あの夜、半分こしたおやつ、覚えてる。言葉にできなくても、隣にいてくれたね。':'あの夜、2匹で答えを探そうって言ってくれたね。僕も、ずっと考えていた。'),
   L('trainer','十二支になれるかどうかは……まだ、わかんない。'),

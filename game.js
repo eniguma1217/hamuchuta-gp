@@ -1,5 +1,6 @@
 import * as Today from './story-today.js';
 import {setEventCompletionHandler} from './events.js';
+import {isBook,BOOK_FLAG} from './story-book.js';
 setEventCompletionHandler(Today.afterDialogue);
 export {townOffer,visitTown} from './story-today.js';
 // 町へ (#30, owner 2026-10-31 「街へのコマンドは行くと1ターン進むようにして」, pick 「話す＋体力少し回復・やる気アップ」): going
@@ -10,7 +11,7 @@ export function goToTown(s,{visit,side}={}){
  if(isLegacy(s)||!Today.isToday(s)||hasPendingDialogue(s)||s.phase!=='training'||s.turn>=72)return false;
  const talk=Today.townTalk(s,{visit,side});if(!Today.canQueueTownTalk(s,talk))return false;
  const old=[...s.stats],beforeEnergy=s.energy,beforeBond=s.trainerBond;
- s.energy=clamp(s.energy+TOWN_REST);s.mood=clamp(s.mood+25);s.trainerBond=clamp(s.trainerBond+2);s.turn++;
+ s.energy=clamp(s.energy+TOWN_REST);s.mood=clamp(s.mood+25);s.trainerBond=clamp(s.trainerBond+bondGain(s,'town'));s.turn++;
  const text=`町へ。${visit?talk.name+'とひと息':'「'+talk.name+'」'}。体力＋${s.energy-beforeEnergy}、やる気1段階アップ。`;
  s.lastAction={key:'town',outcome:'town',friendship:false,gains:[0,0,0,0,0],text,event:'',learned:[],beforeStats:old,afterStats:[...s.stats],energyDelta:s.energy-beforeEnergy,bondDelta:s.trainerBond-beforeBond};
  s.log.unshift({turn:s.turn,text,trainingKey:'town',beforeStats:old,afterStats:[...s.stats]});s.log=s.log.slice(0,72);
@@ -67,6 +68,13 @@ export function validState(s){
  if(s.phase==='results')return validResult(s.lastRace)&&s.lastRace.runId===s.id&&s.races.some(r=>r.id===s.lastRace.id);
  return s.phase==='finished'&&['domestic_loss','representative_loss','zodiac_loss','zodiac_member'].includes(s.ending)&&validResult(s.lastRace)&&typeof s.completedAt==='string';
 }
+// Koyori's bond (shown on the ability page; never part of a race). In a run with the four stories it is what
+// こよりのノート waits for (owner 2026-11-01 「止める。きずなの上がり方をゆっくりに」), so it grows slowly from practice
+// and more from the turns spent looking after the hero.
+// Tried in play (owner 2026-11-08 「ためしてみて」, pick 「練習0・休む3・お出かけ3」): 第4話 comes about ten turns late in
+// ordinary play, and nearly everyone (93〜100%) still reads 第5話.
+export const BOND_GAIN={classic:{training:5,failure:3,rest:6,outing:4,town:2},book:{training:0,failure:1,rest:3,outing:3,town:1}};
+export const bondGain=(s,kind)=>BOND_GAIN[isBook(s)?'book':'classic'][kind];
 export function start(s,instanceId,profile,talentId){
  if(isLegacy(s)){if(s.phase!=='select'||hasPendingDialogue(s)||!ownedCandidates(profile).some(h=>h.id===instanceId))return Legacy.start(s,instanceId,profile);const id=s.id;Object.assign(s,freshState(s.seed));s.id=id;}
  const h=ownedCandidates(profile).find(x=>x.id===instanceId);if(hasPendingDialogue(s)||s.phase!=='select'||!h)return false;
@@ -74,6 +82,8 @@ export function start(s,instanceId,profile,talentId){
  // #30 (owner 2026-10-30): a new run's first talent comes at random and rare events add more (story-today.js).
  // New runs are story v3; a story v2 run keeps the three-card pick it began with.
  if(s.storyVersion===3)Object.assign(s,{talentRule:'random',extraTalents:[]});
+ // The four stories (#30, owner 2026-11-01): new runs only (owner pick 「前のお話のまま最後まで」).
+ if(s.storyVersion===3)s.events.storyProgress[BOOK_FLAG]=1;
  const r=rng(s.seed^0x917a21e3);s.rivals=Array.from({length:49},(_,i)=>({id:'domestic-'+i,name:['こむぎ','まめた','ぴの','くるみ','ぽてと','あずき','こはく'][i%7]+(Math.floor(i/7)+1),species:'hamster',dna:STAT_KEYS.map(()=>r.int(19,36)),growth:r.int(9,14),style:Object.keys(STYLES)[r.int(0,2)],variant:i%3}));
  if(Today.isToday(s))Object.assign(s.rivals[0],{name:'ぽてち',variant:1});
  s.domestic=createDomesticSelection(s.id,h.id,[{id:'player',species:'hamster'},...s.rivals]);for(const id of Object.keys(COMPETITIONS))s.plans[id]=makeRacePlan(r.int(0,0xffffffff));
@@ -123,19 +133,19 @@ export function nextScheduledCompetition(s){return Object.values(COMPETITIONS).f
 function schedule(s){const c=Object.values(COMPETITIONS).find(c=>c.turn===s.turn&&['ordinary','selection','representative'].includes(c.kind)&&!s.races.some(r=>r.competitionId===c.id));if(c){s.phase='race-ready';s.pendingCompetitionId=c.id;s.pendingStyle='skitter';}}
 export function train(s,key){
  if(isLegacy(s))return Legacy.train(s,key);if(hasPendingDialogue(s)||s.phase!=='training'||s.turn>=72)return false;
- const t=TRAININGS.find(x=>x.key===key);if(!t)return false;const old=[...s.stats],beforeEnergy=s.energy,beforeBond=s.trainerBond,r=rng(s.seed);let outcome='success',text='',friendship=false;
- if(key==='rest'){s.energy=clamp(s.energy+46);s.trainerBond=clamp(s.trainerBond+6);outcome='rest';text='おふとんでぐっすり。体力＋46。';}
- else if(key==='outing'){s.energy=clamp(s.energy+18);s.mood=clamp(s.mood+25);s.trainerBond=clamp(s.trainerBond+4);outcome='outing';text='町をのんびりお散歩。体力＋18、やる気1段階アップ。';}
+ const t=TRAININGS.find(x=>x.key===key);if(!t)return false;const old=[...s.stats],beforeEnergy=s.energy,beforeBond=s.trainerBond,r=rng(s.seed);let outcome='success',text='',friendship=false,helpers=[];
+ if(key==='rest'){s.energy=clamp(s.energy+46);s.trainerBond=clamp(s.trainerBond+bondGain(s,'rest'));outcome='rest';text='おふとんでぐっすり。体力＋46。';}
+ else if(key==='outing'){s.energy=clamp(s.energy+18);s.mood=clamp(s.mood+25);s.trainerBond=clamp(s.trainerBond+bondGain(s,'outing'));outcome='outing';text='町をのんびりお散歩。体力＋18、やる気1段階アップ。';}
  else if(key==='scout'){const next=nextScheduledCompetition(s);if(!next||s.scouted.includes(next.id))return false;s.scouted.push(next.id);outcome='scout';text=`${next.title}を下見。コースとゾーンの位置がわかった！`;}
  else{
-  const fail=r.next()*100<failureChance(s,key),great=!fail&&r.next()<personalityOf(s).greatChance+(Today.isToday(s)?talentEffects(s).greatPlus||0:0),helpers=trainingNPCs(s,key);friendship=!fail&&helpers.some(n=>(s.npcRelations[n.id]||0)>=80);
+  const fail=r.next()*100<failureChance(s,key),great=!fail&&r.next()<personalityOf(s).greatChance+(Today.isToday(s)?talentEffects(s).greatPlus||0:0);helpers=trainingNPCs(s,key);friendship=!fail&&helpers.some(n=>(s.npcRelations[n.id]||0)>=80);
   if(!fail){const growth=trainingPreview(s,key);s.stats=s.stats.map((v,i)=>clamp(v+(great?growth.greatGains:growth.gains)[i]));s.growthRemainder=great?growth.greatRemainders:growth.remainders;s.balanceVersion=2;}
-  s.energy=clamp(s.energy-trainingCost(s,key));s.mood=clamp(s.mood+(fail?-25:1));s.trainerBond=clamp(s.trainerBond+(fail?3:5));for(const n of helpers)s.npcRelations[n.id]=clamp((s.npcRelations[n.id]||0)+20);
+  s.energy=clamp(s.energy-trainingCost(s,key));s.mood=clamp(s.mood+(fail?-25:1));s.trainerBond=clamp(s.trainerBond+bondGain(s,fail?'failure':'training'));for(const n of helpers)s.npcRelations[n.id]=clamp((s.npcRelations[n.id]||0)+20);
   outcome=fail?'failure':friendship?'friendship':great?'great':'success';text=`${t.name}、${fail?'失敗……能力は上がらなかった。':friendship?'友情練習！':great?'大成功！':'成功！'}${fail?'':` ${STAT_NAMES[t.target]}＋${s.stats[t.target]-old[t.target]}`}`;text+=' '+trainingReaction(s,outcome,helpers[0],key,helpers);
  }
  s.seed=r.seed;s.turn++;const learned=[];s.stats.forEach((v,i)=>{if(v>=58&&!s.skills.includes(i)){s.skills.push(i);learned.push(['ロケットスタート','不屈のあしどり','早食い名人','天才のひらめき','迷路の達人'][i]);}});
  if(Today.isToday(s)&&key==='rest')text=`おふとんでぐっすり。体力＋${s.energy-beforeEnergy}。`;if(Today.isToday(s)&&key==='outing')text=`町をのんびりお散歩。体力＋${s.energy-beforeEnergy}、やる気を整えた。`;
- s.lastAction={key,outcome,friendship,gains:s.stats.map((v,i)=>v-old[i]),text,event:'',learned,...(Today.isToday(s)?{beforeStats:old,afterStats:[...s.stats],energyDelta:s.energy-beforeEnergy,bondDelta:s.trainerBond-beforeBond}:{})};s.log.unshift({turn:s.turn,text,...(Today.isToday(s)?{trainingKey:key,beforeStats:old,afterStats:[...s.stats]}:{})});s.log=s.log.slice(0,72);schedule(s);Today.afterTraining(s);
+ s.lastAction={key,outcome,friendship,gains:s.stats.map((v,i)=>v-old[i]),text,event:'',learned,...(helpers.length?{with:helpers.map(n=>n.id)}:{}),...(Today.isToday(s)?{beforeStats:old,afterStats:[...s.stats],energyDelta:s.energy-beforeEnergy,bondDelta:s.trainerBond-beforeBond}:{})};s.log.unshift({turn:s.turn,text,...(Today.isToday(s)?{trainingKey:key,beforeStats:old,afterStats:[...s.stats]}:{})});s.log=s.log.slice(0,72);schedule(s);Today.afterTraining(s);
  // Story v2/v3: a random talk on 35% of the turns with no other talk (#30); older runs keep every sixth turn.
  if(Today.isToday(s)){if(!Today.rareTalentEvent(s))Today.randomTalk(s);}else if(s.phase==='training'&&s.turn%6===0)queueEvent(s,randomDefinitions(s),'turn-event-'+s.turn);return true;
 }

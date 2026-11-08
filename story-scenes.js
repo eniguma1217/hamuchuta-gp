@@ -7,7 +7,9 @@ const names={
  seedshop:'ひまわりの種屋','seedshop-interior':'種屋の店内','seedshop-rain':'雨の種屋',
  workshop:'ビーバーの工作場',shrine:'神社の石段','shrine-night':'お祭りの夜の神社',
  'bench-dusk':'大会帰りのベンチ',bedroom:'こよりの部屋','bedroom-morning':'朝のこよりの部屋',
- 'race-day':'大会の控え場所','race-sunset':'大会後の会場',world:'世界大会の控え場所'
+ 'race-day':'大会の控え場所','race-sunset':'大会後の会場',world:'世界大会の控え場所',
+ // The four stories (#30, owner 2026-11-01): the 幕間 long ago, and the slope and steps at night and at dawn.
+ 'past-slope':'むかしの坂','past-plaza':'むかしの広場','slope-night':'夜の神社の坂','slope-snow':'雪の夜の坂','shrine-dawn':'夜明け前の神社の石段'
 };
 const mapped={
  'main-prologue':'seedshop','main-year1':'race-sunset','main-year2':'race-sunset',

@@ -9,6 +9,7 @@ const L=(speakerId,text,visibleIds,expressions)=>({speakerId,text,...(visibleIds
 const done=(s,id)=>s.events.history.some(h=>h.eventId===id);
 const chosen=(s,id)=>s.events.history.find(h=>h.eventId===id)?.choiceId;
 const v3=s=>s.storyVersion===3;
+import {isBook,bookLines,BOOK_TWEAKS,RAT_VISITS,RAT_TALK} from './story-book.js';
 // Same calendar as gameDate(): turn 0 is early April, two turns a month.
 export const monthOf=turn=>(3+Math.floor((turn%24)/2))%12+1;
 export const seasonOf=turn=>{const m=monthOf(turn);return m>=3&&m<=5?'spring':m<=8&&m>=6?'summer':m>=9&&m<=11?'autumn':'winter';};
@@ -196,7 +197,7 @@ const DAILY=[
   L('player',said(s,'今なら、目をつぶっても届くぜ！','今の足なら、7秒です。','ここで種を食べる予定だったねぇ。……今日、食べよっか。')),
   L(null,'二匹は旗の下に座って、種を一粒ずつ食べた。3年前の予定が、やっと終わった。')]},
  // Story v3 only: the Cat and the Rat between the main scenes.
- {id:'daily-cat-rerun',title:'前の日から',ids:['trainer','seedshop'],scene:'seedshop',weight:2,v3:true,requires:['cat-first'],when:s=>s.turn<=36,lines:s=>[
+ {id:'daily-cat-rerun',title:'前の日から',ids:['trainer','seedshop'],scene:'seedshop',weight:2,v3:true,requires:['cat-first'],when:s=>s.turn<=36,lines:s=>isBook(s)?bookLines(BOOK_TWEAKS['daily-cat-rerun'],s):[
   L(null,'種屋の壁に、去年の世界十二支決定戦の写真が貼ってあった。夕暮れの坂を上る、十三の背中。'),
   L('seedshop','いちばん後ろのが、あのネコだ。何百年も、毎回この坂を最後まで上ってる。'),
   L('player',said(s,'次は、12の中で並んで走る！ ネコとも、オレとも！','何百年、一度も休まずに……。簡単なことでは、ありません。','ネコさん、毎回ちゃんと出てるんだね。……すごいなぁ。')),
@@ -221,7 +222,7 @@ const DAILY=[
   L('trainer','……一晩で、何往復したんだろう。'),
   L('player',said(s,'数えてくるぜ！ ……途中で分からなくなった！','足あとの深さが、最後まで同じです。一度も、乱れていません。','……足、つめたくなかったのかなぁ。')),
   L(null,'いちばん上の段に、足あとがひとつだけ、こちらを向いて止まっていた。')]},
- {id:'daily-rat-dawn',title:'朝いちばんの石段',ids:['rat'],scene:'shrine',weight:2,v3:true,requires:['rat-confession'],lines:s=>[
+ {id:'daily-rat-dawn',title:'朝いちばんの石段',ids:['rat'],scene:'shrine',weight:2,v3:true,requires:['rat-confession'],lines:s=>isBook(s)?bookLines(BOOK_TWEAKS['daily-rat-dawn'],s):[
   L(null,'朝いちばんの神社。石段を、小さな影が何度も往復していた。',['player','rat']),
   L(null,'王者のネズミだった。あの日、坂を駆け抜けた走りより、ずっと地味な練習だった。',['player','rat']),
   L('rat','……見られちゃったか。速く見える走りは、だいたい、こういう朝からできてるんだ。',['player','rat']),
@@ -240,6 +241,13 @@ export function dailyScenes(s){
 // Visitable: the seed shop, the shrine keeper, the workshop, Potechi (after meeting) and, in v3, the Cat.
 export function visitScene(s,id,count){
  const n=count;
+ // A run with the four stories (story-book.js): the Rat on the dawn steps after his story, and a few talks that read
+ // differently once the stories have moved on.
+ if(isBook(s)){
+  if(id==='rat')return {scene:'shrine-dawn',lines:bookLines(n<=5?RAT_VISITS[n-1]:RAT_TALK[(n-6)%RAT_TALK.length],s)};
+  if(id==='cat'&&(n===3||n===4))return {scene:'slope',lines:bookLines(BOOK_TWEAKS['visit-cat-'+n],s)};
+  if(id==='rival'&&(n===4||n===5)&&done(s,'rival-changes'))return {scene:n===4?'town':'training-dusk',lines:bookLines(BOOK_TWEAKS['visit-rival-'+n],s)};
+ }
  if(id==='seedshop'){
   if(n===1)return {lines:[L('seedshop','おう、今日はどんな種がいい？ よく食べるやつほど、好みがはっきりしてるもんだ。'),L('player',said(s,'うーん、そうだな……。','そうですね……。','そうだなぁ……。'))]};
   if(n===2)return {lines:[L('seedshop',s.social.seedPreference==='small'?'小粒のほう、ちゃんと覚えてるぜ。急いで丸のみすんなよ。':'歯ごたえのあるやつだな。よくかんで、食べてけ。'),L('trainer','好みまで覚えてくれてるんですね。'),L('seedshop','毎日顔見てりゃ、そりゃな。今日も2匹で来たんだろ？')]};

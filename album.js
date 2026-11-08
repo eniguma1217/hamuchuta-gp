@@ -8,6 +8,8 @@ import {randomDefinitions,sideDefinitions,visitDefinition} from './story-today.j
 import {DAILY_IDS,DAILY_TITLES,monthOf,v3SideStoryBeats} from './story-side.js';
 import {sideStoryBeats} from './story-expansion.js';
 import {catResult} from './story-v3.js';
+import {BOOK,BOOK_SERIES,bookNeed,FRIEND_NAMES,isBook} from './story-book.js';
+import {bookDefinition} from './story-today.js';
 
 // The event id a run used for this scene. The first four daily scenes used to carry their turn
 // ('daily-footprints-6'), so runs from before the side-story review count too.
@@ -42,7 +44,10 @@ const when=turn=>`${Math.floor(Math.max(0,turn)/24)+1}年目の${monthOf(turn)}�
 const sideHint=e=>[e.v3?'新しい物語で':'',...(e.requires||[]).map(id=>MET[id]).filter(Boolean),`${when(e.min)}〜${when(e.max)}`].filter(Boolean).join('、');
 export const SIDES=[...sideStoryBeats,...v3SideStoryBeats].map(e=>({id:e.id,title:e.title,hint:sideHint(e)}));
 export const DAILIES=DAILY_IDS.map(id=>({id,title:DAILY_TITLES[id],hint:DAILY_HINTS[id]||'いつでも'}));
-export const TOWN=[['seedshop','種屋さん'],['tanuki','神社の管理役'],['beaver','練習場の手入れ役'],['rival','ぽてち'],['cat','ネコ']].map(([id,name])=>({id,name,hint:id==='rival'?'ぽてちと出会ったあと、町で会う':id==='cat'?'新しい物語で、ネコに会ったあと、町で会う':`町で${name}に会う`}));
+export const TOWN=[['seedshop','種屋さん'],['tanuki','神社の管理役'],['beaver','練習場の手入れ役'],['rival','ぽてち'],['cat','ネコ'],['rat','ネズミ']].map(([id,name])=>({id,name,hint:id==='rival'?'ぽてちと出会ったあと、町で会う':id==='cat'?'新しい物語で、ネコに会ったあと、町で会う':id==='rat'?'ネズミの昔話のあと、町で神社のネズミに会う':`町で${name}に会う`}));
+// 物語のたな (#30, owner 2026-11-01): the four stories, chapter by chapter. Only runs that had them count.
+const needHint=c=>{const n=bookNeed(c);return n.value?`${n.who==='bond'?'こよりとのきずな':FRIEND_NAMES[n.who]+'の友好度'}${n.value}で（${when(c.turn)}から）`:`${when(c.turn)}から`;};
+export const BOOK_SHELVES=Object.keys(BOOK_SERIES).map(k=>({id:k,name:BOOK_SERIES[k],chapters:BOOK.filter(c=>c.series===k).sort((a,b)=>a.n-b.n).map(c=>({id:c.id,n:c.n,title:c.title,interlude:!!c.interlude,hint:needHint(c)}))}));
 export const TOWN_STEPS=5;
 
 // Every saved run, newest last; the run in progress counts once it has started.
@@ -54,7 +59,8 @@ export function album(data){
   endings:ENDINGS.map(e=>({...e,run:latest(done,e.match)})),
   dailies:DAILIES.map(e=>({...e,run:story(e.id)})),
   sides:SIDES.map(e=>({...e,run:story(e.id)})),
-  town:TOWN.map(f=>({...f,steps:Array.from({length:TOWN_STEPS},(_,i)=>({n:i+1,run:story(`visit-${f.id}-${i+1}`)}))}))
+  town:TOWN.map(f=>({...f,steps:Array.from({length:TOWN_STEPS},(_,i)=>({n:i+1,run:story(`visit-${f.id}-${i+1}`)}))})),
+  book:BOOK_SHELVES.map(sh=>({...sh,chapters:sh.chapters.map(c=>({...c,run:latest(runs,r=>isBook(r)&&seen(r,c.id))}))}))
  };
 }
 
@@ -71,6 +77,8 @@ export function replayDefinition(data,kind,id){
   if(kind==='ending'){const e=a.endings.find(x=>x.id===id);return e?.run?endingDefinition(e.run):null;}
   if(kind==='daily'){const e=a.dailies.find(x=>x.id===id),s=e?.run&&stateAt(e.run,seenAs(e.run,id));return s?randomDefinitions(s).find(d=>d.id===id)||null:null;}
   if(kind==='side'){const e=a.sides.find(x=>x.id===id),s=e?.run&&stateAt(e.run,id);return s?sideDefinitions(s).find(d=>d.id===id)||null:null;}
+  // A chapter re-reads with the answer chosen that time, and no choice to make.
+  if(kind==='book'){const c=a.book.flatMap(sh=>sh.chapters).find(x=>x.id===id),s=c?.run&&stateAt(c.run,id),choiceId=c?.run?.events.history.find(h=>h.eventId===id)?.choiceId||null;return s?bookDefinition(s,id,{replay:true,choiceId}):null;}
   if(kind==='town'){const [friend,n]=id.split(':'),f=a.town.find(x=>x.id===friend),step=f?.steps[Number(n)-1],s=step?.run&&stateAt(step.run,`visit-${friend}-${n}`);return s?visitDefinition(s,friend,Number(n)):null;}
  }catch{return null;}
  return null;
@@ -85,7 +93,7 @@ export function hall(data){
   .sort((a,b)=>(a.date?.getTime()||0)-(b.date?.getTime()||0)).map((x,i)=>({...x,generation:i+1}));
 }
 // 自己ベスト: counts, the best world final, each hero's best, each friend's highest friendship.
-const FRIENDS=[['domestic-0','ぽてち'],['child','ちょび'],['seedshop','種屋さん'],['tanuki','神社の管理役'],['beaver','練習場の手入れ役'],['cat','ネコ']];
+const FRIENDS=[['domestic-0','ぽてち'],['child','ちょび'],['seedshop','種屋さん'],['tanuki','神社の管理役'],['beaver','練習場の手入れ役'],['cat','ネコ'],['rat','ネズミ']];
 const ORDER=['zodiac_member','zodiac_loss','representative_loss','domestic_loss'];
 const RESULT={zodiac_member:'十二支になった',zodiac_loss:'世界大会へ',representative_loss:'代表決定戦まで',domestic_loss:'国内予選まで'};
 export function bests(data){
@@ -100,4 +108,4 @@ export function bests(data){
   friends:FRIENDS.map(([id,name])=>({id,name,best:Math.max(0,...runs.map(r=>r.npcRelations?.[id]||0))}))
  };
 }
-export function albumCounts(a){const town=a.town.flatMap(f=>f.steps);const n=list=>list.filter(x=>x.run).length;return {endings:[n(a.endings),a.endings.length],stories:[n(a.dailies)+n(a.sides),a.dailies.length+a.sides.length],town:[n(town),town.length]};}
+export function albumCounts(a){const town=a.town.flatMap(f=>f.steps),book=a.book.flatMap(sh=>sh.chapters);const n=list=>list.filter(x=>x.run).length;return {book:[n(book),book.length],endings:[n(a.endings),a.endings.length],stories:[n(a.dailies)+n(a.sides),a.dailies.length+a.sides.length],town:[n(town),town.length]};}

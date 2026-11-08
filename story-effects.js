@@ -36,6 +36,12 @@ export const STORY_EFFECTS={
  'goal-y3':{mood:UP},
  'rival-changes':{mood:UP,...rel(R,10)},
  'cat-past':{stats:st(STA,2),mood:DOWN},// the cat runs off without looking back
+ // The four stories (#30, owner 2026-11-01). The 幕間 have no hero; what is learned in them brings their side closer,
+ // and the first Cat's lonely morning weighs on the hero.
+ 'book-nn-1':rel('cat',5),'book-nn-3':{mood:DOWN},'book-nn-4':rel('rat',5),
+ 'book-nn-5':{mood:UP,npcRelations:{cat:5,rat:10}},// three sets of footprints in the snow
+ 'book-cat-5':{stats:st(STA,2),...rel('cat',10)},// 「……6つだった」
+ 'book-potechi-5':{mood:UP,...rel(R,10)},// the seed kept since the first day
  'exp-fireworks-answer':{mood:UP,trainerBond:10},
  'festival-3':{mood:UP,energy:10},
  'exp-child-snow-senior':{stats:st(STA,3),...rel('child',10)},
@@ -114,7 +120,13 @@ export const STORY_EFFECTS={
  'visit-cat-2':{trainerBond:5,...rel('cat',8)},
  'visit-cat-3':{stats:st(SPD,3),...rel('cat',8)},
  'visit-cat-4':{npcRelations:{cat:-5,rat:5}},// the cat is cross about the rat
- 'visit-cat-5':{mood:UP,...rel('cat',10)}
+ 'visit-cat-5':{mood:UP,...rel('cat',10)},
+ // 町へ・ネズミ (#30, owner 2026-11-01 「前半はネコ、後半はネズミ」): the Rat's friendship for ネコとネズミ 第3〜5話.
+ 'visit-rat-1':{energy:-10,...rel('rat',8)},// a hundred steps, ten times: down after three
+ 'visit-rat-2':{...rel('rat',8)},
+ 'visit-rat-3':{mood:UP,...rel('rat',8)},
+ 'visit-rat-4':{...rel('rat',10)},
+ 'visit-rat-5':{stats:st(STA,2),...rel('rat',10)}// the family's worn step
 };
 export const CHOICE_EFFECTS={
  'cat-first':{'talk-back':{mood:UP,...rel('cat',5)},quiet:{mood:DOWN},seed:{stats:st(APP,2),...rel('cat',8)}},
@@ -128,7 +140,7 @@ export const CHOICE_EFFECTS={
 // The reply that follows a choice belongs to the same talk: no effects of its own.
 const REPLIES=new Set(['cat-first-answer','cat-shortcut-answer','rat-confession-answer','exp-rival-make-up-answer','exp-fireworks-promise-answer','exp-child-wheel-answer','visit-seedshop-1-answer','visit-beaver-3-answer']);
 export const isReply=id=>REPLIES.has(id);
-const BENCH=/^ordinary-response-[123]$/,VISIT=/^visit-(seedshop|tanuki|beaver|rival|cat)-(\d+)$/;
+const BENCH=/^ordinary-response-[123]$/,VISIT=/^visit-(seedshop|tanuki|beaver|rival|cat|rat)-(\d+)$/;
 export function storyEffects(s,id){
  if(id==='main-ending'||REPLIES.has(id))return null;
  if(Object.hasOwn(STORY_EFFECTS,id))return STORY_EFFECTS[id];

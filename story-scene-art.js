@@ -3,7 +3,7 @@ import {loadFancyBackgrounds,drawFancyScene} from './fancy-backgrounds.js';
 // Dedicated location paintings plus the visible, saved dialogue cast. Display only.
 import {drawIntroScene,loadIntroArt} from './intro-art.js';
 import {drawAnimatedRunner} from './race-animation.js';
-import {drawStoryActor} from './story-art.js';import {drawVisualHero,drawVisualNPC,drawVisualVenue} from './visual-art.js';import {THEMES} from './race-scenery.js';
+import {drawStoryActor} from './story-art.js';import {FIRST_CAST} from './story-book.js';import {drawVisualHero,drawVisualNPC,drawVisualVenue} from './visual-art.js';import {THEMES} from './race-scenery.js';
 let image,festival,fancySeedshop,fancyWorld,pending;
 // 5 columns x 4 rows of character-free 384x216 illustrated locations.
 // These are presentation assets; no story or race data is changed.
@@ -16,7 +16,9 @@ export const FANCY_WORLD_SCENES=[
 export const FANCY_WORLD_SCENE_INDEX={...Object.fromEntries(FANCY_WORLD_SCENES.map((scene,i)=>[scene,i])),morning:5};
 export function loadStorySceneArt(){if(typeof Image==='undefined')return Promise.resolve(false);loadConversationBackgrounds();const read=(path,accept)=>new Promise(resolve=>{const i=new Image();i.onload=()=>{accept(i);resolve(true);};i.onerror=()=>resolve(false);i.src=new URL(path,import.meta.url).href;});return pending||=Promise.all([loadIntroArt(),loadFancyBackgrounds(),read('./assets/story-v7/story-locations-v7.png',i=>image=i),read('./assets/shrine-festival-new-20261020.png',i=>festival=i),read('./assets/polish-v25/seedshop-v25.png',i=>fancySeedshop=i),read('./assets/fancy-world-handoff-v2-20261020.svg',i=>fancyWorld=i)]).then(a=>a.every(Boolean));}
 export const STORY_PANELS={bedroom:0,'bedroom-morning':0,'bench-dusk':1,'town-dusk':1,'training-dusk':1,'training-rain':2,'town-snow':3,shrine:4,'shrine-night':4,workshop:5};
-export function locationPlan(scene){if(Object.hasOwn(STORY_PANELS,scene))return {kind:'story',panel:STORY_PANELS[scene]};if(['world','race-day','race-sunset'].includes(scene))return {kind:'venue',theme:scene==='world'?'stadium':scene==='race-day'?'day':'sunset'};return {kind:'intro',scene:({seedshop:'shop','seedshop-interior':'shop','seedshop-rain':'shop',town:'slope','town-summer':'morning',training:'morning','training-morning':'morning','training-night':'slope'})[scene]||scene};}
+// Places of the four stories fall back to the place they were drawn from while the owner's pictures load.
+const SCENE_LOOKS={'past-slope':'slope','past-plaza':'shrine','slope-night':'slope','slope-snow':'town-snow','shrine-dawn':'shrine'};
+export function locationPlan(scene){scene=SCENE_LOOKS[scene]||scene;if(Object.hasOwn(STORY_PANELS,scene))return {kind:'story',panel:STORY_PANELS[scene]};if(['world','race-day','race-sunset'].includes(scene))return {kind:'venue',theme:scene==='world'?'stadium':scene==='race-day'?'day':'sunset'};return {kind:'intro',scene:({seedshop:'shop','seedshop-interior':'shop','seedshop-rain':'shop',town:'slope','town-summer':'morning',training:'morning','training-morning':'morning','training-night':'slope'})[scene]||scene};}
 // Two actors carry a conversation. Keep their left/right positions stable
 // across dialogue pages and choose the player as listener when possible.
 export function focusedStoryActors(characters=[],speakerId=null){
@@ -36,9 +38,9 @@ export function drawStoryScene(canvas,place,characters=[],variant=0,clock=0,spea
  // Owner-supplied backgrounds (2026-10-23) come first; older art remains the fallback.
  if(drawConversationBackground(c,place,cw,ch)){}
  else if(['seedshop','seedshop-interior','seedshop-rain','shop','tv'].includes(place)&&fancySeedshop){c.drawImage(fancySeedshop,0,0,cw,ch);}
- else if(drawFancyScene(c,place,cw,ch)){}
- else if(Object.hasOwn(FANCY_WORLD_SCENE_INDEX,place)&&fancyWorld){
-  const i=FANCY_WORLD_SCENE_INDEX[place];
+ else if(drawFancyScene(c,SCENE_LOOKS[place]||place,cw,ch)){}
+ else if(Object.hasOwn(FANCY_WORLD_SCENE_INDEX,SCENE_LOOKS[place]||place)&&fancyWorld){
+  const i=FANCY_WORLD_SCENE_INDEX[SCENE_LOOKS[place]||place];
   c.drawImage(fancyWorld,(i%5)*384,Math.floor(i/5)*216,384,216,0,0,cw,ch);
  }
  else if(plan.kind==='intro'){if(!drawIntroScene(canvas,plan.scene,variant,'normal',{actors:false})){c.restore();return false;}}
@@ -72,7 +74,8 @@ export function drawStoryScene(canvas,place,characters=[],variant=0,clock=0,spea
   c.fillRect(Math.round(x-height*.27),base,Math.round(height*.54),3);
   c.globalAlpha=1;
   if(a.id==='player')drawVisualHero(c,variant,x,base-breath,height,false,expression);
-  else if(!drawStoryActor(c,a.id,x,base-breath,height,expression))drawVisualNPC(c,a.id,x,base-breath,height,expression);
+  // The first Cat and the first Rat (幕間) look like today's Cat and Rat.
+  else{const look=FIRST_CAST[a.id]?.looks||a.id;if(!drawStoryActor(c,look,x,base-breath,height,expression))drawVisualNPC(c,look,x,base-breath,height,expression);}
   c.restore();
  });
  if(place==='seedshop-rain'){c.strokeStyle='#bbd9e9';c.lineWidth=1;for(let i=0;i<7;i++){const x=8+i*5,y=20+(i*23+Math.floor(clock*25))%130;c.beginPath();c.moveTo(x,y);c.lineTo(x-3,y+9);c.stroke();}}
