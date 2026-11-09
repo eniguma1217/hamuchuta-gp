@@ -1,7 +1,9 @@
 // Owner-supplied conversation backgrounds (2026-10-23/24, docs/references/owner-supplied-2026102[34]).
 // Display only: no saves, RNG or story changes. Loaded in the background; until an
 // image has arrived the older location art is drawn instead.
-export const CONVERSATION_IMAGES=Object.freeze(['training-sunny','training-ranch','town-street','seedshop-front','hamster-house','dusk-lookout','shrine-approach','race-countryside','race-temple','training-dusk','training-rain','town-snow','town-slope-dusk','seedshop-rain','shrine-festival-night']);
+export const CONVERSATION_IMAGES=Object.freeze(['training-sunny','training-ranch','town-street','seedshop-front','hamster-house','dusk-lookout','shrine-approach','race-countryside','race-temple','training-dusk','training-rain','town-snow','town-slope-dusk','seedshop-rain','shrine-festival-night',
+ // The four stories' own pictures (owner 2026-11-08, docs/references/owner-supplied-20261108).
+ 'past-slope','past-plaza-night','past-plaza-morning','slope-night','slope-snow-night']);
 // scene -> [image, mood]. A mood is a TEMPORARY tint for a time of day that has no
 // dedicated picture yet (owner: art is being made; request in
 // docs/art-direction/CONVERSATION_VARIANTS_REQUEST_20261023.md).
@@ -14,8 +16,9 @@ export const CONVERSATION_BACKGROUNDS=Object.freeze({
  bedroom:['hamster-house'],'bedroom-morning':['hamster-house'],
  shrine:['shrine-approach'],'shrine-night':['shrine-festival-night'],
  'race-day':['race-countryside'],'race-sunset':['race-countryside','dusk'],world:['race-temple'],
- // The four stories (#30, owner 2026-11-01). The 幕間 are drawn in sepia by the page (dialogue stage CSS).
- 'past-slope':['town-slope-dusk'],'past-plaza':['shrine-approach'],'slope-night':['town-slope-dusk','night'],'slope-snow':['town-snow','night'],'shrine-dawn':['shrine-approach','dawn'],
+ // The four stories (#30, owner 2026-11-01). The 幕間 are drawn in sepia by the page (dialogue stage CSS); the owner's
+ // pictures for them came on 2026-11-08 (the dawn steps are still tinted until theirs comes).
+ 'past-slope':['past-slope'],'past-plaza':['past-plaza-night'],'past-plaza-morning':['past-plaza-morning'],'slope-night':['slope-night'],'slope-snow':['slope-snow-night'],'shrine-dawn':['shrine-approach','dawn'],
  // 夏合宿 (#30, owner 2026-11-08): the nearest pictures until the camp pictures come (art request 2026-11-08).
  'camp-sea':['dusk-lookout'],'camp-mountain':['training-ranch'],'camp-forest':['training-sunny']
 });
